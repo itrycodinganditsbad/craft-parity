@@ -53,18 +53,18 @@ Missing in: cadcraft, deckcraft, designcraft, effectcraft, filmcraft, gridcraft,
 
 | App | Ref | Commit |
 |---|---|---|
-| [cadcraft](https://github.com/storytold/cadcraft) | origin/HEAD | [b23b45e976](https://github.com/storytold/cadcraft/commit/b23b45e976edb561549f6867a74a3a056a5db4ef) |
+| [cadcraft](https://github.com/storytold/cadcraft) | origin/HEAD | [54ea5e743a](https://github.com/storytold/cadcraft/commit/54ea5e743a29acd8f3178cfaa82fb74a38c2de72) |
 | [deckcraft](https://github.com/storytold/deckcraft) | origin/HEAD | [be14248577](https://github.com/storytold/deckcraft/commit/be14248577b92059eb2b8c0c9460cceffbc1f01d) |
 | [designcraft](https://github.com/storytold/designcraft) | origin/HEAD | [ca343e8985](https://github.com/storytold/designcraft/commit/ca343e8985dc4d92dd65cf77a8198723b5f8a9eb) |
 | [effectcraft](https://github.com/storytold/effectcraft) | origin/HEAD | [67434e9038](https://github.com/storytold/effectcraft/commit/67434e90388b6dca4417555346fa6850b6f96033) |
 | [filmcraft](https://github.com/storytold/filmcraft) | origin/HEAD | [0800a8b0aa](https://github.com/storytold/filmcraft/commit/0800a8b0aa4a703ba42172f415b45a61f8d8a5e1) |
-| [gridcraft](https://github.com/storytold/gridcraft) | origin/HEAD | [26489863b0](https://github.com/storytold/gridcraft/commit/26489863b044d2bd626c706cf13062042f36a622) |
+| [gridcraft](https://github.com/storytold/gridcraft) | origin/HEAD | [177e52a14d](https://github.com/storytold/gridcraft/commit/177e52a14dc1ea484b0f02df157c1093e87b569e) |
 | [lightcraft](https://github.com/storytold/lightcraft) | origin/HEAD | [76b5377868](https://github.com/storytold/lightcraft/commit/76b5377868d912db69a777bda253a5b1b96b22bd) |
-| [pdfcraft](https://github.com/storytold/pdfcraft) | origin/HEAD | [134b98b0a8](https://github.com/storytold/pdfcraft/commit/134b98b0a8516ceee8de387779dc4696d549bb1b) |
-| [photocraft](https://github.com/storytold/photocraft) | origin/HEAD | [e5dbcab335](https://github.com/storytold/photocraft/commit/e5dbcab335b16ca99f540f97b27d08ef60e6626d) |
+| [pdfcraft](https://github.com/storytold/pdfcraft) | origin/HEAD | [8f8e0236aa](https://github.com/storytold/pdfcraft/commit/8f8e0236aaef16a4f3ca52a074ad5d48da6498f7) |
+| [photocraft](https://github.com/storytold/photocraft) | origin/HEAD | [f92f13490b](https://github.com/storytold/photocraft/commit/f92f13490b24f54869edc0b260b71d6f92f243dc) |
 | [soundcraft](https://github.com/storytold/soundcraft) | origin/HEAD | [240aa848a0](https://github.com/storytold/soundcraft/commit/240aa848a04811ffff75cf193e69d9d4c404ae68) |
-| [vectorcraft](https://github.com/storytold/vectorcraft) | origin/HEAD | [53bc86fdb4](https://github.com/storytold/vectorcraft/commit/53bc86fdb454ed33cd26cba5e29695ebe0befeff) |
-| [wordcraft](https://github.com/storytold/wordcraft) | origin/HEAD | [09921dfae8](https://github.com/storytold/wordcraft/commit/09921dfae8555ee396c4f66bb0ec23953f22b3ac) |
+| [vectorcraft](https://github.com/storytold/vectorcraft) | origin/HEAD | [2ac3ba2b86](https://github.com/storytold/vectorcraft/commit/2ac3ba2b866ad9d34b2252dd8024f73e34f4b2b8) |
+| [wordcraft](https://github.com/storytold/wordcraft) | origin/HEAD | [f8f1d80c38](https://github.com/storytold/wordcraft/commit/f8f1d80c389a365589e2b7a0d53770c0421ce592) |
 | [artcraft](https://github.com/storytold/artcraft) | origin/HEAD | [d4e4ac69bb](https://github.com/storytold/artcraft/commit/d4e4ac69bbd93d237eaf5d0260bc6a5ff3a5e373) |
 | [artcraftx](https://github.com/storytold/artcraftx) | origin/HEAD | [98c2a48940](https://github.com/storytold/artcraftx/commit/98c2a48940aa0a54604637f665ee539c122fa707) |
-| [craft-launcher](https://github.com/storytold/craft-launcher) | origin/HEAD | [e2b01e7425](https://github.com/storytold/craft-launcher/commit/e2b01e7425cb3f54f2805a99f1f8ee7f7a9a4adc) |
+| [craft-launcher](https://github.com/storytold/craft-launcher) | origin/HEAD | [c273a94a9a](https://github.com/storytold/craft-launcher/commit/c273a94a9a37c7a2d7a07fd6cc9ca44e3dcc6b9c) |
