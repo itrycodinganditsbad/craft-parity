@@ -1,0 +1,138 @@
+{
+  "key": "cadcraft-pr-172",
+  "area": "file_io",
+  "symptom": "Closing a document with unsaved changes discards them without asking.",
+  "attempts": 2,
+  "proven": true,
+  "toml": "applies_if = []\nknown_fixed = [\"cadcraft\", \"designcraft\", \"effectcraft\", \"filmcraft\"]\nreferences = [\"storytold/cadcraft#172\", \"storytold/designcraft#146\", \"storytold/effectcraft#13\", \"storytold/filmcraft#758\"]\ntitle = \"Ask to save unsaved changes before closing a document or the window\"\nwhy = \"Without this, closing a document, quitting, or closing the window while there are unsaved changes goes ahead without asking, and the edits are lost.\"\n\n[exempt]\n\n[[fixed_if]]\ngrep = 'ViewportCommand::CancelClose|Dialog::UnsavedChanges|Save changes to \\{|Save them before closing'\nin = [\"**/*.rs\"]\n\n[[proof]]\napp = \"cadcraft\"\npr = 172\n\n[[proof]]\napp = \"designcraft\"\npr = 146\n\n[[proof]]\napp = \"effectcraft\"\npr = 13\n\n[[proof]]\napp = \"filmcraft\"\npr = 758\n",
+  "reasoning": "I couldn't see attempt 1 or the filmcraft diff, so parts of this are guesses. Attempt 1 most likely matched a generic button label like \"Don't Save\". Filmcraft probably already had that label in another dialog, which made it read Fixed before its fix. So this version looks only for things the fixes added. Filmcraft and effectcraft fix quitting and closing the window. In egui you stop a window close by sending ViewportCommand::CancelClose, so the fix almost has to add that, and egui code doesn't send it for any other reason. I'm assuming filmcraft didn't send it before, since its window used to close without asking, and that effectcraft's close-request handler (not shown in its truncated diff) sends it. Effectcraft also adds Dialog::UnsavedChanges, which I added as a backup in case that assumption is wrong. Cadcraft and designcraft only guard closing a document from the tab or the menu, so they're matched by their new prompt text. Cadcraft adds the formatted string \"Save changes to {title}?\" and designcraft adds \"Save them before closing?\". I left out \"Don't Save\" and is_dirty() on purpose, because those could already exist before a fix. The check is limited to Rust files. applies_if is empty because every app can lose unsaved edits.",
+  "proof": [
+    {
+      "app": "cadcraft",
+      "pr": 172,
+      "before": {
+        "status": "missing"
+      },
+      "after": {
+        "status": "fixed"
+      },
+      "ok": true
+    },
+    {
+      "app": "designcraft",
+      "pr": 146,
+      "before": {
+        "status": "missing"
+      },
+      "after": {
+        "status": "fixed"
+      },
+      "ok": true
+    },
+    {
+      "app": "effectcraft",
+      "pr": 13,
+      "before": {
+        "status": "missing"
+      },
+      "after": {
+        "status": "fixed"
+      },
+      "ok": true
+    },
+    {
+      "app": "filmcraft",
+      "pr": 758,
+      "before": {
+        "status": "missing"
+      },
+      "after": {
+        "status": "fixed"
+      },
+      "ok": true
+    }
+  ],
+  "matrix": {
+    "artcraft": {
+      "status": "missing"
+    },
+    "artcraftx": {
+      "status": "missing"
+    },
+    "cadcraft": {
+      "status": "fixed"
+    },
+    "craft-launcher": {
+      "status": "fixed"
+    },
+    "deckcraft": {
+      "status": "fixed"
+    },
+    "designcraft": {
+      "status": "fixed"
+    },
+    "effectcraft": {
+      "status": "fixed"
+    },
+    "filmcraft": {
+      "status": "fixed"
+    },
+    "gridcraft": {
+      "status": "missing"
+    },
+    "lightcraft": {
+      "status": "fixed"
+    },
+    "pdfcraft": {
+      "status": "fixed"
+    },
+    "photocraft": {
+      "status": "fixed"
+    },
+    "soundcraft": {
+      "status": "missing"
+    },
+    "vectorcraft": {
+      "status": "fixed"
+    },
+    "wordcraft": {
+      "status": "fixed"
+    }
+  },
+  "verified": {
+    "artcraft": {
+      "verdict": "unclear",
+      "evidence": "No source files from artcraft were provided (\"No related files were found in this app\"), so there is nothing to quote. The sibling's fix touches crates/ui-egui/src/chrome.rs (file_tabs close button) and adds crates/ui-egui/src/closing.rs.",
+      "explanation": "No artcraft code was found that matches the sibling fix: no file-tab close handler, no close/closeall command wiring and no window-close handling. That could mean artcraft has no multi-document close feature, or that it lives in files the search did not turn up. Without any code to look at, I can't say whether closing a dirty document or the window asks before throwing away edits.",
+      "alternative": null,
+      "alternative_rejected": null
+    },
+    "artcraftx": {
+      "verdict": "unclear",
+      "evidence": "No source files were provided for artcraftx. The lookup found no files related to closing documents, file tabs or the window (no counterpart to crates/ui-egui/src/chrome.rs or closing.rs).",
+      "explanation": "I can't judge this one: no artcraftx source files were provided to compare against the sibling's fix. Without them, I can't tell whether artcraftx has file tabs or close/quit actions, whether it tracks unsaved changes, or whether it already asks before closing. It also isn't safe to call it not_applicable, because finding no related files doesn't prove the app lacks the feature.",
+      "alternative": null,
+      "alternative_rejected": null
+    },
+    "gridcraft": {
+      "verdict": "unclear",
+      "evidence": "crates/engine/src/lib.rs:\n    pub fn close_document(&mut self, i: usize) {\n        if i < self.docs.len() {\n            self.docs.remove(i);\ncrates/ui-egui/src/lib.rs (truncated):\n    pub fn run(&mut self, id: &str, params: Json) -> Result<Json, String> {\n        if id.starts_with(\"file.\")\n            || matches!(\n                id,\n                \"window.a…\ncrates/ui-egui/src/control.rs:\n    //! - `app.open {path}`, `app.save {path?}`, `app.quit`\n    \"documents\": app.session.documents().iter().map(|d| json!({\"title\": d.display_title(), \"dirty\": d.is_dirty()}))",
+      "explanation": "The engine's close_document removes a document without checking for unsaved changes. In the sibling's fix the engine-level close also never asks, though; the prompt lives in the UI layer. The UI code that would hold gridcraft's prompt isn't fully shown. SheetApp::run cuts off exactly where it handles file.* and window.* commands. dialogs.rs is cut off. backstage.rs (likely the File ▸ Close page) and the native window-close/quit handling aren't included. control.rs reports each document's dirty flag, but nothing shown uses it to block a close. So the files can't show whether closing, quitting or closing the window asks to save first.",
+      "alternative": null,
+      "alternative_rejected": null
+    },
+    "soundcraft": {
+      "verdict": "present",
+      "evidence": "crates/ui-egui/src/control.rs:\n        \"app.quit\" => {\n            app.quit_requested = true;\n            ok(json!({}))\n        }\ncrates/ui-egui/src/dialogs.rs — the full set of modal dialogs has no save-changes prompt:\npub enum Dialog { NewTracks {..}, NewSession {..}, Bounce {..}, RenameTrack {..}, RenameClip {..}, PathPrompt {..}, Number {..}, TempoChange {..}, Fades {..}, StripSilence {..}, Group {..}, Session {..}, ScoreSetup {..} }\ncrates/ui-egui/src/menus.rs:\n    (\"window.close\", \"Close Window\", \"Window > Close Window\", Some(\"Cmd+W\")),",
+      "explanation": "The sibling's fix adds a Save / Don't Save / Cancel prompt before a document with unsaved changes is closed. Soundcraft has quit and Close Window actions, but none of the code shown asks about unsaved changes first. Quitting just sets quit_requested, and the full Dialog enum (the app's modal dialogs) has no prompt asking whether to save changes. The part of lib.rs that acts on quit_requested is cut off, so a check there can't be fully ruled out, but nothing visible suggests one exists. Soundcraft has one session rather than document tabs, so the prompt would go on quit, Close Window, and opening or creating a new session. The bug still applies.",
+      "alternative": null,
+      "alternative_rejected": null
+    }
+  },
+  "usage": {
+    "calls": 6,
+    "input_tokens": 87241,
+    "output_tokens": 7077,
+    "cost_usd": 0.7872536
+  }
+}

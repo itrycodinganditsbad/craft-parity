@@ -1,0 +1,63 @@
+{
+  "key": "designcraft-pr-36",
+  "area": "text_fonts_i18n",
+  "symptom": "Fonts installed on the system are not available; only the bundled fonts are listed and used.",
+  "attempts": 3,
+  "proven": false,
+  "toml": "applies_if = []\nknown_fixed = [\"designcraft\", \"effectcraft\", \"vectorcraft\", \"wordcraft\"]\nreferences = [\"storytold/designcraft#36\", \"storytold/effectcraft#118\", \"storytold/vectorcraft#445\", \"storytold/wordcraft#233\"]\ntitle = \"List installed system fonts in the font menus\"\nwhy = \"Without it the font list misses installed fonts: only bundled fonts are shown, and fonts in macOS asset folders (such as the Chinese PingFang fonts), network font folders, or fonts that need a system scan don't appear.\"\n\n[exempt]\n\n[[fixed_if]]\ngrep = \"com_apple_MobileAsset_Font|scan_system_in_background|/Network/Library/Fonts\"\nin = [\"**/*.rs\"]\n\n[[proof]]\napp = \"designcraft\"\npr = 36\n\n[[proof]]\napp = \"effectcraft\"\npr = 118\n\n[[proof]]\napp = \"vectorcraft\"\npr = 445\n\n[[proof]]\napp = \"wordcraft\"\npr = 233\n",
+  "reasoning": "The fixes have no marker in common, so one regex covers each app's new marker: the macOS asset font folder prefix com_apple_MobileAsset_Font (designcraft; probably also wordcraft, since its bug is about Chinese fonts such as PingFang, which macOS installs as assets), the background system font scan scan_system_in_background (effectcraft), and the /Network/Library/Fonts folder (vectorcraft). Each one is added by its diff and is unlikely to be there before. I dropped broader terms (XDG_DATA_DIRS, AssetsV2, rescan_system, windows-registry), which could already be in vectorcraft or wordcraft and probably made attempt 2 match before the fix.",
+  "proof": [
+    {
+      "app": "designcraft",
+      "pr": 36,
+      "before": {
+        "status": "missing"
+      },
+      "after": {
+        "status": "fixed"
+      },
+      "ok": true
+    },
+    {
+      "app": "effectcraft",
+      "pr": 118,
+      "before": {
+        "status": "missing"
+      },
+      "after": {
+        "status": "fixed"
+      },
+      "ok": true
+    },
+    {
+      "app": "vectorcraft",
+      "pr": 445,
+      "before": {
+        "status": "fixed"
+      },
+      "after": {
+        "status": "fixed"
+      },
+      "ok": false
+    },
+    {
+      "app": "wordcraft",
+      "pr": 233,
+      "before": {
+        "status": "fixed"
+      },
+      "after": {
+        "status": "fixed"
+      },
+      "ok": false
+    }
+  ],
+  "matrix": {},
+  "verified": {},
+  "usage": {
+    "calls": 3,
+    "input_tokens": 45034,
+    "output_tokens": 7196,
+    "cost_usd": 0.4714548
+  }
+}

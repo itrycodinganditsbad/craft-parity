@@ -1,0 +1,147 @@
+{
+  "key": "lightcraft-pr-959",
+  "area": "packaging_install",
+  "symptom": "On macOS the app in the downloaded DMG fails code signature checks and may refuse to open.",
+  "attempts": 1,
+  "proven": true,
+  "toml": "known_fixed = [\"lightcraft\"]\nreferences = [\"storytold/lightcraft#959\"]\ntitle = \"Build the macOS DMG with hdiutil create -srcfolder instead of makehybrid\"\nwhy = \"`hdiutil makehybrid -hfs` adds FinderInfo extended attributes to the already signed app while it builds the image. Because of that, the app inside the downloaded DMG fails strict code-signature checks, and Gatekeeper may refuse to open it.\"\n\n[[applies_if]]\ngrep = \"^[^#]*hdiutil\"\nin = [\"packaging/**\"]\n\n[exempt]\n\n[[fixed_if]]\ngrep = \"^[^#]*-srcfolder\"\nin = [\"packaging/**\"]\n\n[[proof]]\napp = \"lightcraft\"\npr = 959\n",
+  "reasoning": "The fix that every app shares is dropping `hdiutil makehybrid` + convert and building the image with `hdiutil create -srcfolder`, which leaves the signed bundle unchanged. Before the fix, `-srcfolder` showed up only in a shell comment (\"unlike `create -srcfolder`\"). The pattern `^[^#]*-srcfolder` skips comment lines, so it fails before the fix and passes after it. It still matches if a port puts the flag on a backslash-continued line, wraps hdiutil in a retry helper, or orders the arguments differently. I left out the `xattr -cr` and mounted-image verification steps as required markers: only one diff was shown, and other apps may have done those parts differently or already had them. applies_if limits the check to apps whose packaging scripts actually call hdiutil.",
+  "proof": [
+    {
+      "app": "lightcraft",
+      "pr": 959,
+      "before": {
+        "status": "missing"
+      },
+      "after": {
+        "status": "fixed"
+      },
+      "ok": true
+    }
+  ],
+  "matrix": {
+    "artcraft": {
+      "status": "not_applicable"
+    },
+    "artcraftx": {
+      "status": "not_applicable"
+    },
+    "cadcraft": {
+      "status": "missing"
+    },
+    "craft-launcher": {
+      "status": "missing"
+    },
+    "deckcraft": {
+      "status": "missing"
+    },
+    "designcraft": {
+      "status": "missing"
+    },
+    "effectcraft": {
+      "status": "missing"
+    },
+    "filmcraft": {
+      "status": "missing"
+    },
+    "gridcraft": {
+      "status": "missing"
+    },
+    "lightcraft": {
+      "status": "fixed"
+    },
+    "pdfcraft": {
+      "status": "fixed"
+    },
+    "photocraft": {
+      "status": "missing"
+    },
+    "soundcraft": {
+      "status": "missing"
+    },
+    "vectorcraft": {
+      "status": "fixed"
+    },
+    "wordcraft": {
+      "status": "missing"
+    }
+  },
+  "verified": {
+    "cadcraft": {
+      "verdict": "present",
+      "evidence": "packaging/macos/package.sh:\nhdiutil makehybrid -hfs -hfs-volume-name \"CADCraft\" -hfs-openfolder \"$STAGE\" -o \"$WORK/raw.dmg\" \"$STAGE\"\nhdiutil convert \"$WORK/raw.dmg\" -format UDZO -imagekey zlib-level=9 -o \"$DMG\"\n...\nsign \"$DMG\"\ncodesign --verify --strict --verbose=2 \"$DMG\"\n(no `xattr -cr \"$APP\"` before signing, and the app inside the finished DMG is never verified)",
+      "explanation": "CADCraft's package.sh is the same as the sibling's script before the fix. It signs CADCraft.app, copies it into the stage folder with ditto, and builds the DMG with `hdiutil makehybrid -hfs`. That command adds FinderInfo extended attributes to the signed app. Nothing protects against this: the script doesn't clear xattrs before signing, doesn't use `create -srcfolder`, and only verifies the DMG container's signature, never the app inside the finished image. The dmg/README.md also says the DMG is built with `hdiutil makehybrid`.",
+      "alternative": null,
+      "alternative_rejected": null
+    },
+    "craft-launcher": {
+      "verdict": "present",
+      "evidence": "packaging/macos/package.sh:\nhdiutil makehybrid -hfs -hfs-volume-name \"$APP_NAME $VERSION\" -hfs-openfolder \"$STAGE\" -o \"$WORK/raw.dmg\" \"$STAGE\"\nhdiutil convert \"$WORK/raw.dmg\" -format UDZO -imagekey zlib-level=9 -o \"$DMG\"\n\npackaging/macos/verify.sh:\n# Integrity first: ... Not --strict here: files read back from\n# the DMG's HFS volume (hdiutil makehybrid) report a com.apple.FinderInfo attribute, which strict\n# mode calls \"detritus\".\ncodesign --verify --deep --verbose=2 \"$APP\"",
+      "explanation": "The app still builds its DMG with `hdiutil makehybrid -hfs` and then `convert`, which is the same approach the sibling had before its fix. It has none of the fix's parts: no `xattr -cr` before signing, no `create -srcfolder`, and no strict check of the app inside the finished DMG. verify.sh even says that the app in the DMG gets com.apple.FinderInfo detritus. Instead of fixing that, it turns off `--strict` to work around it. So the shipped app fails strict signature checks, which is exactly this bug.",
+      "alternative": null,
+      "alternative_rejected": null
+    },
+    "deckcraft": {
+      "verdict": "present",
+      "evidence": "packaging/macos/package.sh:\nhdiutil makehybrid -hfs -hfs-volume-name \"DeckCraft\" -hfs-openfolder \"$STAGE\" -o \"$WORK/raw.dmg\" \"$STAGE\"\nhdiutil convert \"$WORK/raw.dmg\" -format UDZO -imagekey zlib-level=9 -o \"$DMG\"\n...\nsign \"$DMG\"\ncodesign --verify --strict --verbose=2 \"$DMG\"\n(no `xattr -cr \"$APP\"` before signing, and no check of the app inside the finished DMG)",
+      "explanation": "DeckCraft still builds its DMG the way the unfixed sibling did. It signs DeckCraft.app, copies it into the staging folder with ditto, and then runs `hdiutil makehybrid -hfs` followed by `hdiutil convert`. That makehybrid step is what adds FinderInfo extended attributes to the signed app, so the app inside the image can fail strict code-signature checks. The script also never clears extended attributes before signing (the fix's `xattr -cr`). After the build it only checks the DMG container's signature, not the app inside the mounted image. The README also says the DMG is built with `hdiutil makehybrid`.",
+      "alternative": null,
+      "alternative_rejected": null
+    },
+    "designcraft": {
+      "verdict": "present",
+      "evidence": "packaging/macos/package.sh:\nhdiutil makehybrid -hfs -hfs-volume-name \"DesignCraft\" -hfs-openfolder \"$STAGE\" -o \"$WORK/raw.dmg\" \"$STAGE\"\nhdiutil convert \"$WORK/raw.dmg\" -format UDZO -imagekey zlib-level=9 -o \"$DMG\"\n...\nsign \"$DMG\"\ncodesign --verify --strict --verbose=2 \"$DMG\"",
+      "explanation": "DesignCraft has the bug. Its DMG is still built the way LightCraft built it before the fix: `hdiutil makehybrid -hfs` followed by `convert`. That step adds FinderInfo extended attributes to the app after it has been signed. Nothing protects against this:\n- There is no `xattr -cr` before signing.\n- The image is not built with `create -srcfolder`.\n- After the DMG is built, only the DMG container itself is verified. The app inside the finished image is never mounted and checked with a strict codesign.\n\nThe README also says the DMG is built with makehybrid.",
+      "alternative": null,
+      "alternative_rejected": null
+    },
+    "effectcraft": {
+      "verdict": "present",
+      "evidence": "packaging/macos/package.sh:\nditto \"$APP\" \"$STAGE/EffectCraft.app\"\n...\nhdiutil makehybrid -hfs -hfs-volume-name \"EffectCraft\" -hfs-openfolder \"$STAGE\" -o \"$WORK/raw.dmg\" \"$STAGE\"\nhdiutil convert \"$WORK/raw.dmg\" -format UDZO -imagekey zlib-level=9 -o \"$DMG\"\n...\nsign \"$DMG\"\ncodesign --verify --strict --verbose=2 \"$DMG\"\n(no xattr -cr before signing, and the app inside the finished DMG is never checked)",
+      "explanation": "EffectCraft builds its DMG the same way the sibling did before its fix. It copies the signed (and possibly stapled) EffectCraft.app into the staging folder, then runs `hdiutil makehybrid -hfs` and `hdiutil convert`. That makehybrid step is the one that adds FinderInfo extended attributes to the signed app. The script does not clear extended attributes before signing. It also never mounts the finished DMG to run a strict codesign check on the app inside: it only checks the DMG container's signature, which does not validate the bundle in the image. The DMG README also says the image \"still builds with `hdiutil makehybrid`\". So the app in the published DMG can fail strict signature checks and be refused by Gatekeeper.",
+      "alternative": null,
+      "alternative_rejected": null
+    },
+    "filmcraft": {
+      "verdict": "present",
+      "evidence": "packaging/macos/package.sh:\nhdiutil makehybrid -hfs -hfs-volume-name \"FilmCraft\" -hfs-openfolder \"$STAGE\" -o \"$WORK/raw.dmg\" \"$STAGE\"\nhdiutil convert \"$WORK/raw.dmg\" -format UDZO -imagekey zlib-level=9 -o \"$DMG\"\nThe only check after building the image is `codesign --verify --strict --verbose=2 \"$DMG\"`, which verifies the DMG container, not the app inside it. There is no `xattr -cr \"$APP\"` before signing.",
+      "explanation": "FilmCraft builds its DMG from the signed FilmCraft.app with `hdiutil makehybrid -hfs` and then `convert`. That is the unfixed sibling's code. makehybrid adds FinderInfo extended attributes to the app, so the app inside the image fails strict code-signature checks. Nothing else protects against this. The script does not use `create -srcfolder`, does not strip extended attributes before signing, and does not mount the finished image to check the app. Its only check is on the DMG container signature. dmg/README.md also says outright that the DMG \"still builds with `hdiutil makehybrid`\".",
+      "alternative": null,
+      "alternative_rejected": null
+    },
+    "gridcraft": {
+      "verdict": "present",
+      "evidence": "packaging/macos/package.sh:\nhdiutil makehybrid -hfs -hfs-volume-name \"GridCraft\" -hfs-openfolder \"$STAGE\" -o \"$WORK/raw.dmg\" \"$STAGE\"\nhdiutil convert \"$WORK/raw.dmg\" -format UDZO -imagekey zlib-level=9 -o \"$DMG\"\nrm -f \"$WORK/raw.dmg\"\nsign \"$DMG\"\ncodesign --verify --strict --verbose=2 \"$DMG\"\nThere is also no `xattr -cr \"$APP\"` before the `sign ... \"$APP\"` calls.",
+      "explanation": "GridCraft still builds its DMG the way the sibling did before its fix. It runs `hdiutil makehybrid -hfs` on a staging folder that holds the already signed GridCraft.app, then converts the result to UDZO. makehybrid adds FinderInfo extended attributes to the signed bundle, so the app inside the image can fail strict codesign checks and Gatekeeper.\n\nThe script also lacks the other parts of the sibling's fix:\n- It never clears extended attributes before signing.\n- It never mounts the finished DMG to verify the app inside it. It only runs `codesign --verify` on the DMG container.\n\nThe dmg/README.md says outright that the DMG \"still builds with `hdiutil makehybrid`\".",
+      "alternative": null,
+      "alternative_rejected": null
+    },
+    "photocraft": {
+      "verdict": "present",
+      "evidence": "packaging/macos/package.sh:\n```\nhdiutil makehybrid -hfs -hfs-volume-name \"PhotoCraft\" -hfs-openfolder \"$STAGE\" -o \"$WORK/raw.dmg\" \"$STAGE\"\nhdiutil convert \"$WORK/raw.dmg\" -format UDZO -imagekey zlib-level=9 -o \"$DMG\"\nrm -f \"$WORK/raw.dmg\"\nsign \"$DMG\"\ncodesign --verify --strict --verbose=2 \"$DMG\"\n```\nThere is no `xattr -cr \"$APP\"` before signing, and nothing checks the app inside the finished DMG.",
+      "explanation": "PhotoCraft has the same bug the sibling fixed. Its package.sh still builds the DMG with `hdiutil makehybrid -hfs`, then runs `hdiutil convert`. That is the step that adds FinderInfo extended attributes to the already signed PhotoCraft.app. The script checks the app's signature before the DMG is built, and after the DMG is built it only checks the DMG container's signature. It never mounts the finished image to check the app inside. The dmg README even says the design was picked so the DMG \"still builds with `hdiutil makehybrid`\".",
+      "alternative": null,
+      "alternative_rejected": null
+    },
+    "soundcraft": {
+      "verdict": "present",
+      "evidence": "packaging/macos/package.sh:\nhdiutil makehybrid -hfs -hfs-volume-name \"SoundCraft\" -hfs-openfolder \"$STAGE\" -o \"$WORK/raw.dmg\" \"$STAGE\"\nhdiutil convert \"$WORK/raw.dmg\" -format UDZO -imagekey zlib-level=9 -o \"$DMG\"\nNo `xattr -cr \"$APP\"` before signing, and no check of the app inside the finished DMG (only `codesign --verify --strict --verbose=2 \"$DMG\"`).",
+      "explanation": "SoundCraft still builds its DMG with `hdiutil makehybrid -hfs` and then `convert`, the same way the unfixed sibling did. That step adds FinderInfo extended attributes to the signed SoundCraft.app. The script never clears extended attributes before signing. After the image is built it only verifies the DMG container's signature and never checks the app inside the image, so the broken signature would go unnoticed. The dmg/README.md also says the DMG is built with makehybrid on purpose.",
+      "alternative": null,
+      "alternative_rejected": null
+    },
+    "wordcraft": {
+      "verdict": "present",
+      "evidence": "packaging/macos/package.sh:\nhdiutil makehybrid -hfs -hfs-volume-name \"WordCraft\" -hfs-openfolder \"$STAGE\" -o \"$WORK/raw.dmg\" \"$STAGE\"\nhdiutil convert \"$WORK/raw.dmg\" -format UDZO -imagekey zlib-level=9 -o \"$DMG\"\n...\nsign \"$DMG\"\ncodesign --verify --strict --verbose=2 \"$DMG\"\n(no `xattr -cr \"$APP\"` before signing, and nothing checks the app inside the finished DMG)",
+      "explanation": "WordCraft still builds its DMG the same way the unfixed sibling did. It runs `hdiutil makehybrid -hfs` and then `hdiutil convert`, and it does not use `hdiutil create -srcfolder`. Its comment even says makehybrid was picked on purpose, and `dmg/README.md` says the same. So makehybrid can add FinderInfo extended attributes to the already signed WordCraft.app while it builds the image. The script also never clears inherited extended attributes before signing (no `xattr -cr`). The only check on the finished DMG is `codesign --verify --strict` on the DMG container itself. Nothing mounts the image and checks the app inside it, so a broken signature on the app would get through to the release.",
+      "alternative": null,
+      "alternative_rejected": null
+    }
+  },
+  "usage": {
+    "calls": 11,
+    "input_tokens": 119868,
+    "output_tokens": 8497,
+    "cost_usd": 0.8317558
+  }
+}

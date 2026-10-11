@@ -1,0 +1,41 @@
+{
+  "key": "photocraft-pr-2030",
+  "area": "text_fonts_i18n",
+  "symptom": "Thai text shows as empty boxes when the chosen font has no Thai glyphs.",
+  "attempts": 3,
+  "proven": false,
+  "toml": "applies_if = []\nknown_fixed = [\"photocraft\", \"vectorcraft\"]\nreferences = [\"storytold/photocraft#2030\", \"storytold/vectorcraft#1191\"]\ntitle = \"Thai font fallback so Thai text no longer shows as empty boxes\"\nwhy = \"If the chosen font, or the web build's built-in fonts, have no Thai glyphs, Thai text in the UI, file names and edited text is drawn with .notdef and shows as empty boxes. The fix adds a Thai-capable font to the fallback chain.\"\n\n[exempt]\n\n[[fixed_if]]\ngrep = \"Noto ?Sans ?Thai|Leelawadee|Thonburi|Sukhumvit\"\nin = [\"**/*.rs\"]\n\n[[fixed_if]]\ngrep = 'ไทย|สวัสดี|u\\{0?[Ee][0-7][0-9A-Fa-f]\\}'\nin = [\"**/*.rs\"]\n\n[[proof]]\napp = \"photocraft\"\npr = 2030\n\n[[proof]]\napp = \"vectorcraft\"\npr = 1191\n",
+  "reasoning": "I could only see vectorcraft's ROADMAP change because its code diff was cut off, so the second check is a guess and may fail again.\n\nAttempts 1 and 2 failed because vectorcraft's code already passed every fixed_if check before PR #1191. Most likely it already named Thai-capable fonts such as Noto Sans Thai or Leelawadee in its desktop fallback list. The bug report says the problem was only in the web build, which points the same way. So a check on font names alone can't tell vectorcraft's fixed state from its unfixed state.\n\nThis attempt keeps that check: a Thai font family name (Noto Sans Thai with or without spaces, Leelawadee, Thonburi or Sukhumvit) in a Rust file. Every fixed app needs one somewhere.\n\nIt adds a second check that must also pass: Thai text in a Rust file, either the word for 'Thai' (ไทย), the common test greeting (สวัสดี), or a Unicode escape in the Thai block (\\u{0E00} to \\u{0E7F}). Photocraft's fix adds Thai sample strings in its tests. A web-build port would probably add a Thai test string, or a Thai range check to pick the fallback font. Rust source that only renders Latin and CJK text would not contain either before the fix.\n\nBoth checks use only font names, the Unicode block and Thai words, none of the apps' own identifiers. They are limited to **/*.rs so that ROADMAP and docs notes don't count as a fix. The second check misses if vectorcraft's fix added no Thai text or Thai range check in Rust, or if vectorcraft already had one before the fix.",
+  "proof": [
+    {
+      "app": "photocraft",
+      "pr": 2030,
+      "before": {
+        "status": "missing"
+      },
+      "after": {
+        "status": "fixed"
+      },
+      "ok": true
+    },
+    {
+      "app": "vectorcraft",
+      "pr": 1191,
+      "before": {
+        "status": "fixed"
+      },
+      "after": {
+        "status": "fixed"
+      },
+      "ok": false
+    }
+  ],
+  "matrix": {},
+  "verified": {},
+  "usage": {
+    "calls": 3,
+    "input_tokens": 28197,
+    "output_tokens": 6559,
+    "cost_usd": 0.3240188
+  }
+}

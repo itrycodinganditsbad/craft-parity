@@ -1,0 +1,85 @@
+{
+  "key": "cadcraft-pr-159",
+  "area": "windowing_input",
+  "symptom": "On Wayland desktops, dragging files from the file manager onto the window shows a prohibited cursor and the drop does nothing.",
+  "attempts": 3,
+  "proven": false,
+  "toml": "known_fixed = [\"cadcraft\", \"designcraft\", \"effectcraft\", \"lightcraft\", \"photocraft\", \"vectorcraft\"]\nreferences = [\"storytold/cadcraft#159\", \"storytold/designcraft#10\", \"storytold/effectcraft#447\", \"storytold/lightcraft#738\", \"storytold/photocraft#1073\", \"storytold/vectorcraft#1170\"]\ntitle = \"Make file drag-and-drop work on Linux Wayland\"\nwhy = \"On Wayland, winit 0.30 does not pass file drag or drop events to the app. Dragging a file from the file manager shows a 'no' cursor and the drop is ignored, unless the app runs through XWayland or is built to know about the gap.\"\n\n[[applies_if]]\ngrep = \"^eframe\"\nin = [\"**/Cargo.toml\"]\n\n[exempt]\n\n[[fixed_if]]\ngrep = '\\.with_x11\\(\\)|var_os\\(\"WINIT_UNIX_BACKEND\"\\)'\nin = [\"**/*.rs\"]\n\n[[proof]]\napp = \"cadcraft\"\npr = 159\n\n[[proof]]\napp = \"designcraft\"\npr = 10\n\n[[proof]]\napp = \"effectcraft\"\npr = 447\n\n[[proof]]\napp = \"lightcraft\"\npr = 738\n\n[[proof]]\napp = \"photocraft\"\npr = 1073\n\n[[proof]]\napp = \"vectorcraft\"\npr = 1170\n",
+  "reasoning": "Photocraft already showed a Wayland workaround before its fix, so it already had markers like WAYLAND_DISPLAY, XWayland text and DISPLAY checks. Those can't tell a fixed app from an unfixed one. The real fix is in code. Most apps (designcraft, cadcraft through its new winit x11 dependency, and probably lightcraft, vectorcraft and photocraft) now force winit's X11 backend through EventLoopBuilderExtX11, which shows up as a `.with_x11()` call. Effectcraft took a different route: it reads the WINIT_UNIX_BACKEND variable with var_os to decide whether to show its notice. The pattern only accepts Rust code: a real `.with_x11()` call, or a read of WINIT_UNIX_BACKEND as a quoted string. Workaround text inside a message string (such as 'WINIT_UNIX_BACKEND=x11 app' or 'env -u WAYLAND_DISPLAY') does not match. The winit crate is already in every Cargo.lock through eframe, so a lockfile check would not prove anything.",
+  "proof": [
+    {
+      "app": "cadcraft",
+      "pr": 159,
+      "before": {
+        "status": "missing"
+      },
+      "after": {
+        "status": "fixed"
+      },
+      "ok": true
+    },
+    {
+      "app": "designcraft",
+      "pr": 10,
+      "before": {
+        "status": "missing"
+      },
+      "after": {
+        "status": "fixed"
+      },
+      "ok": true
+    },
+    {
+      "app": "effectcraft",
+      "pr": 447,
+      "before": {
+        "status": "missing"
+      },
+      "after": {
+        "status": "fixed"
+      },
+      "ok": true
+    },
+    {
+      "app": "lightcraft",
+      "pr": 738,
+      "before": {
+        "status": "missing"
+      },
+      "after": {
+        "status": "fixed"
+      },
+      "ok": true
+    },
+    {
+      "app": "photocraft",
+      "pr": 1073,
+      "before": {
+        "status": "fixed"
+      },
+      "after": {
+        "status": "fixed"
+      },
+      "ok": false
+    },
+    {
+      "app": "vectorcraft",
+      "pr": 1170,
+      "before": {
+        "status": "missing"
+      },
+      "after": {
+        "status": "fixed"
+      },
+      "ok": true
+    }
+  ],
+  "matrix": {},
+  "verified": {},
+  "usage": {
+    "calls": 3,
+    "input_tokens": 47166,
+    "output_tokens": 7252,
+    "cost_usd": 0.48963080000000003
+  }
+}

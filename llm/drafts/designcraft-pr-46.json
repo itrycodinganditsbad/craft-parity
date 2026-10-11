@@ -1,0 +1,131 @@
+{
+  "key": "designcraft-pr-46",
+  "area": "packaging_install",
+  "symptom": "The Windows Start Menu shortcut and Add/Remove Programs icon are blank, and a console window opens behind the app.",
+  "attempts": 1,
+  "proven": true,
+  "toml": "known_fixed = [\"designcraft\", \"effectcraft\", \"filmcraft\", \"lightcraft\", \"pdfcraft\", \"vectorcraft\"]\nreferences = [\"storytold/designcraft#46\", \"storytold/effectcraft#98\", \"storytold/filmcraft#61\", \"storytold/lightcraft#139\", \"storytold/pdfcraft#58\", \"storytold/vectorcraft#211\"]\ntitle = \"Windows GUI subsystem and MSI Icon ids ending in .ico\"\nwhy = \"Windows Installer ignores Icon ids that don't end in .ico or .exe, so the Start Menu shortcut and the Add/Remove Programs entry show a blank icon. Release builds without the windows subsystem attribute also open a console window behind the app, and closing that window kills the app.\"\n\n[[applies_if]]\npath = \"packaging/windows/*.wxs\"\n\n[exempt]\n\n[[fixed_if]]\ngrep = 'windows_subsystem *= *\"windows\"'\nin = [\"apps/**/*.rs\"]\n\n[[fixed_if]]\ngrep = '<Icon[^>]*Id=\"[^\"]*\\.(ico|exe)\"'\nignore_case = true\nin = [\"packaging/windows/*.wxs\"]\n\n[[proof]]\napp = \"designcraft\"\npr = 46\n\n[[proof]]\napp = \"effectcraft\"\npr = 98\n\n[[proof]]\napp = \"filmcraft\"\npr = 61\n\n[[proof]]\napp = \"lightcraft\"\npr = 139\n\n[[proof]]\napp = \"pdfcraft\"\npr = 58\n\n[[proof]]\napp = \"vectorcraft\"\npr = 211\n",
+  "reasoning": "Each diff makes the same two product changes. (1) It adds #![cfg_attr(..., windows_subsystem = \"windows\")] to the app's main.rs. This is a standard Rust attribute, so any port of the fix will use it, and it was not there before. (2) It renames the WiX <Icon Id> to end in .ico. Before the fix the ids had no extension, so a grep for an Icon element whose Id ends in .ico/.exe fails before and passes after. The check looks for Icon elements, not comments, and does not depend on the app's own id names. The fix only matters for apps that ship a WiX installer, so applies_if requires packaging/windows/*.wxs. I left out the CI lint step and the description text changes because they are not part of the bug fix.",
+  "proof": [
+    {
+      "app": "designcraft",
+      "pr": 46,
+      "before": {
+        "status": "missing"
+      },
+      "after": {
+        "status": "fixed"
+      },
+      "ok": true
+    },
+    {
+      "app": "effectcraft",
+      "pr": 98,
+      "before": {
+        "status": "missing"
+      },
+      "after": {
+        "status": "fixed"
+      },
+      "ok": true
+    },
+    {
+      "app": "filmcraft",
+      "pr": 61,
+      "before": {
+        "status": "missing"
+      },
+      "after": {
+        "status": "fixed"
+      },
+      "ok": true
+    },
+    {
+      "app": "lightcraft",
+      "pr": 139,
+      "before": {
+        "status": "missing"
+      },
+      "after": {
+        "status": "fixed"
+      },
+      "ok": true
+    },
+    {
+      "app": "pdfcraft",
+      "pr": 58,
+      "before": {
+        "status": "missing"
+      },
+      "after": {
+        "status": "fixed"
+      },
+      "ok": true
+    },
+    {
+      "app": "vectorcraft",
+      "pr": 211,
+      "before": {
+        "status": "missing"
+      },
+      "after": {
+        "status": "fixed"
+      },
+      "ok": true
+    }
+  ],
+  "matrix": {
+    "artcraft": {
+      "status": "not_applicable"
+    },
+    "artcraftx": {
+      "status": "not_applicable"
+    },
+    "cadcraft": {
+      "status": "fixed"
+    },
+    "craft-launcher": {
+      "status": "fixed"
+    },
+    "deckcraft": {
+      "status": "fixed"
+    },
+    "designcraft": {
+      "status": "fixed"
+    },
+    "effectcraft": {
+      "status": "fixed"
+    },
+    "filmcraft": {
+      "status": "fixed"
+    },
+    "gridcraft": {
+      "status": "fixed"
+    },
+    "lightcraft": {
+      "status": "fixed"
+    },
+    "pdfcraft": {
+      "status": "fixed"
+    },
+    "photocraft": {
+      "status": "fixed"
+    },
+    "soundcraft": {
+      "status": "fixed"
+    },
+    "vectorcraft": {
+      "status": "fixed"
+    },
+    "wordcraft": {
+      "status": "fixed"
+    }
+  },
+  "verified": {},
+  "usage": {
+    "calls": 1,
+    "input_tokens": 7648,
+    "output_tokens": 1011,
+    "cost_usd": 0.0704916
+  }
+}

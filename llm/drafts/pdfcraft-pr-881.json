@@ -1,0 +1,140 @@
+{
+  "key": "pdfcraft-pr-881",
+  "area": "ui_theme",
+  "symptom": "On Linux, the 'use system setting' theme does not follow the desktop's dark or light mode.",
+  "attempts": 2,
+  "proven": true,
+  "toml": "applies_if = []\nknown_fixed = [\"pdfcraft\", \"photocraft\"]\nreferences = [\"storytold/pdfcraft#881\", \"storytold/photocraft#2941\"]\ntitle = \"Make the System theme follow the Linux desktop's light/dark mode\"\nwhy = \"On Linux, winit reports no system theme. Unless the app reads the desktop's colour scheme through the XDG portal, and wakes the window once that answer arrives, the System theme stays stuck on light or dark whatever the desktop is set to.\"\n\n[exempt]\nartcraftx = \"\"\"The sibling's bug is in a winit app that draws its own interface. There, winit's `system_theme()` returns None on Linux, so the \"System\" theme setting has to as…\"\"\"\ndesigncraft = \"\"\"The bug is that a \"System\" theme setting doesn't follow the Linux desktop's light/dark mode. DesignCraft doesn't have a System theme. It offers a fixed choice o…\"\"\"\nvectorcraft = \"\"\"vectorcraft's UI theme is one of Illustrator's four fixed brightness levels (Dark, Medium Dark, Medium Light, Light). None of them is a \"System\" or \"follow the …\"\"\"\n\n[[fixed_if]]\ngrep = 'org\\.freedesktop\\.interface\\.color-scheme|fn publish\\('\nin = [\"**/*.rs\"]\n\n[[proof]]\napp = \"pdfcraft\"\npr = 881\n\n[[proof]]\napp = \"photocraft\"\npr = 2941\n",
+  "reasoning": "The two diffs fix different gaps behind the same symptom. pdfcraft had no desktop query at all. It adds a portal Settings ReadOne for color-scheme under the org.gnome.desktop.interface and org.freedesktop.interface.color-scheme namespaces. photocraft already queried the portal (zbus, SettingChanged, portal_theme, the gtk fallback). That is why the first attempt's portal markers matched photocraft before its fix. Its fix makes the first read wake the UI through a single publish path that calls request_repaint when the answer arrives after the start-up wait. No one token was added by both diffs, so this uses one grep that accepts either side. The pdfcraft side is the org.freedesktop.interface.color-scheme namespace string. photocraft's existing code uses a different appearance namespace, so it should not have this string before its fix. The photocraft side is the new `fn publish(` publisher that wakes the UI. Neither string should exist in either app before its fix. The grep is limited to .rs files so comments in Cargo.toml do not count. applies_if is empty because every app with a 'follow system' theme on Linux is affected.",
+  "proof": [
+    {
+      "app": "pdfcraft",
+      "pr": 881,
+      "before": {
+        "status": "missing"
+      },
+      "after": {
+        "status": "fixed"
+      },
+      "ok": true
+    },
+    {
+      "app": "photocraft",
+      "pr": 2941,
+      "before": {
+        "status": "missing"
+      },
+      "after": {
+        "status": "fixed"
+      },
+      "ok": true
+    }
+  ],
+  "matrix": {
+    "artcraft": {
+      "status": "missing"
+    },
+    "artcraftx": {
+      "status": "exempt",
+      "detail": "The sibling's bug is in a winit app that draws its own interface. There, winit's `system_theme()` returns None on Linux, so the \"System\" theme setting has to as…"
+    },
+    "cadcraft": {
+      "status": "missing"
+    },
+    "craft-launcher": {
+      "status": "missing"
+    },
+    "deckcraft": {
+      "status": "fixed"
+    },
+    "designcraft": {
+      "status": "exempt",
+      "detail": "The bug is that a \"System\" theme setting doesn't follow the Linux desktop's light/dark mode. DesignCraft doesn't have a System theme. It offers a fixed choice o…"
+    },
+    "effectcraft": {
+      "status": "fixed"
+    },
+    "filmcraft": {
+      "status": "fixed"
+    },
+    "gridcraft": {
+      "status": "fixed"
+    },
+    "lightcraft": {
+      "status": "fixed"
+    },
+    "pdfcraft": {
+      "status": "fixed"
+    },
+    "photocraft": {
+      "status": "fixed"
+    },
+    "soundcraft": {
+      "status": "fixed"
+    },
+    "vectorcraft": {
+      "status": "exempt",
+      "detail": "vectorcraft's UI theme is one of Illustrator's four fixed brightness levels (Dark, Medium Dark, Medium Light, Light). None of them is a \"System\" or \"follow the …"
+    },
+    "wordcraft": {
+      "status": "missing"
+    }
+  },
+  "verified": {
+    "artcraft": {
+      "verdict": "unclear",
+      "evidence": "Cargo.lock: `name = \"accesskit_winit\" ... dependencies = [ ... \"accesskit_unix\", ... \"winit\", ]` and `name = \"accesskit_unix\" ... dependencies = [ ... \"zbus\", ]`. The `artcraft` package's dependency list (truncated) is the only app-specific content; no theme-handling source is shown.",
+      "explanation": "The only file provided is Cargo.lock. It shows that winit and zbus are in the dependency tree, but no source code that handles theme selection. I can't tell whether artcraft has a System theme setting, how it decides light or dark on Linux, or whether it already reads the XDG portal's color-scheme and wakes the window when the answer arrives. I'd need artcraft's theme and window-setup source to decide.",
+      "alternative": null,
+      "alternative_rejected": null
+    },
+    "artcraftx": {
+      "verdict": "not_applicable",
+      "evidence": "Cargo.lock, package \"artcraftx\" dependencies:\n \"tauri\",\n \"tauri-build\",\n \"tauri-plugin-dialog\",\n \"tauri-plugin-http\",\n ...\n(no \"platform\"/desktop_theme crate and no direct winit/zbus dependency of artcraftx)",
+      "explanation": "The sibling's bug is in a winit app that draws its own interface. There, winit's `system_theme()` returns None on Linux, so the \"System\" theme setting has to ask the XDG portal itself. artcraftx is a Tauri app: its dependencies are tauri, tauri-build and tauri plugins. Tauri runs on tao and draws its interface in a webview, so the theme comes from the web frontend. On Linux, WebKitGTK passes the desktop's GTK/portal colour scheme through to CSS (`prefers-color-scheme`). The app has no winit-driven System theme that could get stuck on light or dark. The only file shown is the lockfile, so I can't fully rule out a hand-made theme feature somewhere. Based on what is shown, though, the feature this bug lives in isn't part of this app.",
+      "alternative": null,
+      "alternative_rejected": null
+    },
+    "cadcraft": {
+      "verdict": "present",
+      "evidence": "crates/ui-egui/src/theme.rs:\n```\n/// The theme `System` uses when the OS (or browser) reports no appearance.\npub const SYSTEM_FALLBACK: Theme = Theme::Dark;\n...\n/// The theme to show, given what the OS reports (`ctx.system_theme()`).\npub fn resolve(self, system: Option<Theme>) -> Theme {\n    match self {\n        ThemePref::System => system.unwrap_or(SYSTEM_FALLBACK),\n```\ncrates/ui-egui/src/lib.rs module list (autosave, canvas, chrome, … theme, viewcube, vpscale, exchange) has no desktop-theme or portal module. `CadApp` keeps only `shown_theme` and `shown_follows_system`, with no theme watcher or receiver.",
+      "explanation": "cadcraft gets the System theme only from `ctx.system_theme()`, which comes from winit. winit always returns `None` on Linux, so `resolve` falls back to `SYSTEM_FALLBACK` (Dark) whatever the desktop is set to. That is the same unfixed behaviour the sibling had. None of the files shown read the XDG portal's color-scheme over zbus, and none watch for changes and wake the window. zbus appears in Cargo.lock only through accesskit_unix and atspi. lib.rs is cut off before the code that calls `resolve`, but its module list and `CadApp`'s fields show no portal reader in this crate.",
+      "alternative": null,
+      "alternative_rejected": null
+    },
+    "craft-launcher": {
+      "verdict": "present",
+      "evidence": "crates/ui-egui/src/theme.rs:\n    ctx.set_theme(match choice {\n        ThemeChoice::System => egui::ThemePreference::System,\n        ThemeChoice::Dark => egui::ThemePreference::Dark,\n        ThemeChoice::Light => egui::ThemePreference::Light,\n    });\nCargo.lock: the \"artcraft-launcher\" and \"artcraft-launcher-ui-egui\" dependency lists don't include zbus. zbus is only in the tree through accesskit_unix.",
+      "explanation": "The System theme is passed to egui as ThemePreference::System, so egui decides from winit's system theme. On Linux winit reports no theme. Nothing in the files shown reads the XDG Desktop Portal colour scheme or wakes the window when it changes, and neither the launcher shell nor the UI crate depends on zbus directly. So on Linux, \"Match system\" is stuck on egui's fallback, as it was in the unfixed sibling.",
+      "alternative": null,
+      "alternative_rejected": null
+    },
+    "designcraft": {
+      "verdict": "not_applicable",
+      "evidence": "crates/ui-egui/src/theme.rs:\n```rust\npub enum Brightness {\n    Dark,\n    #[default]\n    MediumDark,\n    MediumLight,\n    Light,\n    /// Accessibility: black chrome, white text, yellow selection and focus.\n    HighContrast,\n}\n```\ncrates/ui-egui/src/lib.rs (UiState): `pub brightness: theme::Brightness,`, with no system or follow-OS field among the persisted settings shown.",
+      "explanation": "The bug is that a \"System\" theme setting doesn't follow the Linux desktop's light/dark mode. DesignCraft doesn't have a System theme. It offers a fixed choice of five InDesign-style brightness levels (Dark, Medium Dark, Medium Light, Light, High Contrast), and the user picks one, which is stored in `UiState.brightness`. Nothing in the code shown reads the OS theme, either through winit's `system_theme` or through the XDG portal. So there is no \"follow the desktop\" setting that could get stuck on light or dark. The app lacks the feature the bug lives in.",
+      "alternative": null,
+      "alternative_rejected": null
+    },
+    "vectorcraft": {
+      "verdict": "not_applicable",
+      "evidence": "crates/ui-egui/src/theme.rs:\n```\npub enum Brightness {\n    Dark,\n    #[default]\n    MediumDark,\n    MediumLight,\n    Light,\n}\n...\npub const ALL: [Brightness; 4] = [Brightness::Dark, Brightness::MediumDark, Brightness::MediumLight, Brightness::Light];\n```\nCargo.lock: zbus is pulled in only by accesskit_unix (dependencies: \"atspi\", ..., \"zbus\").",
+      "explanation": "vectorcraft's UI theme is one of Illustrator's four fixed brightness levels (Dark, Medium Dark, Medium Light, Light). None of them is a \"System\" or \"follow the desktop\" option, and nothing in the code shown asks winit or the desktop which theme is active. The sibling's bug is a System theme that ignores the Linux desktop's light/dark setting. Without a System theme, vectorcraft lacks the feature the bug lives in. zbus is in Cargo.lock only through accesskit's accessibility support, not because the app reads the portal.",
+      "alternative": null,
+      "alternative_rejected": null
+    },
+    "wordcraft": {
+      "verdict": "present",
+      "evidence": "crates/ui-egui/src/theme.rs:\n    /// Whether the interface is dark, given the OS appearance egui reports (`Context::system_theme`).\n    /// `System` falls back to light when the OS reports none.\n    pub fn is_dark(self, system: Option<egui::Theme>) -> bool {\n        ...\n            Appearance::System => system == Some(egui::Theme::Dark),\n\ncrates/ui-egui/src/lib.rs module list (backstage, canvas, chrome, ..., theme, widgets, window_geometry, zotero) has no desktop-theme / portal module.",
+      "explanation": "Wordcraft decides the System theme only from what egui/winit reports. On Linux, winit reports no system theme, so System always shows light. Nothing shown asks the XDG desktop portal for the colour scheme or watches it for changes. zbus appears in Cargo.lock only through accesskit_unix, not through any theme code. This is the unfixed behaviour the sibling corrected.",
+      "alternative": null,
+      "alternative_rejected": null
+    }
+  },
+  "usage": {
+    "calls": 9,
+    "input_tokens": 147002,
+    "output_tokens": 12159,
+    "cost_usd": 1.2000296000000001
+  }
+}

@@ -1,0 +1,96 @@
+{
+  "key": "cadcraft-pr-31",
+  "area": "gpu_rendering",
+  "symptom": "On some Windows machines the app crashes at startup with no window and no error message.",
+  "attempts": 3,
+  "proven": false,
+  "toml": "known_fixed = [\"cadcraft\", \"deckcraft\", \"effectcraft\", \"filmcraft\", \"gridcraft\", \"soundcraft\", \"wordcraft\"]\nreferences = [\"storytold/cadcraft#31\", \"storytold/deckcraft#16\", \"storytold/effectcraft#589\", \"storytold/filmcraft#365\", \"storytold/gridcraft#22\", \"storytold/soundcraft#34\", \"storytold/wordcraft#50\"]\ntitle = \"Keep wgpu from starting the OpenGL backend that crashes AMD Windows drivers at startup\"\nwhy = \"With eframe's default wgpu backends, which include OpenGL, AMD's Windows driver (atio6axx.dll or amdvlk64.dll) can crash while the window is being created. The app flashes and exits with no window and no error.\"\n\n[[applies_if]]\nlockfile_crate = \"wgpu\"\n\n[exempt]\n\n[[fixed_if]]\ngrep = 'backends *=.*Backends::DX12|unwrap_or\\(Backends::DX12\\)|SETTLE: *Duration|fn frame_drawn'\nin = [\"**/*.rs\"]\n\n[[proof]]\napp = \"cadcraft\"\npr = 31\n\n[[proof]]\napp = \"deckcraft\"\npr = 16\n\n[[proof]]\napp = \"effectcraft\"\npr = 589\n\n[[proof]]\napp = \"filmcraft\"\npr = 365\n\n[[proof]]\napp = \"gridcraft\"\npr = 22\n\n[[proof]]\napp = \"soundcraft\"\npr = 34\n\n[[proof]]\napp = \"wordcraft\"\npr = 50\n",
+  "reasoning": "The apps fixed this in two different ways. cadcraft and deckcraft (and, judging by the matching README text, probably the hidden ones too) set the wgpu instance to DirectX 12 only: `create.instance_descriptor.backends = backend_override.unwrap_or(Backends::DX12)`. effectcraft already had a launch guard that switches to OpenGL, using Backends::GL, WGPU_BACKEND and instance backends. That is why markers like WGPU_BACKEND, instance_descriptor, Backends:: or from_env passed before its fix. Its fix #589 added a settle period instead: `SETTLE: Duration` and `fn frame_drawn`. Checks must all pass together, so I used one grep with alternatives. One alternative is any assignment of Backends::DX12 to the backends, which is new code in the DX12-only fix and not in effectcraft's auto/gl setup. The others are the settle markers effectcraft added. The grep only looks at .rs files, so the README and docs text does not count.",
+  "proof": [
+    {
+      "app": "cadcraft",
+      "pr": 31,
+      "before": {
+        "status": "missing"
+      },
+      "after": {
+        "status": "fixed"
+      },
+      "ok": true
+    },
+    {
+      "app": "deckcraft",
+      "pr": 16,
+      "before": {
+        "status": "missing"
+      },
+      "after": {
+        "status": "fixed"
+      },
+      "ok": true
+    },
+    {
+      "app": "effectcraft",
+      "pr": 589,
+      "before": {
+        "status": "fixed"
+      },
+      "after": {
+        "status": "fixed"
+      },
+      "ok": false
+    },
+    {
+      "app": "filmcraft",
+      "pr": 365,
+      "before": {
+        "status": "missing"
+      },
+      "after": {
+        "status": "missing"
+      },
+      "ok": false
+    },
+    {
+      "app": "gridcraft",
+      "pr": 22,
+      "before": {
+        "status": "missing"
+      },
+      "after": {
+        "status": "fixed"
+      },
+      "ok": true
+    },
+    {
+      "app": "soundcraft",
+      "pr": 34,
+      "before": {
+        "status": "missing"
+      },
+      "after": {
+        "status": "fixed"
+      },
+      "ok": true
+    },
+    {
+      "app": "wordcraft",
+      "pr": 50,
+      "before": {
+        "status": "missing"
+      },
+      "after": {
+        "status": "fixed"
+      },
+      "ok": true
+    }
+  ],
+  "matrix": {},
+  "verified": {},
+  "usage": {
+    "calls": 3,
+    "input_tokens": 35439,
+    "output_tokens": 6448,
+    "cost_usd": 0.3797348
+  }
+}

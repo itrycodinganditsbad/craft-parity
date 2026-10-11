@@ -1,0 +1,174 @@
+{
+  "key": "cadcraft-pr-613",
+  "area": "gpu_rendering",
+  "symptom": "On Windows the app fails to start with DirectX 12.",
+  "attempts": 1,
+  "proven": true,
+  "toml": "known_fixed = [\"cadcraft\", \"lightcraft\", \"photocraft\", \"vectorcraft\"]\nreferences = [\"storytold/cadcraft#613\", \"storytold/lightcraft#484\", \"storytold/photocraft#817\", \"storytold/vectorcraft#1215\"]\ntitle = \"Use the FXC DX12 shader compiler on Windows instead of wgpu's Auto DXC lookup\"\nwhy = \"\"\"wgpu's default DX12 compiler setting (Auto) loads whatever dxcompiler.dll the Windows DLL search finds first, which may belong to another program. If that copy has no matching dxil.dll, shader compiles fail, the device is lost (\"Parent device is lost\") and the app exits, crashes or falls back to OpenGL at startup.\"\"\"\n\n[[applies_if]]\nlockfile_crate = \"wgpu\"\n\n[exempt]\ncraft-launcher = \"The bug lives in how the wgpu instance is set up on Windows: left on its default (Auto) DX12 compiler setting, wgpu can load another program's dxcompiler.dll. T…\"\n\n[[fixed_if]]\ngrep = \"Dx12Compiler::Fxc\"\nin = [\"**/*.rs\"]\n\n[[proof]]\napp = \"cadcraft\"\npr = 613\n\n[[proof]]\napp = \"lightcraft\"\npr = 484\n\n[[proof]]\napp = \"photocraft\"\npr = 817\n\n[[proof]]\napp = \"vectorcraft\"\npr = 1215\n",
+  "reasoning": "All three fixes I could see set the wgpu DX12 shader compiler to FXC by default: cadcraft in graphics.rs, lightcraft in crates/gpu/src/backend.rs, and photocraft in gpu_startup.rs. Each one writes the wgpu enum variant `Dx12Compiler::Fxc`, either as `wgpu::Dx12Compiler::Fxc`, `eframe::wgpu::Dx12Compiler::Fxc`, or after a `use` import. None of the apps referred to it before the fix. The diffs don't share an assignment form. Some write `.dx12.shader_compiler = ...` and others call a helper, and vectorcraft might use a struct literal. So the one grep for this variant, limited to Rust files, is the narrowest marker that would still pass if another app wrote the fix in its own words. The fix only matters to apps that use wgpu, so the check for whether it applies is the wgpu crate in Cargo.lock.",
+  "proof": [
+    {
+      "app": "cadcraft",
+      "pr": 613,
+      "before": {
+        "status": "missing"
+      },
+      "after": {
+        "status": "fixed"
+      },
+      "ok": true
+    },
+    {
+      "app": "lightcraft",
+      "pr": 484,
+      "before": {
+        "status": "missing"
+      },
+      "after": {
+        "status": "fixed"
+      },
+      "ok": true
+    },
+    {
+      "app": "photocraft",
+      "pr": 817,
+      "before": {
+        "status": "missing"
+      },
+      "after": {
+        "status": "fixed"
+      },
+      "ok": true
+    },
+    {
+      "app": "vectorcraft",
+      "pr": 1215,
+      "before": {
+        "status": "missing"
+      },
+      "after": {
+        "status": "fixed"
+      },
+      "ok": true
+    }
+  ],
+  "matrix": {
+    "artcraft": {
+      "status": "missing"
+    },
+    "artcraftx": {
+      "status": "not_applicable"
+    },
+    "cadcraft": {
+      "status": "fixed"
+    },
+    "craft-launcher": {
+      "status": "exempt",
+      "detail": "The bug lives in how the wgpu instance is set up on Windows: left on its default (Auto) DX12 compiler setting, wgpu can load another program's dxcompiler.dll. T…"
+    },
+    "deckcraft": {
+      "status": "missing"
+    },
+    "designcraft": {
+      "status": "missing"
+    },
+    "effectcraft": {
+      "status": "fixed"
+    },
+    "filmcraft": {
+      "status": "missing"
+    },
+    "gridcraft": {
+      "status": "missing"
+    },
+    "lightcraft": {
+      "status": "fixed"
+    },
+    "pdfcraft": {
+      "status": "missing"
+    },
+    "photocraft": {
+      "status": "fixed"
+    },
+    "soundcraft": {
+      "status": "missing"
+    },
+    "vectorcraft": {
+      "status": "fixed"
+    },
+    "wordcraft": {
+      "status": "missing"
+    }
+  },
+  "verified": {
+    "artcraft": {
+      "verdict": "unclear",
+      "evidence": "No source files from artcraft were provided (\"No related files were found in this app\"), so there is no wgpu/eframe instance setup, graphics.rs, or main.rs code to quote.",
+      "explanation": "This bug only matters if the app creates a wgpu instance on Windows (through eframe's WgpuSetup::CreateNew) and leaves `backend_options.dx12.shader_compiler` at its default (Auto). No artcraft code was provided, so I can't tell whether it uses the wgpu renderer at all, uses glow, or already sets Dx12Compiler::Fxc. The missing files hint that the feature may not be there, but that isn't enough to call it not_applicable.",
+      "alternative": null,
+      "alternative_rejected": null
+    },
+    "craft-launcher": {
+      "verdict": "not_applicable",
+      "evidence": "No related files were found in craft-launcher. There is no graphics.rs, no use of eframe::egui_wgpu::WgpuSetup or wgpu::Dx12Compiler, and no wgpu instance descriptor setup to quote.",
+      "explanation": "The bug lives in how the wgpu instance is set up on Windows: left on its default (Auto) DX12 compiler setting, wgpu can load another program's dxcompiler.dll. The search found no wgpu or eframe graphics setup in craft-launcher, so the app seems to lack the feature this bug lives in. This verdict is based on that absence, not on code I could read. If the launcher does use eframe/wgpu with default options, the bug would be present, so its dependencies should be checked to confirm.",
+      "alternative": null,
+      "alternative_rejected": null
+    },
+    "deckcraft": {
+      "verdict": "present",
+      "evidence": "apps/deckcraft/src/graphics.rs:\n    pub fn configure(options: &mut NativeOptions, backend_override: Option<Backends>) {\n        ...\n        create.instance_descriptor.backends = backend_override.unwrap_or(Backends::DX12);\n    }\napps/deckcraft/src/main.rs:\n    graphics::configure(&mut options, eframe::wgpu::Backends::from_env());",
+      "explanation": "DeckCraft's Windows graphics setup only limits which backends wgpu uses. It never sets `instance_descriptor.backend_options.dx12.shader_compiler`, so wgpu keeps its default `Dx12Compiler::Auto`. Nothing reads `Dx12Compiler::from_env()` and nothing defaults to FXC. This is the same code cadcraft had before its fix, so DeckCraft can still pick up another program's dxcompiler.dll without a matching dxil.dll and lose the device at startup.",
+      "alternative": null,
+      "alternative_rejected": null
+    },
+    "designcraft": {
+      "verdict": "unclear",
+      "evidence": "apps/designcraft/src/main.rs: \"The graphics backend (DirectX 12, Vulkan, Metal or OpenGL) is chosen in `gpu` before the window exists, with a fallback for a driver that crashes at start-up; `WGPU_BACKEND` overrides it.\" and `mod gpu;` — the gpu module that sets up the wgpu instance isn't included, and main.rs is cut off at `let mut options = eframe::NativeOptions { ...` before any call into gpu.",
+      "explanation": "designcraft sets up its wgpu instance in a separate `gpu` module. That module wasn't provided, and main.rs is cut off before the code that builds NativeOptions and calls into gpu. So I can't tell whether `backend_options.dx12.shader_compiler` is forced to `Dx12Compiler::Fxc` or left at wgpu's Auto default. The startup fallback for driver crashes that the comment mentions hints at a different design, but it doesn't show how the DX12 compiler is chosen.",
+      "alternative": null,
+      "alternative_rejected": null
+    },
+    "filmcraft": {
+      "verdict": "present",
+      "evidence": "apps/filmcraft/src/graphics.rs:\n```\npub fn configure(options: &mut NativeOptions, backend_override: Option<Backends>) {\n    if let WgpuSetup::CreateNew(create) = &mut options.wgpu_options.wgpu_setup {\n        ...\n        create.instance_descriptor.backends = backend_override.unwrap_or(Backends::PRIMARY);\n    }\n}\n```\napps/filmcraft/src/main.rs:\n```\ngraphics::configure(&mut options, eframe::wgpu::Backends::from_env());\n```",
+      "explanation": "FilmCraft's Windows graphics setup only chooses the wgpu backends. It never sets `backend_options.dx12.shader_compiler`, so wgpu keeps its default `Dx12Compiler::Auto`. `WGPU_DX12_COMPILER` is never read, so users can't override it either. That is exactly the unfixed sibling's code. `Backends::PRIMARY` still includes DX12, so whenever a DX12 adapter is used, Auto can load another program's dxcompiler.dll that has no matching dxil.dll, and the device is lost. Keeping Vulkan in the set doesn't help, because the DX12 path still uses Auto.\n\nOne caveat for whoever ports the fix: a comment in this file says FXC rejects fx.wgsl. Copying the sibling's FXC default as-is could therefore break FilmCraft's GPU effects. A safer fix may be a different setting, such as StaticDxc or a DynamicDxc path to a bundled DLL. Either way, the current code has the bug.",
+      "alternative": null,
+      "alternative_rejected": null
+    },
+    "gridcraft": {
+      "verdict": "present",
+      "evidence": "apps/gridcraft/src/graphics.rs:\n    wgpu::{Backends, DeviceType},\n...\npub fn configure_backends(options: &mut NativeOptions, backends: Backends) {\n    if let WgpuSetup::CreateNew(create) = &mut options.wgpu_options.wgpu_setup {\n        ...\n        create.instance_descriptor.backends = backends;\n    }\n}\n...\nlet instance = Instance::new(InstanceDescriptor { backends: Backends::DX12, ..InstanceDescriptor::new_without_display_handle() });",
+      "explanation": "On Windows, gridcraft only limits the wgpu instance to DX12 and/or GL. It never sets `instance_descriptor.backend_options.dx12.shader_compiler`, so the compiler stays on wgpu's default `Auto` DXC lookup. The start-up DX12 probe (`probe_dx12`) also builds its own instance with default options. Neither `Dx12Compiler` nor `WGPU_DX12_COMPILER` appears in this file. Because of this, gridcraft can load an unrelated `dxcompiler.dll` that has no matching `dxil.dll`. Shader compiles then fail and the device is lost, as in the bug the sibling fixed. The `main.rs` provided is cut off before its graphics setup, but `configure` takes no compiler argument, so it most likely sets none.",
+      "alternative": null,
+      "alternative_rejected": null
+    },
+    "pdfcraft": {
+      "verdict": "unclear",
+      "evidence": "apps/pdfcraft/src/main.rs: `mod compositor_gpu;` … `let choice = renderer_choice(std::env::var(\"PDFCRAFT_RENDERER\").ok().as_deref());` and then the file is cut off (\"…\") before NativeOptions and the wgpu instance are set up.",
+      "explanation": "pdfcraft chooses a renderer (PDFCRAFT_RENDERER, renderer_choice) and has a compositor_gpu module, so it probably uses wgpu on Windows. The file shown ends before the code that builds NativeOptions and wgpu_options, so I can't see whether instance_descriptor.backend_options.dx12.shader_compiler is set to Fxc or left at Auto. The shown code is not enough to decide.",
+      "alternative": null,
+      "alternative_rejected": null
+    },
+    "soundcraft": {
+      "verdict": "present",
+      "evidence": "apps/soundcraft/src/graphics.rs: `create.instance_descriptor.backends = backend_override.unwrap_or(Backends::DX12);` is the only setting changed. Nothing sets `backend_options.dx12.shader_compiler`. apps/soundcraft/src/main.rs: `graphics::configure(&mut options, eframe::wgpu::Backends::from_env());` is called without a Dx12Compiler argument.",
+      "explanation": "SoundCraft's graphics.rs matches cadcraft's code before the fix. On Windows it limits wgpu to DX12 but leaves the DX12 shader compiler at wgpu's default, Auto. Auto loads whichever dxcompiler.dll the DLL search finds first, so the same device-loss problem can happen here. Neither main.rs nor graphics.rs sets FXC or reads WGPU_DX12_COMPILER.",
+      "alternative": null,
+      "alternative_rejected": null
+    },
+    "wordcraft": {
+      "verdict": "present",
+      "evidence": "apps/wordcraft/src/graphics.rs, configure_backends:\n    if let WgpuSetup::CreateNew(create) = &mut options.wgpu_options.wgpu_setup {\n        ...\n        create.instance_descriptor.backends = backends;\n    }\nprobe_dx12:\n    let instance = Instance::new(InstanceDescriptor { backends: Backends::DX12, ..InstanceDescriptor::new_without_display_handle() });\napps/wordcraft/src/main.rs:\n    graphics::configure(&mut options, eframe::wgpu::Backends::from_env());",
+      "explanation": "WordCraft has the bug. On Windows its graphics setup only changes which backends wgpu uses (DX12, GL, or both, chosen by a probe). It never sets `backend_options.dx12.shader_compiler`, so the instance eframe creates keeps wgpu's default compiler setting, Auto. That setting loads whatever dxcompiler.dll the Windows DLL search finds first. The startup probe has the same gap: it builds its instance from the default descriptor too. Nothing reads `Dx12Compiler::from_env()` and nothing selects FXC. This is the same code the sibling app had before its fix.",
+      "alternative": null,
+      "alternative_rejected": null
+    }
+  },
+  "usage": {
+    "calls": 10,
+    "input_tokens": 98401,
+    "output_tokens": 8156,
+    "cost_usd": 0.7983271999999999
+  }
+}

@@ -1,0 +1,158 @@
+{
+  "key": "pdfcraft-pr-823",
+  "area": "packaging_install",
+  "symptom": "On macOS, the app in the DMG fails codesign --verify --strict because of Finder info detritus.",
+  "attempts": 1,
+  "proven": true,
+  "toml": "known_fixed = [\"pdfcraft\", \"vectorcraft\"]\nreferences = [\"storytold/pdfcraft#823\", \"storytold/vectorcraft#1121\"]\ntitle = \"Build the macOS DMG with hdiutil create -srcfolder instead of makehybrid\"\nwhy = 'Building the DMG with `hdiutil makehybrid -hfs` gives every file a com.apple.FinderInfo attribute. Because of that, the app inside the image and any copy installed from it fail `codesign --verify --strict` with a \"Finder information, or similar detritus\" error, and MDM and compliance checks report a correctly notarized app as damaged.'\n\n[[applies_if]]\ngrep = \"^[^#]*hdiutil \"\nin = [\"packaging/**\", \"**/*.sh\"]\n\n[exempt]\n\n[[fixed_if]]\ngrep = \"^[^#]*hdiutil[^#]*-srcfolder\"\nin = [\"packaging/**\", \"**/*.sh\", \".github/**\"]\n\n[[proof]]\napp = \"pdfcraft\"\npr = 823\n\n[[proof]]\napp = \"vectorcraft\"\npr = 1121\n",
+  "reasoning": "Before the fix, each app built its DMG with `hdiutil makehybrid` plus `convert`. The fix replaces that with `hdiutil create -srcfolder`, run through a retry wrapper, and then checks the app on the mounted image with `codesign --verify --strict --deep`.\n\n**What the fixes share.** Every fix makes an hdiutil call that uses `-srcfolder`, so that is the marker.\n\n**Why comment lines are excluded.** Before the fix, pdfcraft already had a comment mentioning `create -srcfolder`. The regex skips lines that start with `#` before the match, so that comment can't make an unfixed app pass.\n\n**Checks I left out:**\n- **`--deep` verify:** `codesign --verify --strict --deep` may already appear elsewhere for the plain app bundle, so it wouldn't reliably fail before the fix.\n- **Mount-and-check step:** an app that ports the fix may do this step differently, for example in a CI workflow instead of the packaging script.\n\n**When the fingerprint applies:** to any app whose packaging scripts call hdiutil, meaning it builds a macOS DMG.",
+  "proof": [
+    {
+      "app": "pdfcraft",
+      "pr": 823,
+      "before": {
+        "status": "missing"
+      },
+      "after": {
+        "status": "fixed"
+      },
+      "ok": true
+    },
+    {
+      "app": "vectorcraft",
+      "pr": 1121,
+      "before": {
+        "status": "missing"
+      },
+      "after": {
+        "status": "fixed"
+      },
+      "ok": true
+    }
+  ],
+  "matrix": {
+    "artcraft": {
+      "status": "not_applicable"
+    },
+    "artcraftx": {
+      "status": "not_applicable"
+    },
+    "cadcraft": {
+      "status": "missing"
+    },
+    "craft-launcher": {
+      "status": "missing"
+    },
+    "deckcraft": {
+      "status": "missing"
+    },
+    "designcraft": {
+      "status": "missing"
+    },
+    "effectcraft": {
+      "status": "missing"
+    },
+    "filmcraft": {
+      "status": "missing"
+    },
+    "gridcraft": {
+      "status": "missing"
+    },
+    "lightcraft": {
+      "status": "fixed"
+    },
+    "pdfcraft": {
+      "status": "fixed"
+    },
+    "photocraft": {
+      "status": "missing"
+    },
+    "soundcraft": {
+      "status": "missing"
+    },
+    "vectorcraft": {
+      "status": "fixed"
+    },
+    "wordcraft": {
+      "status": "missing"
+    }
+  },
+  "verified": {
+    "cadcraft": {
+      "verdict": "present",
+      "evidence": "packaging/macos/package.sh:\nhdiutil makehybrid -hfs -hfs-volume-name \"CADCraft\" -hfs-openfolder \"$STAGE\" -o \"$WORK/raw.dmg\" \"$STAGE\"\nhdiutil convert \"$WORK/raw.dmg\" -format UDZO -imagekey zlib-level=9 -o \"$DMG\"\nsign \"$DMG\"\ncodesign --verify --strict --verbose=2 \"$DMG\"",
+      "explanation": "CADCraft still builds its DMG with `hdiutil makehybrid -hfs` followed by `convert`. That is the same unfixed code the sibling had. As a result, every file in the image gets a com.apple.FinderInfo attribute, and the app inside fails `codesign --verify --strict`. The script never mounts the DMG to check the app inside with --strict. It only verifies the DMG's own signature, so the problem isn't caught.",
+      "alternative": null,
+      "alternative_rejected": null
+    },
+    "craft-launcher": {
+      "verdict": "present",
+      "evidence": "packaging/macos/package.sh:\nhdiutil makehybrid -hfs -hfs-volume-name \"$APP_NAME $VERSION\" -hfs-openfolder \"$STAGE\" -o \"$WORK/raw.dmg\" \"$STAGE\"\nhdiutil convert \"$WORK/raw.dmg\" -format UDZO -imagekey zlib-level=9 -o \"$DMG\"\n\npackaging/macos/verify.sh:\n# Integrity first: ... Not --strict here: files read back from\n# the DMG's HFS volume (hdiutil makehybrid) report a com.apple.FinderInfo attribute, which strict\n# mode calls \"detritus\".\ncodesign --verify --deep --verbose=2 \"$APP\"",
+      "explanation": "craft-launcher still builds its DMG with `hdiutil makehybrid -hfs` and then `convert`, just like the sibling did before its fix. It does not use `hdiutil create -srcfolder`. This puts the com.apple.FinderInfo attribute on the app inside the image, so `codesign --verify --strict` fails on it and on any copy installed from it. verify.sh even says so in a comment: it leaves out `--strict` on the mounted app because of this \"detritus\". That hides the problem rather than fixing it. Users' MDM and compliance checks would still report the app as damaged.",
+      "alternative": null,
+      "alternative_rejected": null
+    },
+    "deckcraft": {
+      "verdict": "present",
+      "evidence": "packaging/macos/package.sh:\nhdiutil makehybrid -hfs -hfs-volume-name \"DeckCraft\" -hfs-openfolder \"$STAGE\" -o \"$WORK/raw.dmg\" \"$STAGE\"\nhdiutil convert \"$WORK/raw.dmg\" -format UDZO -imagekey zlib-level=9 -o \"$DMG\"\nsign \"$DMG\"\ncodesign --verify --strict --verbose=2 \"$DMG\"",
+      "explanation": "DeckCraft still builds its DMG with `hdiutil makehybrid -hfs` and then `convert`. This is the same code PdfCraft had before its fix, and it gives every file in the image a com.apple.FinderInfo attribute. The script only checks the DMG's own signature. It never mounts the image to run `codesign --verify --strict` on DeckCraft.app inside it, so the \"Finder information, or similar detritus\" failure would ship without anything catching it. The dmg/README.md also still says the DMG is built with makehybrid.",
+      "alternative": null,
+      "alternative_rejected": null
+    },
+    "designcraft": {
+      "verdict": "present",
+      "evidence": "packaging/macos/package.sh:\nhdiutil makehybrid -hfs -hfs-volume-name \"DesignCraft\" -hfs-openfolder \"$STAGE\" -o \"$WORK/raw.dmg\" \"$STAGE\"\nhdiutil convert \"$WORK/raw.dmg\" -format UDZO -imagekey zlib-level=9 -o \"$DMG\"\nsign \"$DMG\"\ncodesign --verify --strict --verbose=2 \"$DMG\"",
+      "explanation": "DesignCraft still builds its DMG the old way, with `hdiutil makehybrid -hfs` followed by `convert`. The sibling stopped doing that because makehybrid adds com.apple.FinderInfo to every file. After that, `codesign --verify --strict` rejects the app inside the image, and any copy installed from it. The script only checks the DMG's own signature. It never mounts the image to verify the app inside, so nothing would catch the problem. The README also still says the DMG is built with makehybrid.",
+      "alternative": null,
+      "alternative_rejected": null
+    },
+    "effectcraft": {
+      "verdict": "present",
+      "evidence": "packaging/macos/package.sh:\nhdiutil makehybrid -hfs -hfs-volume-name \"EffectCraft\" -hfs-openfolder \"$STAGE\" -o \"$WORK/raw.dmg\" \"$STAGE\"\nhdiutil convert \"$WORK/raw.dmg\" -format UDZO -imagekey zlib-level=9 -o \"$DMG\"\nsign \"$DMG\"\ncodesign --verify --strict --verbose=2 \"$DMG\"",
+      "explanation": "EffectCraft still builds its DMG the way the sibling did before the fix: `hdiutil makehybrid -hfs` followed by `convert`. That step gives every file a com.apple.FinderInfo attribute, so the app in the image fails `codesign --verify --strict`. The script only checks the DMG's own signature. It never mounts the image to verify EffectCraft.app inside it, and nothing else in the script prevents the problem. The README also still says the DMG builds with `hdiutil makehybrid`.",
+      "alternative": null,
+      "alternative_rejected": null
+    },
+    "filmcraft": {
+      "verdict": "present",
+      "evidence": "packaging/macos/package.sh:\nhdiutil makehybrid -hfs -hfs-volume-name \"FilmCraft\" -hfs-openfolder \"$STAGE\" -o \"$WORK/raw.dmg\" \"$STAGE\"\nhdiutil convert \"$WORK/raw.dmg\" -format UDZO -imagekey zlib-level=9 -o \"$DMG\"\nrm -f \"$WORK/raw.dmg\"\nsign \"$DMG\"\ncodesign --verify --strict --verbose=2 \"$DMG\"",
+      "explanation": "FilmCraft has the bug. It still builds the DMG with `hdiutil makehybrid -hfs` and then `convert`, which is the same code the sibling had before its fix. That method gives every file in the image a com.apple.FinderInfo attribute. The script never switches to `hdiutil create -srcfolder`. After signing, it only checks the DMG itself with `codesign --verify --strict`. It doesn't mount the image to verify FilmCraft.app inside, so nothing would catch the \"Finder information, or similar detritus\" failure. The DMG README still says the image is built with makehybrid.",
+      "alternative": null,
+      "alternative_rejected": null
+    },
+    "gridcraft": {
+      "verdict": "present",
+      "evidence": "packaging/macos/package.sh:\nhdiutil makehybrid -hfs -hfs-volume-name \"GridCraft\" -hfs-openfolder \"$STAGE\" -o \"$WORK/raw.dmg\" \"$STAGE\"\nhdiutil convert \"$WORK/raw.dmg\" -format UDZO -imagekey zlib-level=9 -o \"$DMG\"\n...\ncodesign --verify --strict --verbose=2 \"$DMG\"   (only the DMG is checked; the app inside the mounted image is never checked with --strict)",
+      "explanation": "GridCraft still builds its DMG with `hdiutil makehybrid -hfs` and then runs `convert`. This is the same code the sibling had before its fix. makehybrid puts a com.apple.FinderInfo attribute on every file, so the GridCraft.app inside the image and any copy installed from it fail `codesign --verify --strict`. There is no switch to `hdiutil create -srcfolder`, and nothing mounts the image to check the app with --strict afterward. The README also still says the DMG is built with `hdiutil makehybrid`.",
+      "alternative": null,
+      "alternative_rejected": null
+    },
+    "photocraft": {
+      "verdict": "present",
+      "evidence": "packaging/macos/package.sh:\nhdiutil makehybrid -hfs -hfs-volume-name \"PhotoCraft\" -hfs-openfolder \"$STAGE\" -o \"$WORK/raw.dmg\" \"$STAGE\"\nhdiutil convert \"$WORK/raw.dmg\" -format UDZO -imagekey zlib-level=9 -o \"$DMG\"\nsign \"$DMG\"\ncodesign --verify --strict --verbose=2 \"$DMG\"",
+      "explanation": "PhotoCraft still builds its DMG with `hdiutil makehybrid -hfs` and then runs `convert`. That is the same code the sibling had before its fix. Every file in the image gets a com.apple.FinderInfo attribute, so the app inside it fails `codesign --verify --strict`. After building the DMG, the script only checks the DMG's own signature. It never mounts the image to check the app inside, so nothing catches the problem. The DMG README also still says the image is built with makehybrid.",
+      "alternative": null,
+      "alternative_rejected": null
+    },
+    "soundcraft": {
+      "verdict": "present",
+      "evidence": "packaging/macos/package.sh:\nhdiutil makehybrid -hfs -hfs-volume-name \"SoundCraft\" -hfs-openfolder \"$STAGE\" -o \"$WORK/raw.dmg\" \"$STAGE\"\nhdiutil convert \"$WORK/raw.dmg\" -format UDZO -imagekey zlib-level=9 -o \"$DMG\"\n...\ncodesign --verify --strict --verbose=2 \"$DMG\"   (only the DMG is checked, not the app inside the mounted image)",
+      "explanation": "SoundCraft still builds its DMG with `hdiutil makehybrid -hfs` and then `convert`. That is the same code the sibling had before its fix, and it gives every file in the image a com.apple.FinderInfo attribute. The script never mounts the finished image to run `codesign --verify --strict` on SoundCraft.app inside it, so nothing would catch the problem. The README also still says the DMG builds with `hdiutil makehybrid`.",
+      "alternative": null,
+      "alternative_rejected": null
+    },
+    "wordcraft": {
+      "verdict": "present",
+      "evidence": "packaging/macos/package.sh:\nhdiutil makehybrid -hfs -hfs-volume-name \"WordCraft\" -hfs-openfolder \"$STAGE\" -o \"$WORK/raw.dmg\" \"$STAGE\"\nhdiutil convert \"$WORK/raw.dmg\" -format UDZO -imagekey zlib-level=9 -o \"$DMG\"\nsign \"$DMG\"\ncodesign --verify --strict --verbose=2 \"$DMG\"",
+      "explanation": "WordCraft has the bug. It still builds the DMG with `hdiutil makehybrid -hfs` and then `convert`, the same way PdfCraft did before its fix. That puts a com.apple.FinderInfo attribute on every file, so the app inside the image fails `codesign --verify --strict`. The script never mounts the image to check the app inside it. It only checks the DMG's own signature, so nothing catches the problem before release. The README also still says the DMG is built with makehybrid.",
+      "alternative": null,
+      "alternative_rejected": null
+    }
+  },
+  "usage": {
+    "calls": 11,
+    "input_tokens": 103419,
+    "output_tokens": 6915,
+    "cost_usd": 0.8138771999999999
+  }
+}

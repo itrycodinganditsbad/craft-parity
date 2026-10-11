@@ -1,0 +1,145 @@
+{
+  "key": "effectcraft-pr-582",
+  "area": "packaging_install",
+  "symptom": "On macOS, double-clicking a project file in Finder or using open -a launches the app without opening the document, and the bundle claims another app's file extension.",
+  "attempts": 1,
+  "proven": true,
+  "toml": "known_fixed = [\"effectcraft\", \"pdfcraft\"]\nreferences = [\"storytold/effectcraft#582\", \"storytold/pdfcraft#933\"]\ntitle = \"Declare macOS document types with a document icon in Info.plist\"\nwhy = \"\"\"If the bundle's Info.plist has no document type entry with its own icon file, Finder shows the app's documents with a plain gray icon. It also won't offer the app for those files, so double-click and Open With fail with a \"cannot open files of this type\" error.\"\"\"\n\n[[applies_if]]\npath = \"packaging/macos/*.plist*\"\n\n[exempt]\ncraft-launcher = \"The launcher has no document format of its own. It installs, updates and opens the other Craft apps. Its Info.plist template says on purpose that it declares no…\"\n\n[[fixed_if]]\ngrep = \"<key>CFBundleDocumentTypes</key>\"\nin = [\"packaging/**\"]\n\n[[fixed_if]]\ngrep = \"<key>CFBundleTypeIconFile</key>\"\nin = [\"packaging/**\"]\n\n[[proof]]\napp = \"effectcraft\"\npr = 582\n\n[[proof]]\napp = \"pdfcraft\"\npr = 933\n",
+  "reasoning": "Only the macOS Info.plist template appears in both diffs. effectcraft added a whole CFBundleDocumentTypes entry that includes CFBundleTypeIconFile. pdfcraft already had the document types entry and only added CFBundleTypeIconFile. So CFBundleTypeIconFile is the marker both fixes added, and neither app had it before (effectcraft only had UTTypeIconFile in its exported type declaration). CFBundleDocumentTypes is a second check that passes in both apps after the fix and needs any port to declare document types at all. The effectcraft Apple-event handler (the fmv-macos-events crate and apple_events.rs) isn't in pdfcraft, so it's left out. The greps are limited to packaging/** and match plist key elements, not comments. The fix only matters to apps that ship a macOS Info.plist template, so that's the applies_if check.",
+  "proof": [
+    {
+      "app": "effectcraft",
+      "pr": 582,
+      "before": {
+        "status": "missing"
+      },
+      "after": {
+        "status": "fixed"
+      },
+      "ok": true
+    },
+    {
+      "app": "pdfcraft",
+      "pr": 933,
+      "before": {
+        "status": "missing"
+      },
+      "after": {
+        "status": "fixed"
+      },
+      "ok": true
+    }
+  ],
+  "matrix": {
+    "artcraft": {
+      "status": "not_applicable"
+    },
+    "artcraftx": {
+      "status": "not_applicable"
+    },
+    "cadcraft": {
+      "status": "fixed"
+    },
+    "craft-launcher": {
+      "status": "exempt",
+      "detail": "The launcher has no document format of its own. It installs, updates and opens the other Craft apps. Its Info.plist template says on purpose that it declares no…"
+    },
+    "deckcraft": {
+      "status": "missing"
+    },
+    "designcraft": {
+      "status": "missing"
+    },
+    "effectcraft": {
+      "status": "fixed"
+    },
+    "filmcraft": {
+      "status": "missing"
+    },
+    "gridcraft": {
+      "status": "missing"
+    },
+    "lightcraft": {
+      "status": "missing"
+    },
+    "pdfcraft": {
+      "status": "fixed"
+    },
+    "photocraft": {
+      "status": "fixed"
+    },
+    "soundcraft": {
+      "status": "fixed"
+    },
+    "vectorcraft": {
+      "status": "missing"
+    },
+    "wordcraft": {
+      "status": "missing"
+    }
+  },
+  "verified": {
+    "craft-launcher": {
+      "verdict": "not_applicable",
+      "evidence": "packaging/macos/Info.plist.in: \"ArtCraft Launcher opens no documents, so there are no document or UT types. It is a normal Dock app that can also sit in the menu bar: LSUIElement must stay unset.\"",
+      "explanation": "The launcher has no document format of its own. It installs, updates and opens the other Craft apps. Its Info.plist template says on purpose that it declares no CFBundleDocumentTypes or UT types, so there are no documents that could show a gray icon or fail to open from Finder.",
+      "alternative": null,
+      "alternative_rejected": null
+    },
+    "deckcraft": {
+      "verdict": "present",
+      "evidence": "apps/deckcraft/src/main.rs: documents come only from argv —\n    while let Some(a) = args.next() { match a.as_str() { ... _ => files.push(a), } }\n    ...\n    for f in files { if let Err(e) = app.open_path(&f) { ... } }\nand the module list has no Apple-event handler:\n    mod audio;\n    mod control_server;\n    #[cfg(any(target_os = \"windows\", test))]\n    mod graphics;\n    mod logging;\napps/deckcraft/Cargo.toml has no `fmv-macos-events` dependency; its only macOS-specific setup is `app.integrated_titlebar = cfg!(target_os = \"macos\");`.",
+      "explanation": "EffectCraft's fix added the fmv-macos-events crate and an apple_events module. That module registers a handler for the kAEOpenDocuments event before the event loop starts and passes the paths to the UI as dropped files. This is needed because winit 0.30 drops that event, and it is how Finder double-click, Open With and `open -a` deliver documents. DeckCraft is in the state EffectCraft was in before the fix: it only reads paths from std::env::args, has no apple_events module, and doesn't depend on fmv-macos-events. So on macOS, documents opened from Finder never reach the app. DeckCraft's Info.plist wasn't shown, so I can't check the document-type and icon declarations. The missing event handling the sibling fix adds is clearly absent, though.",
+      "alternative": null,
+      "alternative_rejected": null
+    },
+    "designcraft": {
+      "verdict": "present",
+      "evidence": "apps/designcraft/Cargo.toml:\n[target.'cfg(target_os = \"macos\")'.dependencies]\nmuda = { version = \"0.21\", default-features = false }\n(no fmv-macos-events)\n\napps/designcraft/src/main.rs:\nmod control_server;\nmod gpu;\nmod logging;\n#[cfg(target_os = \"macos\")]\nmod native_menu;\nmod profile;\n...\n    fn raw_input_hook(&mut self, _ctx: &egui::Context, raw: &mut egui::RawInput) {\n        self.app.raw_input_hook(raw);\n    }\n...\n            _ => files.push(a),",
+      "explanation": "The sibling's fix lets Finder double-click, Open With, Dock drops and `open -a` reach the app by handling the open-documents Apple event (kAEOpenDocuments) through fmv-macos-events, which winit 0.30 doesn't handle. DesignCraft depends only on muda for macOS, has no apple_events module, and receives paths only from the command line (`files.push(a)`) and egui drag-and-drop in raw_input_hook. So macOS document-open requests never reach it, and its .designcraft and .idml documents can't be opened from Finder, as in the unfixed sibling. The packaging Info.plist (CFBundleDocumentTypes and its icon) isn't among the files shown, so that part can't be checked directly. The missing handler is enough to show the bug.",
+      "alternative": null,
+      "alternative_rejected": null
+    },
+    "filmcraft": {
+      "verdict": "present",
+      "evidence": "apps/filmcraft/src/main.rs module list has no Apple-event handling:\n```\nmod app_nap;\nmod appearance;\nmod args;\n...\n#[cfg(target_os = \"macos\")]\nmod native_menu;\nmod window_raise;\n```\nDocuments to open come only from the command line:\n```\nlet Launch { control_port, control_input_only, files, demo, startup_flag, recover, data_dir } = match args::parse(env_port, std::env::args().skip(1)) {\n...\nlet project = files.iter().find(|f| f.ends_with(\".fcproj\")).cloned();\n```\napps/filmcraft/Cargo.toml macOS dependencies do not include `fmv-macos-events`:\n```\n[target.'cfg(target_os = \"macos\")'.dependencies]\nmuda = \"0.21\"\nobjc2-foundation = { version = \"0.3\", ... features = [\"std\", \"NSProcessInfo\", \"NSString\", \"NSArray\"] }\nobjc2-app-kit = { version = \"0.3\", ... features = [\"std\", \"NSApplication\", \"NSResponder\", \"NSWindow\"] }\n```",
+      "explanation": "The sibling fixed this by adding the `fmv-macos-events` crate and an `apple_events` module. That code catches macOS's open-documents (kAEOpenDocuments) event, which winit 0.30 ignores, and passes the files to the UI as dropped files. FilmCraft has neither. It reads files to open only from `std::env::args()`. Finder double-click, Open With, Dock drops and `open -a` don't put files on the command line, so FilmCraft never sees them. Its objc2-app-kit features don't include NSAppleEventManager either, so nothing else in the code shown handles the event. This is the code the sibling had before its fix.",
+      "alternative": null,
+      "alternative_rejected": null
+    },
+    "gridcraft": {
+      "verdict": "unclear",
+      "evidence": "apps/gridcraft/Cargo.toml: `fmv-macos-events = \"=0.1.0\"` (comment: \"Finder double-click, Open With, Dock drops and `open -a GridCraft file.xlsx` arrive as a kAEOpenDocuments Apple event ... (#69)\"). apps/gridcraft/src/apple_events.rs: `Event::Open(paths) => { for p in paths.iter().filter_map(|p| p.to_str()) { app.open_path(p); } }` and the doc comment \"AppKit answered \\\"GridCraft cannot open files in the Excel Workbook format\\\"\". No Info.plist or bundle packaging file for gridcraft is among the files shown.",
+      "explanation": "The bug is about the bundle's Info.plist needing a document type entry (CFBundleDocumentTypes) with its own icon file. GridCraft already has the Apple-event side: it registers the kAEOpenDocuments handler through fmv-macos-events and opens the paths in main.rs's logic loop. Its comment about the \"Excel Workbook format\" suggests some document type is declared. But gridcraft's Info.plist and packaging script are not shown, so I can't tell whether its document type entries include an icon file.",
+      "alternative": null,
+      "alternative_rejected": null
+    },
+    "lightcraft": {
+      "verdict": "unclear",
+      "evidence": "apps/lightcraft/Cargo.toml macOS deps: `[target.'cfg(target_os = \"macos\")'.dependencies]\\nmuda = { workspace = true }\\nobjc2 = { workspace = true }\\nobjc2-app-kit = { workspace = true }\\nobjc2-foundation = { workspace = true }` (no fmv-macos-events); apps/lightcraft/src/main.rs: `#[cfg(target_os = \"macos\")]\\nmod native_menu;\\n#[cfg(target_os = \"macos\")]\\nmod screen_profile;` (no apple_events module). No Info.plist / macOS bundle packaging file was provided.",
+      "explanation": "The bug is that the bundle's Info.plist has no document-type entry with a document icon. LightCraft's Info.plist and packaging files weren't provided, so I can't tell whether it declares document types. The sibling's diff adds handling for the macOS \"open documents\" Apple event through the fmv-macos-events crate. LightCraft's Cargo.toml doesn't list that crate, and main.rs has no apple_events module, which suggests the open-documents handling is missing. But main.rs and Cargo.lock were cut off, and the Info.plist itself isn't shown, so the bug can't be confirmed or ruled out from these files.",
+      "alternative": null,
+      "alternative_rejected": null
+    },
+    "vectorcraft": {
+      "verdict": "unclear",
+      "evidence": "apps/vectorcraft/src/main.rs:\n  #[cfg(target_os = \"macos\")]\n  mod open_documents;\n  ...\n  open_files(&mut self.app, open_documents::take());\napps/vectorcraft/Cargo.toml:\n  # Files opened from Finder and the Dock (src/open_documents.rs) and pasted bitmaps (src/clipboard.rs)",
+      "explanation": "The bug is about the bundle's Info.plist: it must declare a document type with its own icon file, or Finder shows a plain icon and won't offer the app. VectorCraft's Info.plist (or whatever builds it) isn't among the files shown. The code shown only proves that VectorCraft already handles documents sent from Finder and the Dock, through its own open_documents module. That half of the sibling's fix is covered another way. Whether the Info.plist declares a document type with an icon can't be told from these files.",
+      "alternative": null,
+      "alternative_rejected": null
+    },
+    "wordcraft": {
+      "verdict": "unclear",
+      "evidence": "apps/wordcraft/src/apple_events.rs: \"so AppKit answered \\\"WordCraft cannot open files in the Word Document format\\\"\" and apps/wordcraft/Cargo.toml: `fmv-macos-events = \"=0.1.0\"`. No Info.plist or macOS bundling script for WordCraft is among the files shown.",
+      "explanation": "The bug is about the bundle's Info.plist: whether CFBundleDocumentTypes has an entry with its own CFBundleTypeIconFile. None of the files shown is that Info.plist or the script that builds the .app bundle. The excerpt of the sibling diff only covers the Apple-event handling, and WordCraft already has the same handler (apple_events.rs, fmv-macos-events pinned, AppleEvents::install() in main.rs). AppKit's message names a \"Word Document\" format, which hints that some document type is declared. Still, nothing shown says whether that entry has its own icon file, so I can't tell whether the bug is present.",
+      "alternative": null,
+      "alternative_rejected": null
+    }
+  },
+  "usage": {
+    "calls": 9,
+    "input_tokens": 165506,
+    "output_tokens": 9754,
+    "cost_usd": 1.3006635999999998
+  }
+}
