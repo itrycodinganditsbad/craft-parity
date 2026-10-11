@@ -5,7 +5,7 @@ use std::process::ExitCode;
 use clap::{Args as ClapArgs, Parser, Subcommand, ValueEnum};
 
 use craft_parity::index::Index;
-use craft_parity::{classify, fix, git, github, html, report, scan, sync};
+use craft_parity::{classify, cluster, fix, git, github, html, report, scan, sync};
 
 /// Shows which Craft apps carry a fix that already landed in a sibling app.
 #[derive(Parser)]
@@ -23,6 +23,22 @@ enum Command {
     Sync(SyncArgs),
     /// Label fixes, open PRs and open issues with Claude, resuming where the last run stopped.
     Classify(ClassifyArgs),
+    /// Group classified records that describe the same bug in different apps.
+    Cluster(ClusterArgs),
+}
+
+#[derive(ClapArgs)]
+struct ClusterArgs {
+    #[arg(long, default_value = "data")]
+    data: PathBuf,
+    #[arg(long, default_value = "apps.toml")]
+    apps: PathBuf,
+    /// Similarity (0 to 1) at which two records join.
+    #[arg(long, default_value_t = cluster::DEFAULT_THRESHOLD)]
+    threshold: f64,
+    /// Print this many candidates.
+    #[arg(long, default_value_t = 25)]
+    show: usize,
 }
 
 #[derive(ClapArgs)]
@@ -177,6 +193,24 @@ fn run_classify(args: ClassifyArgs) -> Result<bool, String> {
     Ok(true)
 }
 
+fn run_cluster(args: ClusterArgs) -> Result<bool, String> {
+    let apps = fix::load_apps(&args.apps)?;
+    let records = cluster::load(&Index::new(&args.data), &classify::Store::new(&args.data), &apps)?;
+    let all = cluster::clusters(&records, args.threshold);
+    let candidates: Vec<&cluster::Cluster> = all.iter().filter(|c| c.is_candidate()).collect();
+    let path = args.data.join("llm").join("candidates.json");
+    let text = serde_json::to_string_pretty(&candidates).map_err(|e| e.to_string())? + "\n";
+    craft_parity::index::write_if_changed(&path, text.as_bytes())?;
+    eprintln!("{} records, {} clusters, {} candidates -> {}", records.len(), all.len(), candidates.len(), path.display());
+    for c in candidates.iter().take(args.show) {
+        println!("\n[{}] fixed in: {} | open in: {}", c.area, c.fixed_in.join(", "), c.open_in.join(", "));
+        for m in &c.members {
+            println!("  {:?} {:24} {}", m.state, m.id, m.symptom);
+        }
+    }
+    Ok(true)
+}
+
 fn run_scan(args: ScanArgs) -> Result<bool, String> {
     let apps = fix::load_apps(&args.apps)?;
     let mut fixes = fix::load_fixes(&args.fixes, &apps)?;
@@ -237,6 +271,7 @@ fn main() -> ExitCode {
         Command::Scan(args) => run_scan(args),
         Command::Sync(args) => run_sync(args),
         Command::Classify(args) => run_classify(args),
+        Command::Cluster(args) => run_cluster(args),
     };
     match result {
         Ok(true) => ExitCode::SUCCESS,

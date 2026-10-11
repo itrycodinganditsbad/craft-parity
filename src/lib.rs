@@ -2,6 +2,7 @@
 //! against every app's default branch.
 
 pub mod classify;
+pub mod cluster;
 pub mod fix;
 pub mod git;
 pub mod github;
