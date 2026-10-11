@@ -38,9 +38,9 @@ pub struct Check {
     /// An extended regex matches a line in some file.
     pub grep: Option<String>,
     /// Globs that limit `grep` to some files. Empty means the whole tree.
-    #[serde(default, rename = "in")]
+    #[serde(default, rename = "in", skip_serializing_if = "Vec::is_empty")]
     pub within: Vec<String>,
-    #[serde(default)]
+    #[serde(default, skip_serializing_if = "std::ops::Not::not")]
     pub ignore_case: bool,
     /// `Cargo.lock` at the repo root lists a package with this name.
     pub lockfile_crate: Option<String>,
@@ -76,11 +76,26 @@ pub struct Fix {
     pub applies_if: Vec<Check>,
     /// All must pass for an app to count as fixed.
     pub fixed_if: Vec<Check>,
+    /// Other ways an app can have fixed it: any one passing also counts as fixed (for an app that
+    /// solved the same bug differently).
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub fixed_if_any: Vec<Check>,
     /// Apps known to carry the fix. If one of them reads as missing, the fingerprint is stale.
     pub known_fixed: Vec<String>,
     /// App name to the reason the fix does not apply to it.
     #[serde(default)]
     pub exempt: BTreeMap<String, String>,
+    /// Fix PRs the fingerprint was proven on: it reads missing on the merge commit's parent and
+    /// fixed on the merge commit.
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub proof: Vec<Proof>,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
+pub struct Proof {
+    pub app: String,
+    pub pr: u64,
 }
 
 /// Loads every `*.toml` in `dir`, sorted by id.
@@ -102,17 +117,17 @@ pub fn load_fixes(dir: &Path, apps: &[App]) -> Result<Vec<Fix>, String> {
     Ok(fixes)
 }
 
-fn validate(fix: &Fix, apps: &[App]) -> Result<(), String> {
+pub fn validate(fix: &Fix, apps: &[App]) -> Result<(), String> {
     if fix.fixed_if.is_empty() {
         return Err("`fixed_if` needs at least one check".into());
     }
     if fix.known_fixed.is_empty() {
         return Err("`known_fixed` needs at least one app, so a stale fingerprint gets caught".into());
     }
-    for check in fix.applies_if.iter().chain(&fix.fixed_if) {
+    for check in fix.applies_if.iter().chain(&fix.fixed_if).chain(&fix.fixed_if_any) {
         check.validate()?;
     }
-    for name in fix.known_fixed.iter().chain(fix.exempt.keys()) {
+    for name in fix.known_fixed.iter().chain(fix.exempt.keys()).chain(fix.proof.iter().map(|p| &p.app)) {
         if !apps.iter().any(|a| &a.name == name) {
             return Err(format!("unknown app `{name}`"));
         }

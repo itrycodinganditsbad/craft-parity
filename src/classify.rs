@@ -141,7 +141,7 @@ fn hash(parts: &[&str]) -> String {
     format!("{h:016x}")
 }
 
-fn clip(text: &str, chars: usize) -> String {
+pub fn clip(text: &str, chars: usize) -> String {
     match text.char_indices().nth(chars) {
         Some((i, _)) => format!("{}…", &text[..i]),
         None => text.to_string(),
@@ -268,19 +268,27 @@ impl Classifier for ClaudeCli {
     }
 
     fn classify(&self, batch: &[Item]) -> Result<(BTreeMap<String, Labels>, Usage), String> {
+        let (value, usage) = self.call(SYSTEM_PROMPT, &render_batch(batch), &schema())?;
+        Ok((parse_results(&value, batch), usage))
+    }
+}
+
+impl ClaudeCli {
+    /// One `claude -p` call that must answer with JSON matching `schema`.
+    pub fn call(&self, system: &str, prompt: &str, schema: &Value) -> Result<(Value, Usage), String> {
         let mut child = Command::new("claude")
             .current_dir(&self.workdir)
             .env_remove("ANTHROPIC_API_KEY")
             .env_remove("ANTHROPIC_AUTH_TOKEN")
             .args(["-p", "--safe-mode", "--tools", "", "--strict-mcp-config", "--no-session-persistence", "--max-turns", "4"])
             .args(["--model", &self.model, "--effort", &self.effort, "--output-format", "json"])
-            .args(["--system-prompt", SYSTEM_PROMPT, "--json-schema", &schema().to_string()])
+            .args(["--system-prompt", system, "--json-schema", &schema.to_string()])
             .stdin(Stdio::piped())
             .stdout(Stdio::piped())
             .stderr(Stdio::piped())
             .spawn()
             .map_err(|e| format!("running claude: {e}"))?;
-        child.stdin.take().ok_or("no stdin")?.write_all(render_batch(batch).as_bytes()).map_err(|e| format!("writing to claude: {e}"))?;
+        child.stdin.take().ok_or("no stdin")?.write_all(prompt.as_bytes()).map_err(|e| format!("writing to claude: {e}"))?;
         let out = child.wait_with_output().map_err(|e| format!("running claude: {e}"))?;
         let stdout = String::from_utf8_lossy(&out.stdout);
         let envelope: Value = serde_json::from_str(&stdout).map_err(|_| {
@@ -307,7 +315,7 @@ impl Classifier for ClaudeCli {
             output_tokens: tokens("output_tokens"),
             cost_usd: envelope["total_cost_usd"].as_f64().unwrap_or(0.0),
         };
-        Ok((parse_results(&envelope["structured_output"], batch), usage))
+        Ok((envelope["structured_output"].clone(), usage))
     }
 }
 

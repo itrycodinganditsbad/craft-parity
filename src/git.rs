@@ -109,3 +109,73 @@ fn regex_escape(text: &str) -> String {
         s
     })
 }
+
+/// Makes sure `commit` and its first parent are in the checkout, fetching them by id if not.
+pub fn ensure_commit(repo: &Path, commit: &str) -> Result<String, String> {
+    let has = |rev: &str| git(repo, &["cat-file", "-e", &format!("{rev}^{{commit}}")]).map(|o| o.status.success());
+    if !has(commit)? || !has(&format!("{commit}^1"))? {
+        let out = git(repo, &["fetch", "--quiet", "--depth", "2", "origin", commit])?;
+        if !out.status.success() {
+            return Err(format!("git fetch {commit}: {}", stderr(&out)));
+        }
+    }
+    resolve(repo, &format!("{commit}^1"))?.ok_or_else(|| format!("{commit} has no parent"))
+}
+
+/// The change a commit made against its first parent, without lock files and binary assets.
+pub fn diff(repo: &Path, commit: &str) -> Result<String, String> {
+    let out = git(
+        repo,
+        &[
+            "diff",
+            "--no-color",
+            "--no-ext-diff",
+            "-U2",
+            &format!("{commit}^1"),
+            commit,
+            "--",
+            ".",
+            ":(exclude,glob)**/*.lock",
+            ":(exclude,glob)**/*.svg",
+            ":(exclude,glob)**/*.png",
+            ":(exclude,glob)**/*.tiff",
+            ":(exclude,glob)**/*.tsv",
+            ":(exclude,glob)**/locales/**",
+            ":(exclude,glob)**/i18n/**",
+        ],
+    )?;
+    if !out.status.success() {
+        return Err(format!("git diff {commit}: {}", stderr(&out)));
+    }
+    Ok(String::from_utf8_lossy(&out.stdout).into_owned())
+}
+
+/// A file's text at `commit`, or `None` when it does not exist there.
+pub fn show(repo: &Path, commit: &str, path: &str) -> Result<Option<String>, String> {
+    let out = git(repo, &["show", &format!("{commit}:{path}")])?;
+    Ok(out.status.success().then(|| String::from_utf8_lossy(&out.stdout).into_owned()))
+}
+
+/// Files at `commit` with a line matching `check`'s grep, or the files its path glob matches.
+pub fn matching_files(repo: &Path, commit: &str, check: &Check) -> Result<Vec<String>, String> {
+    if let Some(path) = &check.path {
+        let out = git(repo, &["ls-tree", "-r", "--name-only", "-z", commit])?;
+        return Ok(out
+            .stdout
+            .split(|b| *b == 0)
+            .filter(|n| glob_match(path.as_bytes(), n))
+            .map(|n| String::from_utf8_lossy(n).into_owned())
+            .collect());
+    }
+    let Some(pattern) = &check.grep else { return Ok(Vec::new()) };
+    let mut args = vec!["grep", "-l", "-I", "-E"];
+    if check.ignore_case {
+        args.push("-i");
+    }
+    args.extend(["-e", pattern, commit, "--"]);
+    let specs: Vec<String> = check.within.iter().map(|p| glob(p)).collect();
+    args.extend(specs.iter().map(String::as_str));
+    let out = git(repo, &args)?;
+    let prefix = format!("{commit}:");
+    Ok(String::from_utf8_lossy(&out.stdout).lines().map(|l| l.strip_prefix(&prefix).unwrap_or(l).to_string()).collect())
+}

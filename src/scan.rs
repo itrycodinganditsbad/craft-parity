@@ -2,13 +2,13 @@
 
 use std::path::Path;
 
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
 
 use crate::fix::{App, Check, Fix};
 use crate::git;
 
 /// Where one app stands on one fix.
-#[derive(Debug, Clone, PartialEq, Eq, Serialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(tag = "status", content = "detail", rename_all = "snake_case")]
 pub enum Status {
     Fixed,
@@ -77,6 +77,15 @@ fn all_pass(repo: &Path, commit: &str, checks: &[Check]) -> Result<bool, String>
     Ok(true)
 }
 
+fn any_pass(repo: &Path, commit: &str, checks: &[Check]) -> Result<bool, String> {
+    for check in checks {
+        if git::passes(repo, commit, check)? {
+            return Ok(true);
+        }
+    }
+    Ok(false)
+}
+
 pub fn status(root: &Path, scan: &AppScan, fix: &Fix) -> Status {
     if let Some(reason) = fix.exempt.get(&scan.app.name) {
         return Status::Exempt(reason.clone());
@@ -90,7 +99,7 @@ pub fn status(root: &Path, scan: &AppScan, fix: &Fix) -> Status {
         if !applies {
             return Ok(Status::NotApplicable);
         }
-        Ok(if all_pass(&repo, commit, &fix.fixed_if)? { Status::Fixed } else { Status::Missing })
+        Ok(if all_pass(&repo, commit, &fix.fixed_if)? || any_pass(&repo, commit, &fix.fixed_if_any)? { Status::Fixed } else { Status::Missing })
     });
     result.unwrap_or_else(Status::Unknown)
 }

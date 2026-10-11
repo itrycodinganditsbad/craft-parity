@@ -5,7 +5,7 @@ use std::process::ExitCode;
 use clap::{Args as ClapArgs, Parser, Subcommand, ValueEnum};
 
 use craft_parity::index::Index;
-use craft_parity::{classify, cluster, fix, git, github, html, report, scan, sync};
+use craft_parity::{classify, cluster, draft, fix, git, github, html, report, scan, sync};
 
 /// Shows which Craft apps carry a fix that already landed in a sibling app.
 #[derive(Parser)]
@@ -25,6 +25,37 @@ enum Command {
     Classify(ClassifyArgs),
     /// Group classified records that describe the same bug in different apps.
     Cluster(ClusterArgs),
+    /// Draft a fingerprint for groups of the same bug and prove it on their own fix PRs.
+    Draft(DraftArgs),
+}
+
+#[derive(ClapArgs)]
+struct DraftArgs {
+    #[arg(long, default_value = "data")]
+    data: PathBuf,
+    #[arg(long, default_value = "apps.toml")]
+    apps: PathBuf,
+    /// Folder holding one checkout per app; fix commits are fetched into them when missing.
+    #[arg(long, default_value = "..")]
+    root: PathBuf,
+    /// The group containing this record id (e.g. designcraft/pr/66); repeatable.
+    #[arg(long)]
+    group: Vec<String>,
+    /// Or the first N multi-app groups from candidates.json that have no draft yet.
+    #[arg(long, default_value_t = 0)]
+    top: usize,
+    #[arg(long, default_value = "claude-opus-5-5")]
+    model: String,
+    #[arg(long, default_value = "high")]
+    effort: String,
+    #[arg(long, default_value_t = 3)]
+    attempts: u32,
+    /// Draft again even when a draft exists.
+    #[arg(long)]
+    redo: bool,
+    /// Only check the apps that read missing in existing drafts (no new drafts).
+    #[arg(long)]
+    verify_only: bool,
 }
 
 #[derive(ClapArgs)]
@@ -215,6 +246,74 @@ fn run_cluster(args: ClusterArgs) -> Result<bool, String> {
     Ok(true)
 }
 
+fn run_draft(args: DraftArgs) -> Result<bool, String> {
+    let apps = fix::load_apps(&args.apps)?;
+    let path = args.data.join("llm").join("candidates.json");
+    let groups: Vec<cluster::Cluster> = serde_json::from_str(&fs::read_to_string(&path).map_err(|e| format!("{}: {e}", path.display()))?)
+        .map_err(|e| format!("{}: {e}", path.display()))?;
+    let dir = args.data.join("llm").join("drafts");
+    let exists = |g: &cluster::Cluster| draft::key(g).is_some_and(|k| dir.join(format!("{k}.json")).exists());
+    let mut chosen: Vec<&cluster::Cluster> = Vec::new();
+    for id in &args.group {
+        let g = groups.iter().find(|g| g.members.iter().any(|m| &m.id == id)).ok_or_else(|| format!("no candidate group holds {id}"))?;
+        chosen.push(g);
+    }
+    let multi = |g: &&cluster::Cluster| g.members.iter().map(|m| &m.app).collect::<std::collections::BTreeSet<_>>().len() >= 2;
+    chosen.extend(groups.iter().filter(multi).filter(|g| args.redo || !exists(g)).take(args.top));
+    if chosen.is_empty() {
+        return Err("nothing to draft: pass --group or --top".into());
+    }
+    let index = Index::new(&args.data);
+    let located: Vec<_> = apps.iter().map(|a| scan::locate(&args.root, a, scan::DEFAULT_REVS)).collect();
+    let workdir = std::env::temp_dir().join("craft-parity-claude");
+    fs::create_dir_all(&workdir).map_err(|e| format!("{}: {e}", workdir.display()))?;
+    let cli = classify::ClaudeCli { model: args.model.clone(), effort: args.effort.clone(), workdir };
+    for g in chosen {
+        let key = draft::key(g).unwrap_or_default();
+        if !args.redo && !args.verify_only && exists(g) && !args.group.is_empty() {
+            eprintln!("{key}: already drafted (use --redo)");
+            continue;
+        }
+        let file = dir.join(format!("{key}.json"));
+        let drafted = if args.verify_only {
+            fs::read_to_string(&file)
+                .map_err(|e| format!("{}: {e}", file.display()))
+                .and_then(|t| serde_json::from_str::<draft::Draft>(&t).map_err(|e| e.to_string()))
+        } else {
+            eprintln!("{key}: drafting ({} records, fixed in {})", g.members.len(), g.fixed_in.join(", "));
+            draft::draft(&cli, g, &index, &apps, &args.root, &located, args.attempts)
+        };
+        let drafted = drafted.and_then(|mut d| {
+            if d.proven {
+                eprintln!("{key}: checking the apps that read missing");
+                draft::verify(&cli, &mut d, &index, &apps, &args.root, &located)?;
+            }
+            Ok(d)
+        });
+        match drafted {
+            Ok(d) => {
+                let text = serde_json::to_string_pretty(&d).map_err(|e| e.to_string())? + "\n";
+                craft_parity::index::write_if_changed(&dir.join(format!("{key}.json")), text.as_bytes())?;
+                let missing: Vec<&String> = d.matrix.iter().filter(|(_, s)| **s == scan::Status::Missing).map(|(a, _)| a).collect();
+                eprintln!(
+                    "{key}: {} after {} attempt(s); proof {}/{}{}",
+                    if d.proven { "PROVEN" } else { "not proven" },
+                    d.attempts,
+                    d.proof.iter().filter(|p| p.ok).count(),
+                    d.proof.len(),
+                    if d.proven {
+                        format!("; missing in {}", missing.iter().map(|s| s.as_str()).collect::<Vec<_>>().join(", "))
+                    } else {
+                        String::new()
+                    }
+                );
+            }
+            Err(e) => eprintln!("{key}: {e}"),
+        }
+    }
+    Ok(true)
+}
+
 fn run_scan(args: ScanArgs) -> Result<bool, String> {
     let apps = fix::load_apps(&args.apps)?;
     let mut fixes = fix::load_fixes(&args.fixes, &apps)?;
@@ -286,6 +385,7 @@ fn main() -> ExitCode {
         Command::Sync(args) => run_sync(args),
         Command::Classify(args) => run_classify(args),
         Command::Cluster(args) => run_cluster(args),
+        Command::Draft(args) => run_draft(args),
     };
     match result {
         Ok(true) => ExitCode::SUCCESS,

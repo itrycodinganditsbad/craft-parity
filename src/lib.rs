@@ -3,6 +3,7 @@
 
 pub mod classify;
 pub mod cluster;
+pub mod draft;
 pub mod fix;
 pub mod git;
 pub mod github;
