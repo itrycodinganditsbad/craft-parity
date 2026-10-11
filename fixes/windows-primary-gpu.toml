@@ -15,3 +15,21 @@ lockfile_crate = "wgpu"
 [[fixed_if]]
 grep = "EnumDisplayDevices"
 in = ["**/*.rs"]
+
+# The bug needs the power preference to land on a GPU with no monitor. pdfcraft and vectorcraft
+# defaulted to power saving; these apps rank the discrete GPU first, so the #378 desktop already
+# draws on the card with the monitors, and the ported rule would move Optimus laptops onto the
+# integrated GPU instead. Checked on each default branch on 2026-10-11.
+[exempt]
+cadcraft = "defaults to the high-performance GPU, so #378 can't happen; the rule would move hybrid laptops to the iGPU"
+deckcraft = "defaults to the high-performance GPU, so #378 can't happen; the rule would move hybrid laptops to the iGPU"
+designcraft = "defaults to the high-performance GPU, so #378 can't happen; the rule would move hybrid laptops to the iGPU"
+effectcraft = "defaults to the high-performance GPU, so #378 can't happen; the rule would move hybrid laptops to the iGPU"
+filmcraft = "defaults to the high-performance GPU, so #378 can't happen; the rule would move hybrid laptops to the iGPU"
+gridcraft = "defaults to the high-performance GPU, so #378 can't happen; the rule would move hybrid laptops to the iGPU"
+lightcraft = "defaults to the high-performance GPU, so #378 can't happen; the rule would move hybrid laptops to the iGPU"
+photocraft = "its adapter selector ranks discrete GPUs first, so #378 can't happen"
+soundcraft = "defaults to the high-performance GPU, so #378 can't happen; the rule would move hybrid laptops to the iGPU"
+wordcraft = "defaults to the high-performance GPU, so #378 can't happen; the rule would move hybrid laptops to the iGPU"
+craft-launcher = "its adapter selector ranks discrete GPUs first unless WGPU_POWER_PREF asks for low power"
+artcraft = "Tauri app; the webview draws the window, no Rust code uses wgpu"
