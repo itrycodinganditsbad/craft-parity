@@ -362,7 +362,16 @@ fn run_scan(args: ScanArgs) -> Result<bool, String> {
                 }
                 None => Vec::new(),
             };
-            html::html(&report, concat!(env!("CARGO_PKG_REPOSITORY"), "/blob/main"), &groups)
+            let mut drafts: Vec<draft::Draft> = Vec::new();
+            if let Some(data) = &args.data
+                && let Ok(entries) = fs::read_dir(data.join("llm").join("drafts"))
+            {
+                for e in entries.flatten() {
+                    let text = fs::read_to_string(e.path()).map_err(|err| format!("{}: {err}", e.path().display()))?;
+                    drafts.push(serde_json::from_str(&text).map_err(|err| format!("{}: {err}", e.path().display()))?);
+                }
+            }
+            html::html(&report, concat!(env!("CARGO_PKG_REPOSITORY"), "/blob/main"), &groups, &drafts)
         }
         Format::Json => serde_json::to_string_pretty(&report).map_err(|e| e.to_string())? + "\n",
     };

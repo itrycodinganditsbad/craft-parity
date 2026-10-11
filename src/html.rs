@@ -3,6 +3,7 @@
 use std::fmt::Write;
 
 use crate::cluster::{Cluster, MemberState};
+use crate::draft::Draft;
 use crate::report::reference_url;
 use crate::scan::{Report, Status};
 
@@ -109,6 +110,14 @@ a.chip:hover { text-decoration: none; filter: brightness(0.95); }
 .chip.fixed { background: var(--fixed-bg); color: var(--fixed); }
 .chip.open { background: var(--unknown-bg); color: var(--unknown); }
 .chip.none { background: var(--na-bg); color: var(--na); }
+.chip.missing { background: var(--missing-bg); color: var(--missing); }
+.chip.unverified { background: var(--missing-bg); color: var(--missing); opacity: 0.7; border: 1px dashed var(--missing); }
+.status-line { font-size: 13px; color: var(--muted); margin: 0 0 6px; }
+.status-line b { color: var(--fixed); }
+.status-line b.no { color: var(--missing); }
+pre.toml { background: var(--na-bg); border-radius: 8px; padding: 10px 12px; overflow-x: auto; font-size: 12px; line-height: 1.45; }
+.evidence { margin: 4px 0 10px; }
+.evidence pre { background: var(--na-bg); border-radius: 6px; padding: 6px 10px; overflow-x: auto; font-size: 12px; white-space: pre-wrap; }
 details { margin-top: 6px; font-size: 13px; }
 details summary { cursor: pointer; color: var(--muted); }
 details li { margin: 3px 0; color: var(--muted); }
@@ -117,7 +126,7 @@ footer { margin-top: 40px; color: var(--muted); font-size: 13px; }
 "#;
 
 /// `source` is the base URL fingerprint files link to, e.g. `https://github.com/o/r/blob/main`.
-pub fn html(report: &Report, source: &str, groups: &[Cluster]) -> String {
+pub fn html(report: &Report, source: &str, groups: &[Cluster], drafts: &[Draft]) -> String {
     let missing_cells = report.rows.iter().flat_map(|r| &r.statuses).filter(|s| **s == Status::Missing).count();
     let fully_ported = report.rows.iter().filter(|r| !r.statuses.contains(&Status::Missing)).count();
 
@@ -203,6 +212,7 @@ pub fn html(report: &Report, source: &str, groups: &[Cluster]) -> String {
     }
     o.push_str("</div>\n");
 
+    drafts_html(&mut o, report, drafts);
     groups_html(&mut o, report, groups);
 
     o.push_str("<h2>Scanned</h2>\n<div class=\"scroll\"><table class=\"scanned\">\n<thead><tr><th>App</th><th>Ref</th><th>Commit</th></tr></thead>\n<tbody>\n");
@@ -317,6 +327,112 @@ fn groups_html(o: &mut String, report: &Report, groups: &[Cluster]) {
             let _ = write!(o, "<li>{link}: {}</li>", esc(&m.symptom));
         }
         o.push_str("</ul></details></div>\n");
+    }
+    o.push_str("</div>\n");
+}
+
+/// Drafted fingerprints: whether they proved out, where each app stands, and what Claude found in
+/// the code of every app that reads missing.
+fn drafts_html(o: &mut String, report: &Report, drafts: &[Draft]) {
+    if drafts.is_empty() {
+        return;
+    }
+    let repo_of = |app: &str| report.apps.iter().find(|a| a.app.name == app).map(|a| a.app.repo.clone());
+    let proven = drafts.iter().filter(|d| d.proven).count();
+    let _ = write!(
+        o,
+        "<h2>Proposed fingerprints</h2>\n<p class=\"lede\">{} drafted by Claude from the fix diffs, {proven} proven: on every fix PR in the group \
+         the fingerprint reads missing before the merge and fixed after it. For each app that still reads missing, Claude then read that \
+         app's code: <b>bug present</b> gaps quote the lines; a dashed chip was not confirmed. A fingerprint counts in the matrix above \
+         only once it is added to <code>fixes/</code>.</p>\n<div class=\"gaps\">\n",
+        drafts.len()
+    );
+    let mut sorted: Vec<&Draft> = drafts.iter().collect();
+    sorted.sort_by(|a, b| {
+        let gaps = |d: &Draft| d.verified.values().filter(|v| v.verdict == "present").count();
+        b.proven.cmp(&a.proven).then_with(|| gaps(b).cmp(&gaps(a))).then_with(|| a.key.cmp(&b.key))
+    });
+    for d in sorted {
+        let title = d
+            .toml
+            .lines()
+            .find_map(|l| l.strip_prefix("title = "))
+            .map(|t| t.trim_matches('"').replace("\\\"", "\""))
+            .unwrap_or_else(|| d.key.clone());
+        let why = d.toml.lines().find_map(|l| l.strip_prefix("why = ")).map(|t| t.trim_matches('"').replace("\\\"", "\"")).unwrap_or_default();
+        let _ = write!(
+            o,
+            "<div class=\"group\"><div class=\"meta\"><span class=\"area\">{}</span><span class=\"count\">{}</span></div><h3>{}</h3>",
+            esc(&d.area.replace('_', " ")),
+            esc(&d.key),
+            esc(&title)
+        );
+        if !why.is_empty() {
+            let _ = write!(o, "<p class=\"status-line\">{}</p>", esc(&why));
+        }
+        let proofs: Vec<String> = d
+            .proof
+            .iter()
+            .map(|p| match repo_of(&p.app) {
+                Some(r) => {
+                    format!("<a href=\"https://github.com/{}/pull/{}\">{} #{}</a>{}", esc(&r), p.pr, esc(&p.app), p.pr, if p.ok { "" } else { " ✗" })
+                }
+                None => esc(&p.app),
+            })
+            .collect();
+        let _ = write!(
+            o,
+            "<p class=\"status-line\">{} after {} attempt(s) on {}</p>",
+            if d.proven { "<b>Proven</b>".to_string() } else { "<b class=\"no\">Not proven</b>".to_string() },
+            d.attempts,
+            proofs.join(", ")
+        );
+        if d.proven {
+            let mut fixed = Vec::new();
+            let mut present = Vec::new();
+            let mut unverified = Vec::new();
+            let mut other = Vec::new();
+            for (app, st) in &d.matrix {
+                match st {
+                    Status::Fixed => fixed.push(app.as_str()),
+                    Status::Missing => match d.verified.get(app).map(|v| v.verdict.as_str()) {
+                        Some("present") => present.push(app.as_str()),
+                        _ => unverified.push(app.as_str()),
+                    },
+                    _ => other.push(app.as_str()),
+                }
+            }
+            let row = |o: &mut String, label: &str, class: &str, apps: &[&str]| {
+                if apps.is_empty() {
+                    return;
+                }
+                let _ = write!(o, "<div class=\"row\"><span class=\"label\">{label}</span>");
+                for a in apps {
+                    let _ = write!(o, "<span class=\"chip {class}\">{}</span>", esc(a));
+                }
+                o.push_str("</div>");
+            };
+            row(o, "bug present", "missing", &present);
+            row(o, "unconfirmed", "unverified", &unverified);
+            row(o, "fixed", "fixed", &fixed);
+            row(o, "n/a", "none", &other);
+            if !d.verified.is_empty() {
+                let _ = write!(o, "<details><summary>What Claude found in {} app(s)</summary>", d.verified.len());
+                for (app, v) in &d.verified {
+                    let _ = write!(
+                        o,
+                        "<div class=\"evidence\"><b>{}</b>: {}. {}{}<pre>{}</pre></div>",
+                        esc(app),
+                        esc(&v.verdict.replace('_', " ")),
+                        esc(&v.explanation),
+                        if v.alternative.is_some() { " An alternative check for this was added." } else { "" },
+                        esc(&v.evidence)
+                    );
+                }
+                o.push_str("</details>");
+            }
+        }
+        let _ = writeln!(o, "<details><summary>Fingerprint TOML</summary><pre class=\"toml\">{}</pre></details></div>", esc(&d.toml));
     }
     o.push_str("</div>\n");
 }
