@@ -17,10 +17,10 @@ This is an independent tool, not part of the ArtCraft Team's projects.
 With the apps checked out next to this repo (`../photocraft`, `../pdfcraft`, ...):
 
 ```sh
-cargo run -- --fetch            # fetch each checkout, print the report
-cargo run -- --out PARITY.md
-cargo run -- --format html --out docs/index.html
-cargo run -- --only windows-primary-gpu --format json
+cargo run -- scan --fetch            # fetch each checkout, print the report
+cargo run -- scan --out PARITY.md
+cargo run -- scan --format html --out docs/index.html
+cargo run -- scan --only windows-primary-gpu --format json
 ```
 
 `--root DIR` points somewhere else, and `--clone` shallow-clones any app that's missing there. Each
@@ -29,6 +29,24 @@ ls-tree` and `git grep`. Your current branch, local edits and index are ignored,
 feature branch still reports upstream. `--rev` picks another ref.
 
 Exit codes: 0 for a report, 1 for a broken setup, 2 when a fingerprint went stale (see below).
+
+## The index
+
+`craft-parity sync` reads every pull request and issue in the repos from `apps.toml` through the
+GitHub GraphQL API and keeps them as JSONL on the [`data`](../../tree/data) branch, one file per
+repo and kind, sorted by number. Each run reads only what changed since the last one (with a
+10 minute overlap); `--full` re-reads everything and drops what GitHub no longer returns. A workflow
+syncs every 3 hours and does a full pass weekly. It needs a token: `GITHUB_TOKEN`, `GH_TOKEN` or
+`gh auth token`.
+
+```sh
+git worktree add data data       # once
+cargo run --release -- sync      # incremental
+cargo run --release -- sync --full --app pdfcraft
+```
+
+The index is the input for the next steps: classifying fixes, finding the ones that matter to more
+than one app, and tracking each app's gap. The design is in progress.
 
 ## Add a fix
 

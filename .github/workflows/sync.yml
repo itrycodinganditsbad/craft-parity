@@ -1,0 +1,48 @@
+name: Sync index
+
+# Keeps the issue and pull request index on the `data` branch current. Every 3 hours reads what
+# changed; once a week re-reads everything, which also drops deleted or transferred items.
+on:
+  schedule:
+    - cron: "23 */3 * * *"
+    - cron: "41 2 * * 0"
+  workflow_dispatch:
+    inputs:
+      full:
+        description: Re-read everything
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+# Everything that writes the data branch shares this group, so writes never race.
+concurrency:
+  group: data
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          ref: data
+          path: data
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+      - name: Sync
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          FULL: ${{ (github.event.schedule == '41 2 * * 0' || inputs.full) && '--full' || '' }}
+        run: cargo run --release -- sync --data data $FULL
+      - name: Commit
+        working-directory: data
+        run: |
+          git add -A
+          if git diff --cached --quiet; then echo "no change"; exit 0; fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898283+github-actions[bot]@users.noreply.github.com"
+          git commit -q -m "Sync index"
+          git push

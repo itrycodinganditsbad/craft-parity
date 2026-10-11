@@ -2,12 +2,12 @@
 
 Which Craft apps carry a fix that already landed in a sibling app. ✅ fixed, ❌ missing, ➖ does not apply, ❔ not scanned.
 
-| Fix | cadcraft | deckcraft | designcraft | effectcraft | filmcraft | gridcraft | lightcraft | pdfcraft | photocraft | soundcraft | vectorcraft | wordcraft |
-|---|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
-| [Text: right-to-left scripts laid out with the Unicode BiDi algorithm](fixes/bidi-text.toml) | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ | ❌ | ✅ | ❌ | ❌ | ✅ | ✅ |
-| [macOS DMG: branded window background and icon layout](fixes/macos-dmg-background.toml) | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
-| [Desktop: log to a rotating log file as well as standard error](fixes/rotating-log-file.toml) | ✅ | ✅ | ✅ | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
-| [Windows: draw on the GPU that drives the primary display](fixes/windows-primary-gpu.toml) | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ | ❌ | ❌ | ✅ | ❌ |
+| Fix | cadcraft | deckcraft | designcraft | effectcraft | filmcraft | gridcraft | lightcraft | pdfcraft | photocraft | soundcraft | vectorcraft | wordcraft | artcraft | artcraftx | craft-launcher |
+|---|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
+| [Text: right-to-left scripts laid out with the Unicode BiDi algorithm](fixes/bidi-text.toml) | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ | ❌ | ✅ | ❌ | ❌ | ✅ | ✅ | ❌ | ➖ | ❌ |
+| [macOS DMG: branded window background and icon layout](fixes/macos-dmg-background.toml) | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ➖ | ➖ | ❌ |
+| [Desktop: log to a rotating log file as well as standard error](fixes/rotating-log-file.toml) | ✅ | ✅ | ✅ | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ➖ | ➖ | ❌ |
+| [Windows: draw on the GPU that drives the primary display](fixes/windows-primary-gpu.toml) | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ | ❌ | ❌ | ✅ | ❌ | ❌ | ➖ | ❌ |
 
 ## Gaps
 
@@ -16,7 +16,14 @@ Which Craft apps carry a fix that already landed in a sibling app. ✅ fixed, �
 Arabic and Hebrew come out in reverse order, and mixed left-to-right and right-to-left runs land in
 the wrong places, unless lines are reordered with UAX #9.
 
-Missing in: gridcraft, lightcraft, photocraft, soundcraft. Port from [storytold/deckcraft#4](https://github.com/storytold/deckcraft/pull/4), [storytold/pdfcraft#285](https://github.com/storytold/pdfcraft/pull/285), [storytold/pdfcraft#403](https://github.com/storytold/pdfcraft/pull/403).
+Missing in: gridcraft, lightcraft, photocraft, soundcraft, artcraft, craft-launcher. Port from [storytold/deckcraft#4](https://github.com/storytold/deckcraft/pull/4), [storytold/pdfcraft#285](https://github.com/storytold/pdfcraft/pull/285), [storytold/pdfcraft#403](https://github.com/storytold/pdfcraft/pull/403).
+
+### macOS DMG: branded window background and icon layout
+
+Without it the disk image opens as a plain Finder window with no hint to drag the app into
+Applications.
+
+Missing in: craft-launcher. Port from [storytold/photocraft#1201](https://github.com/storytold/photocraft/pull/1201), [storytold/wordcraft#21](https://github.com/storytold/wordcraft/pull/21).
 
 ### Desktop: log to a rotating log file as well as standard error
 
@@ -24,7 +31,7 @@ An app started from the Dock, Start menu or a launcher has no terminal, so its l
 and a crash report comes without a log. The fix keeps the last few runs' logs in the app's data
 folder, capped in size.
 
-Missing in: effectcraft. Port from [storytold/pdfcraft#239](https://github.com/storytold/pdfcraft/pull/239), [storytold/photocraft#1143](https://github.com/storytold/photocraft/pull/1143), [storytold/wordcraft#17](https://github.com/storytold/wordcraft/pull/17).
+Missing in: effectcraft, craft-launcher. Port from [storytold/pdfcraft#239](https://github.com/storytold/pdfcraft/pull/239), [storytold/photocraft#1143](https://github.com/storytold/photocraft/pull/1143), [storytold/wordcraft#17](https://github.com/storytold/wordcraft/pull/17).
 
 ### Windows: draw on the GPU that drives the primary display
 
@@ -34,21 +41,30 @@ blacked out every monitor for two minutes in PdfCraft (storytold/pdfcraft#378). 
 which adapter drives the primary display (EnumDisplayDevices) and matches it to the wgpu adapters by
 PCI ids.
 
-Missing in: cadcraft, deckcraft, designcraft, effectcraft, filmcraft, gridcraft, lightcraft, photocraft, soundcraft, wordcraft. Port from [storytold/pdfcraft#631](https://github.com/storytold/pdfcraft/pull/631), [storytold/vectorcraft#851](https://github.com/storytold/vectorcraft/pull/851).
+Missing in: cadcraft, deckcraft, designcraft, effectcraft, filmcraft, gridcraft, lightcraft, photocraft, soundcraft, wordcraft, artcraft, craft-launcher. Port from [storytold/pdfcraft#631](https://github.com/storytold/pdfcraft/pull/631), [storytold/vectorcraft#851](https://github.com/storytold/vectorcraft/pull/851).
+
+## Exemptions
+
+- bidi-text / artcraftx: exempt, web UI only; the browser lays out right-to-left text
+- rotating-log-file / artcraft: exempt, Tauri app; logs to a file through tauri-plugin-log
+- rotating-log-file / artcraftx: exempt, Tauri app; logs to a file through tauri-plugin-log
 
 ## Scanned
 
 | App | Ref | Commit |
 |---|---|---|
-| [cadcraft](https://github.com/storytold/cadcraft) | origin/HEAD | [8f59410c33](https://github.com/storytold/cadcraft/commit/8f59410c33e5640b5010124c93e5ebcfd35f404f) |
+| [cadcraft](https://github.com/storytold/cadcraft) | origin/HEAD | [b23b45e976](https://github.com/storytold/cadcraft/commit/b23b45e976edb561549f6867a74a3a056a5db4ef) |
 | [deckcraft](https://github.com/storytold/deckcraft) | origin/HEAD | [be14248577](https://github.com/storytold/deckcraft/commit/be14248577b92059eb2b8c0c9460cceffbc1f01d) |
 | [designcraft](https://github.com/storytold/designcraft) | origin/HEAD | [ca343e8985](https://github.com/storytold/designcraft/commit/ca343e8985dc4d92dd65cf77a8198723b5f8a9eb) |
 | [effectcraft](https://github.com/storytold/effectcraft) | origin/HEAD | [67434e9038](https://github.com/storytold/effectcraft/commit/67434e90388b6dca4417555346fa6850b6f96033) |
 | [filmcraft](https://github.com/storytold/filmcraft) | origin/HEAD | [0800a8b0aa](https://github.com/storytold/filmcraft/commit/0800a8b0aa4a703ba42172f415b45a61f8d8a5e1) |
-| [gridcraft](https://github.com/storytold/gridcraft) | origin/HEAD | [cf75981fc2](https://github.com/storytold/gridcraft/commit/cf75981fc2c3edf2c8339f31f492e1c35c9b5eb6) |
+| [gridcraft](https://github.com/storytold/gridcraft) | origin/HEAD | [e800368c91](https://github.com/storytold/gridcraft/commit/e800368c91be9cfa79bfb642bf1e96e99b326d4b) |
 | [lightcraft](https://github.com/storytold/lightcraft) | origin/HEAD | [76b5377868](https://github.com/storytold/lightcraft/commit/76b5377868d912db69a777bda253a5b1b96b22bd) |
-| [pdfcraft](https://github.com/storytold/pdfcraft) | origin/HEAD | [d818f72a57](https://github.com/storytold/pdfcraft/commit/d818f72a57f9bfedf7aebf6f30beb16c4a2ae2f3) |
-| [photocraft](https://github.com/storytold/photocraft) | origin/HEAD | [0144cb283d](https://github.com/storytold/photocraft/commit/0144cb283d137f14c75b661a0faa1aef03d19783) |
+| [pdfcraft](https://github.com/storytold/pdfcraft) | origin/HEAD | [473d5d48d4](https://github.com/storytold/pdfcraft/commit/473d5d48d471b83d1568a8e5cd37722dc65bf36e) |
+| [photocraft](https://github.com/storytold/photocraft) | origin/HEAD | [e26442657f](https://github.com/storytold/photocraft/commit/e26442657f39d04716656baf749d3268ee3f8a0f) |
 | [soundcraft](https://github.com/storytold/soundcraft) | origin/HEAD | [240aa848a0](https://github.com/storytold/soundcraft/commit/240aa848a04811ffff75cf193e69d9d4c404ae68) |
-| [vectorcraft](https://github.com/storytold/vectorcraft) | origin/HEAD | [bab78767ca](https://github.com/storytold/vectorcraft/commit/bab78767ca3c4d8652e5760bde8cb177c9ce4851) |
-| [wordcraft](https://github.com/storytold/wordcraft) | origin/HEAD | [a5b17eb3a4](https://github.com/storytold/wordcraft/commit/a5b17eb3a49377a279413b842a0699a60e8e147b) |
+| [vectorcraft](https://github.com/storytold/vectorcraft) | origin/HEAD | [806b1a6972](https://github.com/storytold/vectorcraft/commit/806b1a6972288319577d75d097c140f9bf530ce0) |
+| [wordcraft](https://github.com/storytold/wordcraft) | origin/HEAD | [908a6de2c7](https://github.com/storytold/wordcraft/commit/908a6de2c74fddc1833414874903b30e5f2e6842) |
+| [artcraft](https://github.com/storytold/artcraft) | origin/HEAD | [d4e4ac69bb](https://github.com/storytold/artcraft/commit/d4e4ac69bbd93d237eaf5d0260bc6a5ff3a5e373) |
+| [artcraftx](https://github.com/storytold/artcraftx) | origin/HEAD | [98c2a48940](https://github.com/storytold/artcraftx/commit/98c2a48940aa0a54604637f665ee539c122fa707) |
+| [craft-launcher](https://github.com/storytold/craft-launcher) | origin/main | [e2b01e7425](https://github.com/storytold/craft-launcher/commit/e2b01e7425cb3f54f2805a99f1f8ee7f7a9a4adc) |

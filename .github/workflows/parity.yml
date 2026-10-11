@@ -28,9 +28,9 @@ jobs:
         # Exit 2 means a fingerprint went stale. The report is still committed, then the job fails.
         run: |
           set +e
-          cargo run --release -- --root checkouts --clone --out PARITY.md
+          cargo run --release -- scan --root checkouts --clone --out PARITY.md
           echo "status=$?" >> "$GITHUB_OUTPUT"
-          cargo run --release -- --root checkouts --format html --out docs/index.html
+          cargo run --release -- scan --root checkouts --format html --out docs/index.html
       - name: Commit
         # main may have moved since checkout (another run, a push). This report is the newest
         # scan, so put it on top of the latest main rather than the commit the run started from.

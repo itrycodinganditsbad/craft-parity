@@ -46,3 +46,15 @@ repo = "storytold/vectorcraft"
 [[app]]
 name = "wordcraft"
 repo = "storytold/wordcraft"
+
+[[app]]
+name = "artcraft"
+repo = "storytold/artcraft"
+
+[[app]]
+name = "artcraftx"
+repo = "storytold/artcraftx"
+
+[[app]]
+name = "craft-launcher"
+repo = "storytold/craft-launcher"

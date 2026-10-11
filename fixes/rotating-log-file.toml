@@ -11,3 +11,7 @@ known_fixed = ["deckcraft", "filmcraft", "lightcraft", "pdfcraft", "photocraft",
 grep = "rotat"
 in = ["apps/*/src/logging.rs"]
 ignore_case = true
+
+[exempt]
+artcraft = "Tauri app; logs to a file through tauri-plugin-log"
+artcraftx = "Tauri app; logs to a file through tauri-plugin-log"

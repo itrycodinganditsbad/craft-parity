@@ -2,14 +2,45 @@ use std::fs;
 use std::path::PathBuf;
 use std::process::ExitCode;
 
-use clap::{Parser, ValueEnum};
+use clap::{Args as ClapArgs, Parser, Subcommand, ValueEnum};
 
-use craft_parity::{fix, git, html, report, scan};
+use craft_parity::index::Index;
+use craft_parity::{fix, git, github, html, report, scan, sync};
 
 /// Shows which Craft apps carry a fix that already landed in a sibling app.
 #[derive(Parser)]
 #[command(version)]
-struct Args {
+struct Cli {
+    #[command(subcommand)]
+    command: Command,
+}
+
+#[derive(Subcommand)]
+enum Command {
+    /// Check every fingerprint against every app's checkout and write the report.
+    Scan(ScanArgs),
+    /// Bring the issue and pull request index up to date with GitHub.
+    Sync(SyncArgs),
+}
+
+#[derive(ClapArgs)]
+struct SyncArgs {
+    /// Folder holding the index (the checkout of the `data` branch).
+    #[arg(long, default_value = "data")]
+    data: PathBuf,
+    /// The app list.
+    #[arg(long, default_value = "apps.toml")]
+    apps: PathBuf,
+    /// Re-read everything instead of what changed since the last sync.
+    #[arg(long)]
+    full: bool,
+    /// Only these apps (by name); repeatable.
+    #[arg(long = "app")]
+    only: Vec<String>,
+}
+
+#[derive(ClapArgs)]
+struct ScanArgs {
     /// Folder holding one checkout per app, named as in the app list.
     #[arg(long, default_value = "..")]
     root: PathBuf,
@@ -47,7 +78,30 @@ enum Format {
     Html,
 }
 
-fn run(args: Args) -> Result<bool, String> {
+fn run_sync(args: SyncArgs) -> Result<bool, String> {
+    let mut apps = fix::load_apps(&args.apps)?;
+    if !args.only.is_empty() {
+        if let Some(name) = args.only.iter().find(|n| !apps.iter().any(|a| &a.name == *n)) {
+            return Err(format!("no app `{name}` in {}", args.apps.display()));
+        }
+        apps.retain(|a| args.only.contains(&a.name));
+    }
+    let gh = github::Client::new(github::token()?);
+    let counts = sync::sync_all(&gh, &Index::new(&args.data), &apps, args.full)?;
+    for (app, c) in counts {
+        eprintln!(
+            "{app}: {} PRs read, {} changed; {} issues read, {} changed{}",
+            c.prs_seen,
+            c.prs_changed,
+            c.issues_seen,
+            c.issues_changed,
+            if c.removed > 0 { format!("; {} removed", c.removed) } else { String::new() }
+        );
+    }
+    Ok(true)
+}
+
+fn run_scan(args: ScanArgs) -> Result<bool, String> {
     let apps = fix::load_apps(&args.apps)?;
     let mut fixes = fix::load_fixes(&args.fixes, &apps)?;
     if !args.only.is_empty() {
@@ -103,7 +157,11 @@ fn run(args: Args) -> Result<bool, String> {
 }
 
 fn main() -> ExitCode {
-    match run(Args::parse()) {
+    let result = match Cli::parse().command {
+        Command::Scan(args) => run_scan(args),
+        Command::Sync(args) => run_sync(args),
+    };
+    match result {
         Ok(true) => ExitCode::SUCCESS,
         Ok(false) => ExitCode::from(2),
         Err(e) => {

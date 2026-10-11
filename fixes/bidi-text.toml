@@ -9,3 +9,6 @@ known_fixed = ["deckcraft", "designcraft", "pdfcraft", "vectorcraft"]
 [[fixed_if]]
 grep = "unicode_bidi|BidiInfo|BidiClass"
 in = ["**/*.rs"]
+
+[exempt]
+artcraftx = "web UI only; the browser lays out right-to-left text"
