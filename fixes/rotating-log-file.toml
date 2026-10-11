@@ -1,0 +1,13 @@
+title = "Desktop: log to a rotating log file as well as standard error"
+why = """
+An app started from the Dock, Start menu or a launcher has no terminal, so its log records are lost
+and a crash report comes without a log. The fix keeps the last few runs' logs in the app's data
+folder, capped in size.
+"""
+references = ["storytold/pdfcraft#239", "storytold/photocraft#1143", "storytold/wordcraft#17"]
+known_fixed = ["deckcraft", "filmcraft", "lightcraft", "pdfcraft", "photocraft", "soundcraft", "vectorcraft", "wordcraft"]
+
+[[fixed_if]]
+grep = "rotat"
+in = ["apps/*/src/logging.rs"]
+ignore_case = true

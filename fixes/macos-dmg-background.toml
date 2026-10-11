@@ -1,0 +1,13 @@
+title = "macOS DMG: branded window background and icon layout"
+why = """
+Without it the disk image opens as a plain Finder window with no hint to drag the app into
+Applications.
+"""
+references = ["storytold/photocraft#1201", "storytold/wordcraft#21"]
+known_fixed = ["cadcraft", "photocraft", "vectorcraft", "wordcraft"]
+
+[[applies_if]]
+path = "packaging/macos/package.sh"
+
+[[fixed_if]]
+path = "packaging/macos/dmg/background.*"

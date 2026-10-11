@@ -1,0 +1,48 @@
+# The Craft apps that get scanned. `name` is also the checkout folder under --root.
+[[app]]
+name = "cadcraft"
+repo = "storytold/cadcraft"
+
+[[app]]
+name = "deckcraft"
+repo = "storytold/deckcraft"
+
+[[app]]
+name = "designcraft"
+repo = "storytold/designcraft"
+
+[[app]]
+name = "effectcraft"
+repo = "storytold/effectcraft"
+
+[[app]]
+name = "filmcraft"
+repo = "storytold/filmcraft"
+
+[[app]]
+name = "gridcraft"
+repo = "storytold/gridcraft"
+
+[[app]]
+name = "lightcraft"
+repo = "storytold/lightcraft"
+
+[[app]]
+name = "pdfcraft"
+repo = "storytold/pdfcraft"
+
+[[app]]
+name = "photocraft"
+repo = "storytold/photocraft"
+
+[[app]]
+name = "soundcraft"
+repo = "storytold/soundcraft"
+
+[[app]]
+name = "vectorcraft"
+repo = "storytold/vectorcraft"
+
+[[app]]
+name = "wordcraft"
+repo = "storytold/wordcraft"

@@ -1,0 +1,11 @@
+title = "Text: right-to-left scripts laid out with the Unicode BiDi algorithm"
+why = """
+Arabic and Hebrew come out in reverse order, and mixed left-to-right and right-to-left runs land in
+the wrong places, unless lines are reordered with UAX #9.
+"""
+references = ["storytold/deckcraft#4", "storytold/pdfcraft#285", "storytold/pdfcraft#403"]
+known_fixed = ["deckcraft", "designcraft", "pdfcraft", "vectorcraft"]
+
+[[fixed_if]]
+grep = "unicode_bidi|BidiInfo|BidiClass"
+in = ["**/*.rs"]

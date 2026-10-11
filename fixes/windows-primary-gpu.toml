@@ -1,0 +1,17 @@
+title = "Windows: draw on the GPU that drives the primary display"
+why = """
+With a low-power or high-performance preference alone, wgpu can pick a GPU that drives no monitor,
+for example a Ryzen iGPU on a desktop whose screens hang off an NVIDIA card. Presenting across GPUs
+blacked out every monitor for two minutes in PdfCraft (storytold/pdfcraft#378). The fix asks Windows
+which adapter drives the primary display (EnumDisplayDevices) and matches it to the wgpu adapters by
+PCI ids.
+"""
+references = ["storytold/pdfcraft#631", "storytold/vectorcraft#851"]
+known_fixed = ["pdfcraft", "vectorcraft"]
+
+[[applies_if]]
+lockfile_crate = "wgpu"
+
+[[fixed_if]]
+grep = "EnumDisplayDevices"
+in = ["**/*.rs"]

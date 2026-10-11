@@ -1,0 +1,42 @@
+name: Parity report
+
+# Rebuilds PARITY.md from every app's default branch and commits it when it changed.
+on:
+  schedule:
+    - cron: "17 5 * * *"
+  push:
+    branches: [main]
+    paths: ["fixes/**", "apps.toml", "src/**"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: parity
+  cancel-in-progress: false
+
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+      - name: Scan
+        id: scan
+        # Exit 2 means a fingerprint went stale. The report is still committed, then the job fails.
+        run: |
+          set +e
+          cargo run --release -- --root checkouts --clone --out PARITY.md
+          echo "status=$?" >> "$GITHUB_OUTPUT"
+      - name: Commit
+        run: |
+          if git diff --quiet -- PARITY.md; then echo "no change"; exit 0; fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898283+github-actions[bot]@users.noreply.github.com"
+          git commit -m "Update parity report" -- PARITY.md
+          git push
+      - name: Fail on stale fingerprints or errors
+        if: steps.scan.outputs.status != '0'
+        run: exit ${{ steps.scan.outputs.status }}

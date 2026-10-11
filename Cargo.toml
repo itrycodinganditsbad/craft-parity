@@ -1,0 +1,25 @@
+[package]
+name = "craft-parity"
+version = "0.1.0"
+edition = "2024"
+license = "MIT OR Apache-2.0"
+rust-version = "1.94"
+description = "Shows which Craft apps already carry a fix that landed in one of their siblings"
+repository = "https://github.com/itrycodinganditsbad/craft-parity"
+publish = false
+
+[dependencies]
+clap = { version = "4.6", features = ["derive"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+toml = "1.1"
+
+[dev-dependencies]
+tempfile = "3.20"
+
+[lints.rust]
+unsafe_code = "forbid"
+
+[lints.clippy]
+dbg_macro = "warn"
+todo = "warn"
