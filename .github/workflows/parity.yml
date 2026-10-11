@@ -21,6 +21,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          ref: data
+          path: data
       - uses: dtolnay/rust-toolchain@stable
       - uses: Swatinem/rust-cache@v2
       - name: Scan
@@ -30,7 +34,7 @@ jobs:
           set +e
           cargo run --release -- scan --root checkouts --clone --out PARITY.md
           echo "status=$?" >> "$GITHUB_OUTPUT"
-          cargo run --release -- scan --root checkouts --format html --out docs/index.html
+          cargo run --release -- scan --root checkouts --data data --format html --out docs/index.html
       - name: Commit
         # main may have moved since checkout (another run, a push). This report is the newest
         # scan, so put it on top of the latest main rather than the commit the run started from.

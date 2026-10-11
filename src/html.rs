@@ -2,6 +2,7 @@
 
 use std::fmt::Write;
 
+use crate::cluster::{Cluster, MemberState};
 use crate::report::reference_url;
 use crate::scan::{Report, Status};
 
@@ -49,7 +50,14 @@ const STYLE: &str = r#"
     --bg: #151514; --surface: #1d1d1b; --text: #ecebe8; --muted: #9e9b95; --line: #2f2e2b;
     --fixed: #6fd19c; --fixed-bg: #183526; --missing: #ff8a80; --missing-bg: #3d1d1a;
     --na: #8a8780; --na-bg: #242422; --unknown: #f0c060; --unknown-bg: #3a2f14; --link: #8cb4ff;
+    color-scheme: dark;
   }
+}
+:root[data-theme="dark"] {
+    --bg: #151514; --surface: #1d1d1b; --text: #ecebe8; --muted: #9e9b95; --line: #2f2e2b;
+    --fixed: #6fd19c; --fixed-bg: #183526; --missing: #ff8a80; --missing-bg: #3d1d1a;
+    --na: #8a8780; --na-bg: #242422; --unknown: #f0c060; --unknown-bg: #3a2f14; --link: #8cb4ff;
+    color-scheme: dark;
 }
 * { box-sizing: border-box; }
 body { margin: 0; background: var(--bg); color: var(--text);
@@ -89,11 +97,27 @@ td.fix small { color: var(--muted); display: block; }
 .legend { display: flex; gap: 14px; flex-wrap: wrap; margin: 10px 0 0; font-size: 13px; color: var(--muted); }
 .scanned td, .scanned th { text-align: left; }
 .scanned code { font-size: 12px; }
+.group { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 14px 18px; }
+.group .meta { display: flex; gap: 8px; align-items: baseline; flex-wrap: wrap; margin-bottom: 4px; }
+.group .area { font-size: 12px; color: var(--muted); border: 1px solid var(--line); border-radius: 6px; padding: 0 6px; }
+.group .count { font-size: 12px; color: var(--muted); }
+.group h3 { margin: 0 0 8px; font-size: 15px; font-weight: 600; }
+.row { display: flex; flex-wrap: wrap; gap: 6px; align-items: baseline; margin: 4px 0; font-size: 13px; }
+.row .label { color: var(--muted); min-width: 92px; }
+.chip { font-size: 13px; padding: 1px 8px; border-radius: 6px; }
+a.chip:hover { text-decoration: none; filter: brightness(0.95); }
+.chip.fixed { background: var(--fixed-bg); color: var(--fixed); }
+.chip.open { background: var(--unknown-bg); color: var(--unknown); }
+.chip.none { background: var(--na-bg); color: var(--na); }
+details { margin-top: 6px; font-size: 13px; }
+details summary { cursor: pointer; color: var(--muted); }
+details li { margin: 3px 0; color: var(--muted); }
+details li a { font-variant-numeric: tabular-nums; }
 footer { margin-top: 40px; color: var(--muted); font-size: 13px; }
 "#;
 
 /// `source` is the base URL fingerprint files link to, e.g. `https://github.com/o/r/blob/main`.
-pub fn html(report: &Report, source: &str) -> String {
+pub fn html(report: &Report, source: &str, groups: &[Cluster]) -> String {
     let missing_cells = report.rows.iter().flat_map(|r| &r.statuses).filter(|s| **s == Status::Missing).count();
     let fully_ported = report.rows.iter().filter(|r| !r.statuses.contains(&Status::Missing)).count();
 
@@ -179,6 +203,8 @@ pub fn html(report: &Report, source: &str) -> String {
     }
     o.push_str("</div>\n");
 
+    groups_html(&mut o, report, groups);
+
     o.push_str("<h2>Scanned</h2>\n<div class=\"scroll\"><table class=\"scanned\">\n<thead><tr><th>App</th><th>Ref</th><th>Commit</th></tr></thead>\n<tbody>\n");
     for scan in &report.apps {
         let repo = esc(&scan.app.repo);
@@ -208,4 +234,89 @@ pub fn html(report: &Report, source: &str) -> String {
         esc(source.trim_end_matches("/blob/main"))
     );
     o
+}
+
+fn member_url(repo: &str, id: &str) -> Option<String> {
+    let mut parts = id.rsplitn(3, '/');
+    let number = parts.next()?;
+    let kind = parts.next()?;
+    let path = if kind == "pr" { "pull" } else { "issues" };
+    Some(format!("https://github.com/{repo}/{path}/{number}"))
+}
+
+/// The same bug fixed or reported in several apps: where it is fixed, where it is only reported,
+/// and where nothing is on record.
+fn groups_html(o: &mut String, report: &Report, groups: &[Cluster]) {
+    let multi: Vec<&Cluster> =
+        groups.iter().filter(|g| g.members.iter().map(|m| m.app.as_str()).collect::<std::collections::BTreeSet<_>>().len() >= 2).collect();
+    if multi.is_empty() {
+        return;
+    }
+    let repo_of = |app: &str| report.apps.iter().find(|a| a.app.name == app).map(|a| a.app.repo.clone());
+    let _ = write!(
+        o,
+        "<h2>Same bug, several apps</h2>\n<p class=\"lede\">{} groups of fixes and reports that Claude read as the same bug in different apps. \
+         An app under <b>reported</b> has an open issue or PR but no merged fix; under <b>no record</b> nothing was found either way, \
+         which often means the bug is there and nobody has hit it yet. Groups are leads, not verdicts: a fingerprint has to pass on a \
+         real fix before an app counts as fixed above.</p>\n<div class=\"gaps\">\n",
+        multi.len()
+    );
+    for g in multi {
+        let first = g.members.iter().find(|m| m.state == MemberState::Fixed).unwrap_or(&g.members[0]);
+        let apps_in: std::collections::BTreeSet<&str> = g.members.iter().map(|m| m.app.as_str()).collect();
+        let _ = write!(
+            o,
+            "<div class=\"group\"><div class=\"meta\"><span class=\"area\">{}</span><span class=\"count\">{} apps, {} records</span></div><h3>{}</h3>",
+            esc(&g.area.replace('_', " ")),
+            apps_in.len(),
+            g.members.len(),
+            esc(&first.symptom)
+        );
+        let link_first = |app: &str, state: MemberState| -> String {
+            let m = g.members.iter().find(|m| m.app == app && m.state == state).or_else(|| g.members.iter().find(|m| m.app == app));
+            match (m, repo_of(app)) {
+                (Some(m), Some(repo)) => match member_url(&repo, &m.id) {
+                    Some(url) => format!(
+                        "<a class=\"chip {}\" href=\"{}\">{}</a>",
+                        if state == MemberState::Fixed { "fixed" } else { "open" },
+                        esc(&url),
+                        esc(app)
+                    ),
+                    None => esc(app),
+                },
+                _ => esc(app),
+            }
+        };
+        o.push_str("<div class=\"row\"><span class=\"label\">fixed</span>");
+        for app in &g.fixed_in {
+            o.push_str(&link_first(app, MemberState::Fixed));
+        }
+        if g.fixed_in.is_empty() {
+            o.push_str("<span class=\"chip none\">none yet</span>");
+        }
+        o.push_str("</div>");
+        if !g.open_in.is_empty() {
+            o.push_str("<div class=\"row\"><span class=\"label\">reported</span>");
+            for app in &g.open_in {
+                o.push_str(&link_first(app, MemberState::OpenIssue));
+            }
+            o.push_str("</div>");
+        }
+        let none: Vec<&str> = report.apps.iter().map(|a| a.app.name.as_str()).filter(|a| !apps_in.contains(a)).collect();
+        if !none.is_empty() {
+            o.push_str("<div class=\"row\"><span class=\"label\">no record</span>");
+            for app in none {
+                let _ = write!(o, "<span class=\"chip none\">{}</span>", esc(app));
+            }
+            o.push_str("</div>");
+        }
+        let _ = write!(o, "<details><summary>All {} records</summary><ul>", g.members.len());
+        for m in &g.members {
+            let label = esc(&m.id);
+            let link = repo_of(&m.app).and_then(|r| member_url(&r, &m.id)).map(|u| format!("<a href=\"{}\">{label}</a>", esc(&u))).unwrap_or(label);
+            let _ = write!(o, "<li>{link}: {}</li>", esc(&m.symptom));
+        }
+        o.push_str("</ul></details></div>\n");
+    }
+    o.push_str("</div>\n");
 }

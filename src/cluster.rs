@@ -4,7 +4,7 @@
 
 use std::collections::{BTreeMap, BTreeSet};
 
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
 
 use crate::classify::Classified;
 
@@ -79,7 +79,7 @@ fn find(parent: &mut [usize], i: usize) -> usize {
     r
 }
 
-#[derive(Debug, Clone, Serialize)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Member {
     pub app: String,
     pub id: String,
@@ -89,7 +89,7 @@ pub struct Member {
     pub state: MemberState,
 }
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Serialize)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case")]
 pub enum MemberState {
     Fixed,
@@ -97,7 +97,7 @@ pub enum MemberState {
     OpenIssue,
 }
 
-#[derive(Debug, Clone, Serialize)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Cluster {
     pub area: String,
     pub members: Vec<Member>,

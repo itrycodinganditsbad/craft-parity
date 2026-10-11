@@ -120,6 +120,10 @@ struct ScanArgs {
     only: Vec<String>,
     #[arg(long, value_enum, default_value_t = Format::Markdown)]
     format: Format,
+    /// The data branch checkout; when given, the HTML report also lists the groups from
+    /// `llm/candidates.json`.
+    #[arg(long)]
+    data: Option<PathBuf>,
     /// Write the report here instead of standard output.
     #[arg(long)]
     out: Option<PathBuf>,
@@ -250,7 +254,17 @@ fn run_scan(args: ScanArgs) -> Result<bool, String> {
 
     let text = match args.format {
         Format::Markdown => report::markdown(&report),
-        Format::Html => html::html(&report, concat!(env!("CARGO_PKG_REPOSITORY"), "/blob/main")),
+        Format::Html => {
+            let groups: Vec<cluster::Cluster> = match &args.data {
+                Some(data) => {
+                    let path = data.join("llm").join("candidates.json");
+                    let text = fs::read_to_string(&path).map_err(|e| format!("{}: {e}", path.display()))?;
+                    serde_json::from_str(&text).map_err(|e| format!("{}: {e}", path.display()))?
+                }
+                None => Vec::new(),
+            };
+            html::html(&report, concat!(env!("CARGO_PKG_REPOSITORY"), "/blob/main"), &groups)
+        }
         Format::Json => serde_json::to_string_pretty(&report).map_err(|e| e.to_string())? + "\n",
     };
     match &args.out {
