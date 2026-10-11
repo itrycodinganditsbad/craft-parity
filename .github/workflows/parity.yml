@@ -32,7 +32,14 @@ jobs:
           echo "status=$?" >> "$GITHUB_OUTPUT"
           cargo run --release -- --root checkouts --format html --out docs/index.html
       - name: Commit
+        # main may have moved since checkout (another run, a push). This report is the newest
+        # scan, so put it on top of the latest main rather than the commit the run started from.
         run: |
+          cp PARITY.md docs/index.html "$RUNNER_TEMP/"
+          git fetch --quiet origin main
+          git reset --quiet --hard origin/main
+          cp "$RUNNER_TEMP/PARITY.md" PARITY.md
+          cp "$RUNNER_TEMP/index.html" docs/index.html
           if git diff --quiet -- PARITY.md docs/index.html; then echo "no change"; exit 0; fi
           git config user.name "github-actions[bot]"
           git config user.email "41898283+github-actions[bot]@users.noreply.github.com"
