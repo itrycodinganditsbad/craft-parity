@@ -63,8 +63,8 @@ Missing in: cadcraft, deckcraft, designcraft, effectcraft, filmcraft, gridcraft,
 | [pdfcraft](https://github.com/storytold/pdfcraft) | origin/HEAD | [134b98b0a8](https://github.com/storytold/pdfcraft/commit/134b98b0a8516ceee8de387779dc4696d549bb1b) |
 | [photocraft](https://github.com/storytold/photocraft) | origin/HEAD | [e5dbcab335](https://github.com/storytold/photocraft/commit/e5dbcab335b16ca99f540f97b27d08ef60e6626d) |
 | [soundcraft](https://github.com/storytold/soundcraft) | origin/HEAD | [240aa848a0](https://github.com/storytold/soundcraft/commit/240aa848a04811ffff75cf193e69d9d4c404ae68) |
-| [vectorcraft](https://github.com/storytold/vectorcraft) | origin/HEAD | [0e6fa89ad6](https://github.com/storytold/vectorcraft/commit/0e6fa89ad6bd5fb57843c7095ecb87d755675771) |
-| [wordcraft](https://github.com/storytold/wordcraft) | origin/HEAD | [c010b73428](https://github.com/storytold/wordcraft/commit/c010b7342878f15520e55a24acc1dde97b6648ad) |
+| [vectorcraft](https://github.com/storytold/vectorcraft) | origin/HEAD | [53bc86fdb4](https://github.com/storytold/vectorcraft/commit/53bc86fdb454ed33cd26cba5e29695ebe0befeff) |
+| [wordcraft](https://github.com/storytold/wordcraft) | origin/HEAD | [09921dfae8](https://github.com/storytold/wordcraft/commit/09921dfae8555ee396c4f66bb0ec23953f22b3ac) |
 | [artcraft](https://github.com/storytold/artcraft) | origin/HEAD | [d4e4ac69bb](https://github.com/storytold/artcraft/commit/d4e4ac69bbd93d237eaf5d0260bc6a5ff3a5e373) |
 | [artcraftx](https://github.com/storytold/artcraftx) | origin/HEAD | [98c2a48940](https://github.com/storytold/artcraftx/commit/98c2a48940aa0a54604637f665ee539c122fa707) |
 | [craft-launcher](https://github.com/storytold/craft-launcher) | origin/HEAD | [e2b01e7425](https://github.com/storytold/craft-launcher/commit/e2b01e7425cb3f54f2805a99f1f8ee7f7a9a4adc) |
