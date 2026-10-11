@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Craft fix parity</title>
+<style>
+:root {
+  --bg: #fbfaf8; --surface: #ffffff; --text: #1c1b19; --muted: #6b6862; --line: #e6e3de;
+  --fixed: #1f7a4d; --fixed-bg: #e3f3ea; --missing: #b3261e; --missing-bg: #fbe6e4;
+  --na: #8a8780; --na-bg: #f1efeb; --unknown: #8a5a00; --unknown-bg: #fbf0d9; --link: #2456b8;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #151514; --surface: #1d1d1b; --text: #ecebe8; --muted: #9e9b95; --line: #2f2e2b;
+    --fixed: #6fd19c; --fixed-bg: #183526; --missing: #ff8a80; --missing-bg: #3d1d1a;
+    --na: #8a8780; --na-bg: #242422; --unknown: #f0c060; --unknown-bg: #3a2f14; --link: #8cb4ff;
+  }
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--text);
+  font: 15px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+main { max-width: 1240px; margin: 0 auto; padding: 40px 16px 64px; }
+h1 { font-size: 28px; margin: 0 0 6px; letter-spacing: -0.01em; }
+h2 { font-size: 18px; margin: 40px 0 12px; }
+p.lede { color: var(--muted); margin: 0 0 24px; max-width: 70ch; }
+a { color: var(--link); text-decoration: none; }
+a:hover { text-decoration: underline; }
+.stats { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 28px; }
+.stat { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 12px 16px; min-width: 130px; }
+.stat b { display: block; font-size: 24px; font-variant-numeric: tabular-nums; }
+.stat span { color: var(--muted); font-size: 13px; }
+.stat.alert b { color: var(--missing); }
+.scroll { overflow-x: auto; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); }
+table { border-collapse: collapse; width: 100%; }
+th, td { padding: 8px 6px; border-bottom: 1px solid var(--line); text-align: center; white-space: nowrap; }
+tr:last-child td { border-bottom: 0; }
+thead th { font-size: 12px; font-weight: 600; color: var(--muted); }
+th.fix, td.fix { text-align: left; white-space: normal; min-width: 220px; padding-left: 12px; position: sticky; left: 0; background: var(--surface); }
+td.fix a { color: var(--text); font-weight: 500; }
+td.fix small { color: var(--muted); display: block; }
+.badge { display: inline-block; min-width: 54px; padding: 2px 8px; border-radius: 999px; font-size: 12px; font-weight: 600; }
+.badge.fixed { color: var(--fixed); background: var(--fixed-bg); }
+.badge.missing { color: var(--missing); background: var(--missing-bg); }
+.badge.na { color: var(--na); background: var(--na-bg); font-weight: 500; }
+.badge.unknown { color: var(--unknown); background: var(--unknown-bg); }
+.gaps { display: grid; gap: 12px; }
+.gap { background: var(--surface); border: 1px solid var(--line); border-left: 3px solid var(--missing); border-radius: 10px; padding: 16px 18px; }
+.gap h3 { margin: 0 0 6px; font-size: 16px; }
+.gap p { margin: 0 0 10px; color: var(--muted); max-width: 80ch; }
+.apps { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+.apps span { font-size: 13px; padding: 2px 8px; border-radius: 6px; background: var(--missing-bg); color: var(--missing); }
+.port { font-size: 13px; }
+.stale { border-left-color: var(--unknown); }
+.legend { display: flex; gap: 14px; flex-wrap: wrap; margin: 10px 0 0; font-size: 13px; color: var(--muted); }
+.scanned td, .scanned th { text-align: left; }
+.scanned code { font-size: 12px; }
+footer { margin-top: 40px; color: var(--muted); font-size: 13px; }
+</style>
+</head>
+<body>
+<main>
+<h1>Craft fix parity</h1>
+<p class="lede">The Craft apps don't share code, so a fix that lands in one app is often still missing in its siblings. Each row is a fix with working code somewhere; each <b>missing</b> is a port waiting to happen.</p>
+<div class="stats"><div class="stat"><b>4</b><span>fixes tracked</span></div><div class="stat"><b>12</b><span>apps scanned</span></div><div class="stat alert"><b>15</b><span>open gaps</span></div><div class="stat"><b>1</b><span>fixes everywhere</span></div></div>
+<div class="scroll"><table>
+<thead><tr><th class="fix">Fix</th><th>cadcraft</th><th>deckcraft</th><th>designcraft</th><th>effectcraft</th><th>filmcraft</th><th>gridcraft</th><th>lightcraft</th><th>pdfcraft</th><th>photocraft</th><th>soundcraft</th><th>vectorcraft</th><th>wordcraft</th></tr></thead>
+<tbody>
+<tr><td class="fix"><a href="https://github.com/itrycodinganditsbad/craft-parity/blob/main/fixes/bidi-text.toml">Text: right-to-left scripts laid out with the Unicode BiDi algorithm</a><small>bidi-text</small></td><td><span class="badge fixed" title="cadcraft: Fixed">fixed</span></td><td><span class="badge fixed" title="deckcraft: Fixed">fixed</span></td><td><span class="badge fixed" title="designcraft: Fixed">fixed</span></td><td><span class="badge fixed" title="effectcraft: Fixed">fixed</span></td><td><span class="badge fixed" title="filmcraft: Fixed">fixed</span></td><td><span class="badge missing" title="gridcraft: Missing: the fingerprint was not found">missing</span></td><td><span class="badge missing" title="lightcraft: Missing: the fingerprint was not found">missing</span></td><td><span class="badge fixed" title="pdfcraft: Fixed">fixed</span></td><td><span class="badge missing" title="photocraft: Missing: the fingerprint was not found">missing</span></td><td><span class="badge missing" title="soundcraft: Missing: the fingerprint was not found">missing</span></td><td><span class="badge fixed" title="vectorcraft: Fixed">fixed</span></td><td><span class="badge fixed" title="wordcraft: Fixed">fixed</span></td></tr>
+<tr><td class="fix"><a href="https://github.com/itrycodinganditsbad/craft-parity/blob/main/fixes/macos-dmg-background.toml">macOS DMG: branded window background and icon layout</a><small>macos-dmg-background</small></td><td><span class="badge fixed" title="cadcraft: Fixed">fixed</span></td><td><span class="badge fixed" title="deckcraft: Fixed">fixed</span></td><td><span class="badge fixed" title="designcraft: Fixed">fixed</span></td><td><span class="badge fixed" title="effectcraft: Fixed">fixed</span></td><td><span class="badge fixed" title="filmcraft: Fixed">fixed</span></td><td><span class="badge fixed" title="gridcraft: Fixed">fixed</span></td><td><span class="badge fixed" title="lightcraft: Fixed">fixed</span></td><td><span class="badge fixed" title="pdfcraft: Fixed">fixed</span></td><td><span class="badge fixed" title="photocraft: Fixed">fixed</span></td><td><span class="badge fixed" title="soundcraft: Fixed">fixed</span></td><td><span class="badge fixed" title="vectorcraft: Fixed">fixed</span></td><td><span class="badge fixed" title="wordcraft: Fixed">fixed</span></td></tr>
+<tr><td class="fix"><a href="https://github.com/itrycodinganditsbad/craft-parity/blob/main/fixes/rotating-log-file.toml">Desktop: log to a rotating log file as well as standard error</a><small>rotating-log-file</small></td><td><span class="badge fixed" title="cadcraft: Fixed">fixed</span></td><td><span class="badge fixed" title="deckcraft: Fixed">fixed</span></td><td><span class="badge fixed" title="designcraft: Fixed">fixed</span></td><td><span class="badge missing" title="effectcraft: Missing: the fingerprint was not found">missing</span></td><td><span class="badge fixed" title="filmcraft: Fixed">fixed</span></td><td><span class="badge fixed" title="gridcraft: Fixed">fixed</span></td><td><span class="badge fixed" title="lightcraft: Fixed">fixed</span></td><td><span class="badge fixed" title="pdfcraft: Fixed">fixed</span></td><td><span class="badge fixed" title="photocraft: Fixed">fixed</span></td><td><span class="badge fixed" title="soundcraft: Fixed">fixed</span></td><td><span class="badge fixed" title="vectorcraft: Fixed">fixed</span></td><td><span class="badge fixed" title="wordcraft: Fixed">fixed</span></td></tr>
+<tr><td class="fix"><a href="https://github.com/itrycodinganditsbad/craft-parity/blob/main/fixes/windows-primary-gpu.toml">Windows: draw on the GPU that drives the primary display</a><small>windows-primary-gpu</small></td><td><span class="badge missing" title="cadcraft: Missing: the fingerprint was not found">missing</span></td><td><span class="badge missing" title="deckcraft: Missing: the fingerprint was not found">missing</span></td><td><span class="badge missing" title="designcraft: Missing: the fingerprint was not found">missing</span></td><td><span class="badge missing" title="effectcraft: Missing: the fingerprint was not found">missing</span></td><td><span class="badge missing" title="filmcraft: Missing: the fingerprint was not found">missing</span></td><td><span class="badge missing" title="gridcraft: Missing: the fingerprint was not found">missing</span></td><td><span class="badge missing" title="lightcraft: Missing: the fingerprint was not found">missing</span></td><td><span class="badge fixed" title="pdfcraft: Fixed">fixed</span></td><td><span class="badge missing" title="photocraft: Missing: the fingerprint was not found">missing</span></td><td><span class="badge missing" title="soundcraft: Missing: the fingerprint was not found">missing</span></td><td><span class="badge fixed" title="vectorcraft: Fixed">fixed</span></td><td><span class="badge missing" title="wordcraft: Missing: the fingerprint was not found">missing</span></td></tr>
+</tbody></table></div>
+<div class="legend"><span><span class="badge fixed">fixed</span> fingerprint found</span><span><span class="badge missing">missing</span> not found</span><span><span class="badge na">n/a</span> does not apply or exempt</span><span><span class="badge unknown">?</span> not scanned</span></div>
+<h2>Gaps</h2>
+<div class="gaps">
+<div class="gap"><h3>Text: right-to-left scripts laid out with the Unicode BiDi algorithm</h3><p>Arabic and Hebrew come out in reverse order, and mixed left-to-right and right-to-left runs land in
+the wrong places, unless lines are reordered with UAX #9.</p><div class="apps"><span>gridcraft</span><span>lightcraft</span><span>photocraft</span><span>soundcraft</span></div><div class="port">Port from <a href="https://github.com/storytold/deckcraft/pull/4">storytold/deckcraft#4</a>, <a href="https://github.com/storytold/pdfcraft/pull/285">storytold/pdfcraft#285</a>, <a href="https://github.com/storytold/pdfcraft/pull/403">storytold/pdfcraft#403</a></div></div>
+<div class="gap"><h3>Desktop: log to a rotating log file as well as standard error</h3><p>An app started from the Dock, Start menu or a launcher has no terminal, so its log records are lost
+and a crash report comes without a log. The fix keeps the last few runs&#39; logs in the app&#39;s data
+folder, capped in size.</p><div class="apps"><span>effectcraft</span></div><div class="port">Port from <a href="https://github.com/storytold/pdfcraft/pull/239">storytold/pdfcraft#239</a>, <a href="https://github.com/storytold/photocraft/pull/1143">storytold/photocraft#1143</a>, <a href="https://github.com/storytold/wordcraft/pull/17">storytold/wordcraft#17</a></div></div>
+<div class="gap"><h3>Windows: draw on the GPU that drives the primary display</h3><p>With a low-power or high-performance preference alone, wgpu can pick a GPU that drives no monitor,
+for example a Ryzen iGPU on a desktop whose screens hang off an NVIDIA card. Presenting across GPUs
+blacked out every monitor for two minutes in PdfCraft (storytold/pdfcraft#378). The fix asks Windows
+which adapter drives the primary display (EnumDisplayDevices) and matches it to the wgpu adapters by
+PCI ids.</p><div class="apps"><span>cadcraft</span><span>deckcraft</span><span>designcraft</span><span>effectcraft</span><span>filmcraft</span><span>gridcraft</span><span>lightcraft</span><span>photocraft</span><span>soundcraft</span><span>wordcraft</span></div><div class="port">Port from <a href="https://github.com/storytold/pdfcraft/pull/631">storytold/pdfcraft#631</a>, <a href="https://github.com/storytold/vectorcraft/pull/851">storytold/vectorcraft#851</a></div></div>
+</div>
+<h2>Scanned</h2>
+<div class="scroll"><table class="scanned">
+<thead><tr><th>App</th><th>Ref</th><th>Commit</th></tr></thead>
+<tbody>
+<tr><td><a href="https://github.com/storytold/cadcraft">cadcraft</a></td><td>origin/HEAD</td><td><a href="https://github.com/storytold/cadcraft/commit/8f59410c33e5640b5010124c93e5ebcfd35f404f"><code>8f59410c33</code></a></td></tr>
+<tr><td><a href="https://github.com/storytold/deckcraft">deckcraft</a></td><td>origin/HEAD</td><td><a href="https://github.com/storytold/deckcraft/commit/be14248577b92059eb2b8c0c9460cceffbc1f01d"><code>be14248577</code></a></td></tr>
+<tr><td><a href="https://github.com/storytold/designcraft">designcraft</a></td><td>origin/HEAD</td><td><a href="https://github.com/storytold/designcraft/commit/ca343e8985dc4d92dd65cf77a8198723b5f8a9eb"><code>ca343e8985</code></a></td></tr>
+<tr><td><a href="https://github.com/storytold/effectcraft">effectcraft</a></td><td>origin/HEAD</td><td><a href="https://github.com/storytold/effectcraft/commit/67434e90388b6dca4417555346fa6850b6f96033"><code>67434e9038</code></a></td></tr>
+<tr><td><a href="https://github.com/storytold/filmcraft">filmcraft</a></td><td>origin/HEAD</td><td><a href="https://github.com/storytold/filmcraft/commit/0800a8b0aa4a703ba42172f415b45a61f8d8a5e1"><code>0800a8b0aa</code></a></td></tr>
+<tr><td><a href="https://github.com/storytold/gridcraft">gridcraft</a></td><td>origin/HEAD</td><td><a href="https://github.com/storytold/gridcraft/commit/fa33d0b90f96a862d68ca03a7480af594b8f796c"><code>fa33d0b90f</code></a></td></tr>
+<tr><td><a href="https://github.com/storytold/lightcraft">lightcraft</a></td><td>origin/HEAD</td><td><a href="https://github.com/storytold/lightcraft/commit/76b5377868d912db69a777bda253a5b1b96b22bd"><code>76b5377868</code></a></td></tr>
+<tr><td><a href="https://github.com/storytold/pdfcraft">pdfcraft</a></td><td>origin/HEAD</td><td><a href="https://github.com/storytold/pdfcraft/commit/fb3fa5de5724d20afb44435f85a110710612315e"><code>fb3fa5de57</code></a></td></tr>
+<tr><td><a href="https://github.com/storytold/photocraft">photocraft</a></td><td>origin/HEAD</td><td><a href="https://github.com/storytold/photocraft/commit/0144cb283d137f14c75b661a0faa1aef03d19783"><code>0144cb283d</code></a></td></tr>
+<tr><td><a href="https://github.com/storytold/soundcraft">soundcraft</a></td><td>origin/HEAD</td><td><a href="https://github.com/storytold/soundcraft/commit/240aa848a04811ffff75cf193e69d9d4c404ae68"><code>240aa848a0</code></a></td></tr>
+<tr><td><a href="https://github.com/storytold/vectorcraft">vectorcraft</a></td><td>origin/HEAD</td><td><a href="https://github.com/storytold/vectorcraft/commit/bab78767ca3c4d8652e5760bde8cb177c9ce4851"><code>bab78767ca</code></a></td></tr>
+<tr><td><a href="https://github.com/storytold/wordcraft">wordcraft</a></td><td>origin/HEAD</td><td><a href="https://github.com/storytold/wordcraft/commit/3042e5251e64e3ba984acdbb0ba1947313ea8df5"><code>3042e5251e</code></a></td></tr>
+</tbody></table></div>
+<footer>Built by <a href="https://github.com/itrycodinganditsbad/craft-parity">craft-parity</a>. An independent tool, not part of the ArtCraft Team's projects. <a href="https://github.com/itrycodinganditsbad/craft-parity#add-a-fix">Add a fix</a>.</footer>
+</main>
+</body>
+</html>

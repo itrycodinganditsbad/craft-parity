@@ -31,7 +31,7 @@ fn app(name: &str) -> App {
 }
 
 const GPU: &str = r#"
-title = "GPU"
+title = "GPU <b>&"
 why = "w"
 references = ["example/fixed#1"]
 known_fixed = ["fixed"]
@@ -76,9 +76,17 @@ fn statuses_for_each_kind_of_app() {
     assert!(matches!(row.statuses[5], Status::Unknown(_)));
     assert!(row.stale.is_empty());
 
+    assert!(craft_parity::html::html(&report, "").contains("GPU &lt;b&gt;&amp;"));
     let md = craft_parity::report::markdown(&report);
     assert!(md.contains("Missing in: missing, half."), "{md}");
     assert!(md.contains("[example/fixed#1](https://github.com/example/fixed/pull/1)"), "{md}");
+
+    let page = craft_parity::html::html(&report, "https://example.com/r/blob/main");
+    assert!(page.starts_with("<!doctype html>"));
+    assert!(page.contains("<span class=\"badge missing\" title=\"missing: Missing"), "{page}");
+    assert!(page.contains("title=\"exempt: Exempt: no window\""), "{page}");
+    assert!(page.contains("href=\"https://example.com/r/blob/main/fixes/gpu.toml\""), "{page}");
+    assert!(page.contains("<span>missing</span><span>half</span>"), "{page}");
 }
 
 #[test]

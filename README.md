@@ -6,7 +6,8 @@ PdfCraft and VectorCraft pick the GPU that drives the primary display on Windows
 can still pick one that drives no monitor at all.
 
 craft-parity keeps a fingerprint for each such fix and checks every app's default branch for it.
-The result is [PARITY.md](PARITY.md), rebuilt daily by CI. Every ❌ is a fix with working code to
+The result is [PARITY.md](PARITY.md) and the same report as a page,
+[docs/index.html](docs/index.html), both rebuilt daily by CI. Every ❌ is a fix with working code to
 port from.
 
 This is an independent tool, not part of the ArtCraft Team's projects.
@@ -18,6 +19,7 @@ With the apps checked out next to this repo (`../photocraft`, `../pdfcraft`, ...
 ```sh
 cargo run -- --fetch            # fetch each checkout, print the report
 cargo run -- --out PARITY.md
+cargo run -- --format html --out docs/index.html
 cargo run -- --only windows-primary-gpu --format json
 ```
 

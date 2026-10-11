@@ -3,5 +3,6 @@
 
 pub mod fix;
 pub mod git;
+pub mod html;
 pub mod report;
 pub mod scan;

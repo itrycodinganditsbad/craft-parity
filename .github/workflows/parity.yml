@@ -1,6 +1,6 @@
 name: Parity report
 
-# Rebuilds PARITY.md from every app's default branch and commits it when it changed.
+# Rebuilds PARITY.md and docs/index.html from every app's default branch and commits it when it changed.
 on:
   schedule:
     - cron: "17 5 * * *"
@@ -30,12 +30,13 @@ jobs:
           set +e
           cargo run --release -- --root checkouts --clone --out PARITY.md
           echo "status=$?" >> "$GITHUB_OUTPUT"
+          cargo run --release -- --root checkouts --format html --out docs/index.html
       - name: Commit
         run: |
-          if git diff --quiet -- PARITY.md; then echo "no change"; exit 0; fi
+          if git diff --quiet -- PARITY.md docs/index.html; then echo "no change"; exit 0; fi
           git config user.name "github-actions[bot]"
           git config user.email "41898283+github-actions[bot]@users.noreply.github.com"
-          git commit -m "Update parity report" -- PARITY.md
+          git commit -m "Update parity report" -- PARITY.md docs/index.html
           git push
       - name: Fail on stale fingerprints or errors
         if: steps.scan.outputs.status != '0'

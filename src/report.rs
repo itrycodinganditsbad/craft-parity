@@ -13,13 +13,20 @@ fn cell(status: &Status) -> &'static str {
     }
 }
 
-/// `storytold/pdfcraft#631` becomes a link to that pull request; anything else is kept as is.
-fn reference_link(reference: &str) -> String {
+/// The pull request URL for `owner/repo#123`; `None` for anything else.
+pub fn reference_url(reference: &str) -> Option<String> {
     match reference.split_once('#') {
         Some((repo, num)) if repo.contains('/') && !num.is_empty() && num.bytes().all(|b| b.is_ascii_digit()) => {
-            format!("[{reference}](https://github.com/{repo}/pull/{num})")
+            Some(format!("https://github.com/{repo}/pull/{num}"))
         }
-        _ => reference.to_string(),
+        _ => None,
+    }
+}
+
+fn reference_link(reference: &str) -> String {
+    match reference_url(reference) {
+        Some(url) => format!("[{reference}]({url})"),
+        None => reference.to_string(),
     }
 }
 

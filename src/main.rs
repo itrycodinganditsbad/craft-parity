@@ -4,7 +4,7 @@ use std::process::ExitCode;
 
 use clap::{Parser, ValueEnum};
 
-use craft_parity::{fix, git, report, scan};
+use craft_parity::{fix, git, html, report, scan};
 
 /// Shows which Craft apps carry a fix that already landed in a sibling app.
 #[derive(Parser)]
@@ -43,6 +43,8 @@ struct Args {
 enum Format {
     Markdown,
     Json,
+    /// One self-contained page.
+    Html,
 }
 
 fn run(args: Args) -> Result<bool, String> {
@@ -84,6 +86,7 @@ fn run(args: Args) -> Result<bool, String> {
 
     let text = match args.format {
         Format::Markdown => report::markdown(&report),
+        Format::Html => html::html(&report, concat!(env!("CARGO_PKG_REPOSITORY"), "/blob/main")),
         Format::Json => serde_json::to_string_pretty(&report).map_err(|e| e.to_string())? + "\n",
     };
     match &args.out {
