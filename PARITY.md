@@ -47,7 +47,7 @@ Missing in: cadcraft, deckcraft, designcraft, effectcraft, filmcraft, gridcraft,
 | [filmcraft](https://github.com/storytold/filmcraft) | origin/HEAD | [0800a8b0aa](https://github.com/storytold/filmcraft/commit/0800a8b0aa4a703ba42172f415b45a61f8d8a5e1) |
 | [gridcraft](https://github.com/storytold/gridcraft) | origin/HEAD | [a0cb8f2ca2](https://github.com/storytold/gridcraft/commit/a0cb8f2ca286f82c60b68dc4a24a268963288be8) |
 | [lightcraft](https://github.com/storytold/lightcraft) | origin/HEAD | [76b5377868](https://github.com/storytold/lightcraft/commit/76b5377868d912db69a777bda253a5b1b96b22bd) |
-| [pdfcraft](https://github.com/storytold/pdfcraft) | origin/HEAD | [046df9dfe4](https://github.com/storytold/pdfcraft/commit/046df9dfe4269711f6b4774006e82e4379dbf9f9) |
+| [pdfcraft](https://github.com/storytold/pdfcraft) | origin/HEAD | [5d7700ead6](https://github.com/storytold/pdfcraft/commit/5d7700ead6cde1912f65462fc8d69fbbf9a3394c) |
 | [photocraft](https://github.com/storytold/photocraft) | origin/HEAD | [f8af27d261](https://github.com/storytold/photocraft/commit/f8af27d2618c48575f80a71a79cd795931b5020f) |
 | [soundcraft](https://github.com/storytold/soundcraft) | origin/HEAD | [240aa848a0](https://github.com/storytold/soundcraft/commit/240aa848a04811ffff75cf193e69d9d4c404ae68) |
 | [vectorcraft](https://github.com/storytold/vectorcraft) | origin/HEAD | [bab78767ca](https://github.com/storytold/vectorcraft/commit/bab78767ca3c4d8652e5760bde8cb177c9ce4851) |
