@@ -352,14 +352,17 @@ fn drafts_html(o: &mut String, report: &Report, drafts: &[Draft]) {
         let gaps = |d: &Draft| d.verified.values().filter(|v| v.verdict == "present").count();
         b.proven.cmp(&a.proven).then_with(|| gaps(b).cmp(&gaps(a))).then_with(|| a.key.cmp(&b.key))
     });
+    let mut seen: Vec<String> = Vec::new();
     for d in sorted {
-        let title = d
-            .toml
-            .lines()
-            .find_map(|l| l.strip_prefix("title = "))
-            .map(|t| t.trim_matches('"').replace("\\\"", "\""))
-            .unwrap_or_else(|| d.key.clone());
-        let why = d.toml.lines().find_map(|l| l.strip_prefix("why = ")).map(|t| t.trim_matches('"').replace("\\\"", "\"")).unwrap_or_default();
+        let table: toml::Table = toml::from_str(&d.toml).unwrap_or_default();
+        let text = |k: &str| table.get(k).and_then(|v| v.as_str()).unwrap_or_default().to_string();
+        let title = if text("title").is_empty() { d.key.clone() } else { text("title") };
+        let why = text("why");
+        // Two groups can be the same fix seen twice; show it once.
+        if seen.contains(&title) {
+            continue;
+        }
+        seen.push(title.clone());
         let _ = write!(
             o,
             "<div class=\"group\"><div class=\"meta\"><span class=\"area\">{}</span><span class=\"count\">{}</span></div><h3>{}</h3>",

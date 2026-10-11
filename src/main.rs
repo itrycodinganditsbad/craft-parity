@@ -155,6 +155,9 @@ struct ScanArgs {
     /// `llm/candidates.json`.
     #[arg(long)]
     data: Option<PathBuf>,
+    /// Also show drafts in the security area (keep these off public pages until fixed).
+    #[arg(long)]
+    include_security: bool,
     /// Write the report here instead of standard output.
     #[arg(long)]
     out: Option<PathBuf>,
@@ -252,7 +255,9 @@ fn run_draft(args: DraftArgs) -> Result<bool, String> {
     let groups: Vec<cluster::Cluster> = serde_json::from_str(&fs::read_to_string(&path).map_err(|e| format!("{}: {e}", path.display()))?)
         .map_err(|e| format!("{}: {e}", path.display()))?;
     let dir = args.data.join("llm").join("drafts");
-    let exists = |g: &cluster::Cluster| draft::key(g).is_some_and(|k| dir.join(format!("{k}.json")).exists());
+    let private = args.data.join("llm").join("private").join("drafts");
+    let exists =
+        |g: &cluster::Cluster| draft::key(g).is_some_and(|k| dir.join(format!("{k}.json")).exists() || private.join(format!("{k}.json")).exists());
     let mut chosen: Vec<&cluster::Cluster> = Vec::new();
     for id in &args.group {
         let g = groups.iter().find(|g| g.members.iter().any(|m| &m.id == id)).ok_or_else(|| format!("no candidate group holds {id}"))?;
@@ -274,7 +279,7 @@ fn run_draft(args: DraftArgs) -> Result<bool, String> {
             eprintln!("{key}: already drafted (use --redo)");
             continue;
         }
-        let file = dir.join(format!("{key}.json"));
+        let file = if private.join(format!("{key}.json")).exists() { private.join(format!("{key}.json")) } else { dir.join(format!("{key}.json")) };
         let drafted = if args.verify_only {
             fs::read_to_string(&file)
                 .map_err(|e| format!("{}: {e}", file.display()))
@@ -293,7 +298,10 @@ fn run_draft(args: DraftArgs) -> Result<bool, String> {
         match drafted {
             Ok(d) => {
                 let text = serde_json::to_string_pretty(&d).map_err(|e| e.to_string())? + "\n";
-                craft_parity::index::write_if_changed(&dir.join(format!("{key}.json")), text.as_bytes())?;
+                // Security drafts name apps that are still open to an attack: keep them out of the
+                // public data branch (llm/private is git-ignored there).
+                let out = if d.area == "security" { args.data.join("llm").join("private").join("drafts") } else { dir.clone() };
+                craft_parity::index::write_if_changed(&out.join(format!("{key}.json")), text.as_bytes())?;
                 let missing: Vec<&String> = d.matrix.iter().filter(|(_, s)| **s == scan::Status::Missing).map(|(a, _)| a).collect();
                 eprintln!(
                     "{key}: {} after {} attempt(s); proof {}/{}{}",
@@ -363,13 +371,18 @@ fn run_scan(args: ScanArgs) -> Result<bool, String> {
                 None => Vec::new(),
             };
             let mut drafts: Vec<draft::Draft> = Vec::new();
-            if let Some(data) = &args.data
-                && let Ok(entries) = fs::read_dir(data.join("llm").join("drafts"))
-            {
+            let dirs = args.data.iter().flat_map(|d| [d.join("llm").join("drafts"), d.join("llm").join("private").join("drafts")]);
+            for entries in dirs.filter_map(|d| fs::read_dir(d).ok()) {
                 for e in entries.flatten() {
                     let text = fs::read_to_string(e.path()).map_err(|err| format!("{}: {err}", e.path().display()))?;
                     drafts.push(serde_json::from_str(&text).map_err(|err| format!("{}: {err}", e.path().display()))?);
                 }
+            }
+            // Security gaps are for the maintainers first, not for a public page.
+            let mut groups = groups;
+            if !args.include_security {
+                drafts.retain(|d| d.area != "security");
+                groups.retain(|g| g.area != "security");
             }
             html::html(&report, concat!(env!("CARGO_PKG_REPOSITORY"), "/blob/main"), &groups, &drafts)
         }
