@@ -1,0 +1,4759 @@
+[
+  {
+    "area": "text_fonts_i18n",
+    "members": [
+      {
+        "app": "effectcraft",
+        "id": "effectcraft/pr/312",
+        "symptom": "Chinese text is drawn with Japanese glyph forms when the system locale is not Chinese.",
+        "confidence": 0.85,
+        "state": "fixed"
+      },
+      {
+        "app": "filmcraft",
+        "id": "filmcraft/pr/363",
+        "symptom": "Chinese text such as file names and labels shows as missing-glyph boxes when the interface language is English.",
+        "confidence": 0.9,
+        "state": "fixed"
+      },
+      {
+        "app": "filmcraft",
+        "id": "filmcraft/pr/589",
+        "symptom": "In a Japanese UI without the bundled fonts, shared kanji are drawn with the Chinese system font instead of the Japanese one.",
+        "confidence": 0.85,
+        "state": "fixed"
+      },
+      {
+        "app": "gridcraft",
+        "id": "gridcraft/pr/25",
+        "symptom": "Japanese, Chinese and Korean text shows as empty boxes (tofu).",
+        "confidence": 0.9,
+        "state": "fixed"
+      },
+      {
+        "app": "lightcraft",
+        "id": "lightcraft/pr/460",
+        "symptom": "Simplified Chinese text shows up as empty boxes.",
+        "confidence": 0.85,
+        "state": "fixed"
+      },
+      {
+        "app": "pdfcraft",
+        "id": "pdfcraft/pr/925",
+        "symptom": "In a Chinese interface many characters show as missing-glyph boxes or in a Japanese font.",
+        "confidence": 0.85,
+        "state": "fixed"
+      },
+      {
+        "app": "photocraft",
+        "id": "photocraft/pr/2467",
+        "symptom": "Some window titles and buttons stay in English when another interface language is selected.",
+        "confidence": 0.7,
+        "state": "fixed"
+      },
+      {
+        "app": "vectorcraft",
+        "id": "vectorcraft/pr/950",
+        "symptom": "Some UI labels and buttons stay in English when the interface language is Chinese.",
+        "confidence": 0.7,
+        "state": "fixed"
+      },
+      {
+        "app": "wordcraft",
+        "id": "wordcraft/pr/276",
+        "symptom": "Some interface labels and tooltips stay in English when another language is selected.",
+        "confidence": 0.6,
+        "state": "fixed"
+      },
+      {
+        "app": "wordcraft",
+        "id": "wordcraft/pr/313",
+        "symptom": "Some menus, tooltips and dialogs stay in English whichever interface language is chosen.",
+        "confidence": 0.85,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "effectcraft",
+      "filmcraft",
+      "gridcraft",
+      "lightcraft",
+      "pdfcraft",
+      "photocraft",
+      "vectorcraft",
+      "wordcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "gpu_rendering",
+    "members": [
+      {
+        "app": "cadcraft",
+        "id": "cadcraft/pr/31",
+        "symptom": "On some Windows machines the app crashes at startup with no window and no error message.",
+        "confidence": 0.95,
+        "state": "fixed"
+      },
+      {
+        "app": "deckcraft",
+        "id": "deckcraft/pr/16",
+        "symptom": "On Windows with AMD graphics the app flashes in Task Manager and exits without a window or error.",
+        "confidence": 0.95,
+        "state": "fixed"
+      },
+      {
+        "app": "filmcraft",
+        "id": "filmcraft/pr/365",
+        "symptom": "On Windows the app exits right after launch and no window appears.",
+        "confidence": 0.95,
+        "state": "fixed"
+      },
+      {
+        "app": "gridcraft",
+        "id": "gridcraft/pr/22",
+        "symptom": "On Windows with AMD graphics the app flashes briefly and exits without showing a window or an error.",
+        "confidence": 0.95,
+        "state": "fixed"
+      },
+      {
+        "app": "soundcraft",
+        "id": "soundcraft/pr/34",
+        "symptom": "On Windows with AMD graphics the app flashes briefly and exits at startup without showing a window or an error.",
+        "confidence": 0.95,
+        "state": "fixed"
+      },
+      {
+        "app": "wordcraft",
+        "id": "wordcraft/pr/50",
+        "symptom": "On Windows with AMD graphics, the app flashes briefly and exits with no window or error.",
+        "confidence": 0.95,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "cadcraft",
+      "deckcraft",
+      "filmcraft",
+      "gridcraft",
+      "soundcraft",
+      "wordcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "windowing_input",
+    "members": [
+      {
+        "app": "cadcraft",
+        "id": "cadcraft/pr/159",
+        "symptom": "On Wayland desktops, dragging files from the file manager onto the window shows a prohibited cursor and the drop does nothing.",
+        "confidence": 0.9,
+        "state": "fixed"
+      },
+      {
+        "app": "effectcraft",
+        "id": "effectcraft/pr/447",
+        "symptom": "Dropping files onto the window does nothing visible, gives no hover feedback, and on native Wayland drops are ignored completely.",
+        "confidence": 0.8,
+        "state": "fixed"
+      },
+      {
+        "app": "lightcraft",
+        "id": "lightcraft/pr/738",
+        "symptom": "On Wayland desktops, dragging files from the file manager onto the window shows a 'no' cursor and the drop does nothing.",
+        "confidence": 0.9,
+        "state": "fixed"
+      },
+      {
+        "app": "photocraft",
+        "id": "photocraft/pr/1073",
+        "symptom": "On Linux Wayland, dropping files on the window does nothing, and the suggested workaround command is wrong for AppImage and Flatpak.",
+        "confidence": 0.9,
+        "state": "fixed"
+      },
+      {
+        "app": "vectorcraft",
+        "id": "vectorcraft/pr/1170",
+        "symptom": "On Linux Wayland sessions, dragging a file from the file manager onto the window does nothing.",
+        "confidence": 0.9,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "cadcraft",
+      "effectcraft",
+      "lightcraft",
+      "photocraft",
+      "vectorcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "text_fonts_i18n",
+    "members": [
+      {
+        "app": "gridcraft",
+        "id": "gridcraft/pr/38",
+        "symptom": "Thai and Hebrew text shows as boxes even when fonts that support them are installed.",
+        "confidence": 0.9,
+        "state": "fixed"
+      },
+      {
+        "app": "photocraft",
+        "id": "photocraft/pr/2030",
+        "symptom": "Thai text shows as empty boxes when the chosen font has no Thai glyphs.",
+        "confidence": 0.8,
+        "state": "fixed"
+      },
+      {
+        "app": "photocraft",
+        "id": "photocraft/pr/2280",
+        "symptom": "Thai characters in file names and paths show as square boxes in the user interface.",
+        "confidence": 0.9,
+        "state": "fixed"
+      },
+      {
+        "app": "photocraft",
+        "id": "photocraft/pr/2758",
+        "symptom": "Text in scripts like Thai, Arabic or Devanagari shows missing-glyph boxes in the interface.",
+        "confidence": 0.85,
+        "state": "fixed"
+      },
+      {
+        "app": "vectorcraft",
+        "id": "vectorcraft/pr/1185",
+        "symptom": "Thai text falls back to an arbitrary display font instead of the system's Thai UI font.",
+        "confidence": 0.75,
+        "state": "fixed"
+      },
+      {
+        "app": "vectorcraft",
+        "id": "vectorcraft/pr/1191",
+        "symptom": "In the web build, Thai text shows as empty boxes.",
+        "confidence": 0.7,
+        "state": "fixed"
+      },
+      {
+        "app": "vectorcraft",
+        "id": "vectorcraft/pr/623",
+        "symptom": "On Windows, the command-line tool and automation can't see fonts loaded by font services such as Adobe Fonts.",
+        "confidence": 0.75,
+        "state": "fixed"
+      },
+      {
+        "app": "vectorcraft",
+        "id": "vectorcraft/pr/762",
+        "symptom": "On macOS, installed suitcase fonts such as the Microsoft Office fonts are reported missing and don't appear in the font menu.",
+        "confidence": 0.75,
+        "state": "fixed"
+      },
+      {
+        "app": "vectorcraft",
+        "id": "vectorcraft/pr/781",
+        "symptom": "On macOS, fonts installed by font managers or other apps outside the standard font folders are missing from the font list.",
+        "confidence": 0.8,
+        "state": "fixed"
+      },
+      {
+        "app": "wordcraft",
+        "id": "wordcraft/pr/233",
+        "symptom": "Opening the font picker freezes the app, and text in scripts that need fallback fonts gets slow.",
+        "confidence": 0.8,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "gridcraft",
+      "photocraft",
+      "vectorcraft",
+      "wordcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "ui_theme",
+    "members": [
+      {
+        "app": "cadcraft",
+        "id": "cadcraft/pr/363",
+        "symptom": "With the theme set to follow the system, later OS light/dark changes are ignored until the app restarts.",
+        "confidence": 0.9,
+        "state": "fixed"
+      },
+      {
+        "app": "photocraft",
+        "id": "photocraft/pr/2833",
+        "symptom": "On Linux, a system light/dark theme change made during startup is lost and the app keeps the old theme.",
+        "confidence": 0.8,
+        "state": "fixed"
+      },
+      {
+        "app": "soundcraft",
+        "id": "soundcraft/pr/85",
+        "symptom": "The System theme doesn't follow light/dark appearance changes made while the app is open.",
+        "confidence": 0.85,
+        "state": "fixed"
+      },
+      {
+        "app": "wordcraft",
+        "id": "wordcraft/pr/317",
+        "symptom": "With the System theme, the interface stops following later OS light/dark changes.",
+        "confidence": 0.85,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "cadcraft",
+      "photocraft",
+      "soundcraft",
+      "wordcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "gpu_rendering",
+    "members": [
+      {
+        "app": "craft-launcher",
+        "id": "craft-launcher/pr/18",
+        "symptom": "On Windows laptops with hybrid AMD graphics the app crashes silently at startup with an access violation.",
+        "confidence": 0.9,
+        "state": "fixed"
+      },
+      {
+        "app": "designcraft",
+        "id": "designcraft/pr/297",
+        "symptom": "On Windows hybrid-graphics laptops the app crashes seconds after launch inside the Vulkan driver.",
+        "confidence": 0.9,
+        "state": "fixed"
+      },
+      {
+        "app": "gridcraft",
+        "id": "gridcraft/pr/315",
+        "symptom": "On Windows PCs with Intel UHD graphics the app crashes silently at launch without showing a window.",
+        "confidence": 0.95,
+        "state": "fixed"
+      },
+      {
+        "app": "vectorcraft",
+        "id": "vectorcraft/pr/870",
+        "symptom": "On Windows the app crashes before its window appears, from the second launch on, because of a faulty Vulkan driver.",
+        "confidence": 0.9,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "craft-launcher",
+      "designcraft",
+      "gridcraft",
+      "vectorcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "packaging_install",
+    "members": [
+      {
+        "app": "cadcraft",
+        "id": "cadcraft/pr/128",
+        "symptom": "On macOS the app icon in the Dock looks the wrong size while the app is running.",
+        "confidence": 0.75,
+        "state": "fixed"
+      },
+      {
+        "app": "filmcraft",
+        "id": "filmcraft/pr/246",
+        "symptom": "On Linux, development builds show a generic icon in the taskbar and title bar instead of the app icon.",
+        "confidence": 0.85,
+        "state": "fixed"
+      },
+      {
+        "app": "gridcraft",
+        "id": "gridcraft/pr/222",
+        "symptom": "On macOS the Dock icon looks larger than the icons of neighbouring apps.",
+        "confidence": 0.85,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "cadcraft",
+      "filmcraft",
+      "gridcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "gpu_rendering",
+    "members": [
+      {
+        "app": "cadcraft",
+        "id": "cadcraft/pr/613",
+        "symptom": "On Windows the app fails to start with DirectX 12.",
+        "confidence": 0.9,
+        "state": "fixed"
+      },
+      {
+        "app": "lightcraft",
+        "id": "lightcraft/pr/484",
+        "symptom": "On some Windows PCs the app exits at startup with code 1 and never opens a window, reporting that the parent device is lost.",
+        "confidence": 0.9,
+        "state": "fixed"
+      },
+      {
+        "app": "vectorcraft",
+        "id": "vectorcraft/pr/1215",
+        "symptom": "On Windows the app falls back from Direct3D 12 to OpenGL at startup because of shader compile errors.",
+        "confidence": 0.95,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "cadcraft",
+      "lightcraft",
+      "vectorcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "ui_theme",
+    "members": [
+      {
+        "app": "effectcraft",
+        "id": "effectcraft/pr/573",
+        "symptom": "Closing an inactive tab switches the visible panel in a tab group.",
+        "confidence": 0.65,
+        "state": "fixed"
+      },
+      {
+        "app": "pdfcraft",
+        "id": "pdfcraft/pr/439",
+        "symptom": "Closing an inactive document tab switches the selection to a different tab.",
+        "confidence": 0.5,
+        "state": "fixed"
+      },
+      {
+        "app": "photocraft",
+        "id": "photocraft/pr/3239",
+        "symptom": "Dragging one panel tab to another dock group moves the whole tab group instead of just that tab.",
+        "confidence": 0.6,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "effectcraft",
+      "pdfcraft",
+      "photocraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "file_io",
+    "members": [
+      {
+        "app": "filmcraft",
+        "id": "filmcraft/pr/390",
+        "symptom": "On Linux, file open and save dialogs hide files with upper-case or mixed-case extensions such as .MP4.",
+        "confidence": 0.85,
+        "state": "fixed"
+      },
+      {
+        "app": "lightcraft",
+        "id": "lightcraft/pr/723",
+        "symptom": "On Linux the open-file dialog does not show files with upper-case extensions such as .JPG.",
+        "confidence": 0.85,
+        "state": "fixed"
+      },
+      {
+        "app": "photocraft",
+        "id": "photocraft/pr/1439",
+        "symptom": "On Linux the Open dialog hides files with uppercase or mixed-case extensions.",
+        "confidence": 0.9,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "filmcraft",
+      "lightcraft",
+      "photocraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "windowing_input",
+    "members": [
+      {
+        "app": "gridcraft",
+        "id": "gridcraft/pr/323",
+        "symptom": "On macOS the red/yellow/green window buttons sit off-centre in the title bar.",
+        "confidence": 0.9,
+        "state": "fixed"
+      },
+      {
+        "app": "vectorcraft",
+        "id": "vectorcraft/pr/972",
+        "symptom": "On macOS the close, minimize and zoom buttons sit too high instead of centred on the app bar.",
+        "confidence": 0.9,
+        "state": "fixed"
+      },
+      {
+        "app": "wordcraft",
+        "id": "wordcraft/pr/255",
+        "symptom": "On macOS the window buttons are not vertically centred in the title bar and crowd nearby buttons.",
+        "confidence": 0.8,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "gridcraft",
+      "vectorcraft",
+      "wordcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "windowing_input",
+    "members": [
+      {
+        "app": "lightcraft",
+        "id": "lightcraft/pr/570",
+        "symptom": "Ctrl+= and Ctrl+- scale the whole interface instead of zooming the document, and Ctrl+0 resets the interface scale.",
+        "confidence": 0.9,
+        "state": "fixed"
+      },
+      {
+        "app": "soundcraft",
+        "id": "soundcraft/pr/20",
+        "symptom": "On Windows and Linux, Ctrl keyboard shortcuts do not work or trigger the wrong command.",
+        "confidence": 0.8,
+        "state": "fixed"
+      },
+      {
+        "app": "wordcraft",
+        "id": "wordcraft/pr/36",
+        "symptom": "Ctrl+- / Ctrl+= / Ctrl+0 zoom the whole window and also trigger the app's own shortcut, e.g. deleting selected text.",
+        "confidence": 0.75,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "lightcraft",
+      "soundcraft",
+      "wordcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "gpu_rendering",
+    "members": [
+      {
+        "app": "lightcraft",
+        "id": "lightcraft/pr/779",
+        "symptom": "On older Intel Macs the window never opens and the log says the parent device is lost.",
+        "confidence": 0.95,
+        "state": "fixed"
+      },
+      {
+        "app": "pdfcraft",
+        "id": "pdfcraft/pr/530",
+        "symptom": "The app quits at startup with a device-lost error on some GPUs, such as Intel Macs.",
+        "confidence": 0.95,
+        "state": "fixed"
+      },
+      {
+        "app": "photocraft",
+        "id": "photocraft/pr/3171",
+        "symptom": "On older Intel Macs (Iris Pro, macOS Monterey) the app crashes at startup with a 'Parent device is lost' GPU error.",
+        "confidence": 0.85,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "lightcraft",
+      "pdfcraft",
+      "photocraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "file_io",
+    "members": [
+      {
+        "app": "lightcraft",
+        "id": "lightcraft/pr/407",
+        "symptom": "Opening a file dialog leaves the menu drawn on screen and the app is reported as not responding.",
+        "confidence": 0.9,
+        "state": "fixed"
+      },
+      {
+        "app": "lightcraft",
+        "id": "lightcraft/pr/413",
+        "symptom": "Opening a file dialog leaves the menu drawn on screen and the app is reported as not responding.",
+        "confidence": 0.85,
+        "state": "fixed"
+      },
+      {
+        "app": "photocraft",
+        "id": "photocraft/pr/1071",
+        "symptom": "Opening a file dialog crashes the app on macOS or makes the compositor report the app as not responding on Linux.",
+        "confidence": 0.9,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "lightcraft",
+      "photocraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "automation_control",
+    "members": [
+      {
+        "app": "cadcraft",
+        "id": "cadcraft/pr/120",
+        "symptom": "The command-line tool ignores or misreads unknown options and keeps running instead of stopping with an error.",
+        "confidence": 0.75,
+        "state": "fixed"
+      },
+      {
+        "app": "wordcraft",
+        "id": "wordcraft/pr/166",
+        "symptom": "The command-line tool ignores or misreads unknown options after it has already started work on files.",
+        "confidence": 0.75,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "cadcraft",
+      "wordcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "file_io",
+    "members": [
+      {
+        "app": "cadcraft",
+        "id": "cadcraft/pr/172",
+        "symptom": "Closing a document with unsaved changes discards them without asking.",
+        "confidence": 0.7,
+        "state": "fixed"
+      },
+      {
+        "app": "designcraft",
+        "id": "designcraft/pr/146",
+        "symptom": "Closing a document with unsaved changes (Ctrl/Cmd+W or tab ×) closes it without asking and loses the edits.",
+        "confidence": 0.8,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "cadcraft",
+      "designcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "ui_theme",
+    "members": [
+      {
+        "app": "cadcraft",
+        "id": "cadcraft/pr/202",
+        "symptom": "On macOS the window title text is not vertically aligned with the traffic-light buttons.",
+        "confidence": 0.9,
+        "state": "fixed"
+      },
+      {
+        "app": "pdfcraft",
+        "id": "pdfcraft/pr/1055",
+        "symptom": "On macOS the window's traffic-light buttons are not vertically centred in the top tab strip or title bar.",
+        "confidence": 0.85,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "cadcraft",
+      "pdfcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "automation_control",
+    "members": [
+      {
+        "app": "cadcraft",
+        "id": "cadcraft/pr/348",
+        "symptom": "A control request that times out still runs later, so a client that retries applies the change twice.",
+        "confidence": 0.85,
+        "state": "fixed"
+      },
+      {
+        "app": "photocraft",
+        "id": "photocraft/pr/1525",
+        "symptom": "An automation request that timed out still runs later, so retrying it applies the edit twice.",
+        "confidence": 0.85,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "cadcraft",
+      "photocraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "windowing_input",
+    "members": [
+      {
+        "app": "cadcraft",
+        "id": "cadcraft/pr/355",
+        "symptom": "Ctrl/Cmd+C, X and V keyboard shortcuts do nothing, and only the Edit menu works.",
+        "confidence": 0.6,
+        "state": "fixed"
+      },
+      {
+        "app": "photocraft",
+        "id": "photocraft/pr/2568",
+        "symptom": "On macOS with the native menu bar, Cmd+C/X/V does not work in text fields.",
+        "confidence": 0.85,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "cadcraft",
+      "photocraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "ui_theme",
+    "members": [
+      {
+        "app": "cadcraft",
+        "id": "cadcraft/pr/54",
+        "symptom": "Menus and tooltips show macOS ⌘ and ⇧ shortcut symbols on Windows, Linux and the web.",
+        "confidence": 0.85,
+        "state": "fixed"
+      },
+      {
+        "app": "pdfcraft",
+        "id": "pdfcraft/pr/695",
+        "symptom": "On Windows and Linux, menus and tooltips show macOS ⌘ shortcuts instead of Ctrl.",
+        "confidence": 0.8,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "cadcraft",
+      "pdfcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "other",
+    "members": [
+      {
+        "app": "cadcraft",
+        "id": "cadcraft/pr/568",
+        "symptom": "The command-line tool panics with exit code 101 when its output is piped into a command that closes early, such as head.",
+        "confidence": 0.9,
+        "state": "fixed"
+      },
+      {
+        "app": "wordcraft",
+        "id": "wordcraft/pr/510",
+        "symptom": "Piping CLI output into a reader that closes early, such as head, makes the CLI panic with a Broken pipe error and exit 101.",
+        "confidence": 0.9,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "cadcraft",
+      "wordcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "windowing_input",
+    "members": [
+      {
+        "app": "cadcraft",
+        "id": "cadcraft/pr/64",
+        "symptom": "On a Mac, pressing the delete key does not delete the selected objects.",
+        "confidence": 0.6,
+        "state": "fixed"
+      },
+      {
+        "app": "photocraft",
+        "id": "photocraft/pr/1565",
+        "symptom": "Pressing Delete or Backspace does not delete the selected item after a slider, dropdown or list row has been clicked.",
+        "confidence": 0.75,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "cadcraft",
+      "photocraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "file_io",
+    "members": [
+      {
+        "app": "craft-launcher",
+        "id": "craft-launcher/pr/54",
+        "symptom": "On Windows, 'Show in Explorer' opens the Documents folder instead of the folder containing the file.",
+        "confidence": 0.8,
+        "state": "fixed"
+      },
+      {
+        "app": "lightcraft",
+        "id": "lightcraft/pr/368",
+        "symptom": "On Windows, Show in Explorer opens Documents instead of selecting a file whose path has a space.",
+        "confidence": 0.8,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "craft-launcher",
+      "lightcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "windowing_input",
+    "members": [
+      {
+        "app": "designcraft",
+        "id": "designcraft/pr/111",
+        "symptom": "On macOS, pressing Cmd+A, Cmd+C, Cmd+V or Cmd+Z in a text field acts on the document instead of the field's text.",
+        "confidence": 0.85,
+        "state": "fixed"
+      },
+      {
+        "app": "pdfcraft",
+        "id": "pdfcraft/pr/930",
+        "symptom": "On macOS, Cmd+W does nothing when no document is open instead of closing the window.",
+        "confidence": 0.85,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "designcraft",
+      "pdfcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "automation_control",
+    "members": [
+      {
+        "app": "designcraft",
+        "id": "designcraft/pr/254",
+        "symptom": "Running the command-line tool with --help prints usage to stderr and exits with code 1.",
+        "confidence": 0.75,
+        "state": "fixed"
+      },
+      {
+        "app": "filmcraft",
+        "id": "filmcraft/pr/357",
+        "symptom": "Running the command-line tool with --help prints 'missing subcommand' and exits with code 2 instead of showing usage.",
+        "confidence": 0.6,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "designcraft",
+      "filmcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "text_fonts_i18n",
+    "members": [
+      {
+        "app": "effectcraft",
+        "id": "effectcraft/pr/298",
+        "symptom": "Japanese punctuation in vertical text appears in the wrong place and orientation.",
+        "confidence": 0.5,
+        "state": "fixed"
+      },
+      {
+        "app": "filmcraft",
+        "id": "filmcraft/pr/277",
+        "symptom": "In vertical Japanese text, punctuation such as 、。「」ー shows as horizontal glyphs in the wrong position.",
+        "confidence": 0.6,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "effectcraft",
+      "filmcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "ui_theme",
+    "members": [
+      {
+        "app": "effectcraft",
+        "id": "effectcraft/pr/354",
+        "symptom": "The focused panel's outline is partly hidden by the panel's contents.",
+        "confidence": 0.7,
+        "state": "fixed"
+      },
+      {
+        "app": "photocraft",
+        "id": "photocraft/pr/2226",
+        "symptom": "Borders between the title bar, toolbar and panels look two pixels thick in places instead of a hairline.",
+        "confidence": 0.6,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "effectcraft",
+      "photocraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "ui_theme",
+    "members": [
+      {
+        "app": "effectcraft",
+        "id": "effectcraft/pr/629",
+        "symptom": "After closing every panel, picking a panel from the Window menu does not put it back into the empty dock.",
+        "confidence": 0.6,
+        "state": "fixed"
+      },
+      {
+        "app": "filmcraft",
+        "id": "filmcraft/pr/759",
+        "symptom": "After maximizing a panel from its menu there is no way to restore the layout, and closing the last panel leaves an empty dock that no panel can be reopened into.",
+        "confidence": 0.6,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "effectcraft",
+      "filmcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "ui_theme",
+    "members": [
+      {
+        "app": "effectcraft",
+        "id": "effectcraft/pr/638",
+        "symptom": "Colour pickers have no hex field, and some dialogs save picked colours darker than what was chosen.",
+        "confidence": 0.75,
+        "state": "fixed"
+      },
+      {
+        "app": "photocraft",
+        "id": "photocraft/pr/2571",
+        "symptom": "Some colour swatches open a basic popup instead of the full color picker, and they show and store the wrong shade.",
+        "confidence": 0.65,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "effectcraft",
+      "photocraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "automation_control",
+    "members": [
+      {
+        "app": "filmcraft",
+        "id": "filmcraft/pr/256",
+        "symptom": "Sending Ctrl+ key chords through the automation control channel does not trigger shortcuts on Windows or Linux; only Cmd+ works.",
+        "confidence": 0.85,
+        "state": "fixed"
+      },
+      {
+        "app": "photocraft",
+        "id": "photocraft/pr/2430",
+        "symptom": "Sending a key with the Ctrl modifier over the automation channel succeeds but triggers no shortcut on Windows or Linux.",
+        "confidence": 0.9,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "filmcraft",
+      "photocraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "automation_control",
+    "members": [
+      {
+        "app": "filmcraft",
+        "id": "filmcraft/pr/297",
+        "symptom": "The command-line tool panics with a broken pipe error when its output is piped to head.",
+        "confidence": 0.7,
+        "state": "fixed"
+      },
+      {
+        "app": "vectorcraft",
+        "id": "vectorcraft/pr/1042",
+        "symptom": "The command-line tool reports a broken pipe and exits with an error when the program reading its output closes early.",
+        "confidence": 0.6,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "filmcraft",
+      "vectorcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "windowing_input",
+    "members": [
+      {
+        "app": "filmcraft",
+        "id": "filmcraft/pr/599",
+        "symptom": "The app freezes on the first frame of a drag in a panel.",
+        "confidence": 0.6,
+        "state": "fixed"
+      },
+      {
+        "app": "gridcraft",
+        "id": "gridcraft/pr/272",
+        "symptom": "Clicking a ribbon button freezes the app.",
+        "confidence": 0.6,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "filmcraft",
+      "gridcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "file_io",
+    "members": [
+      {
+        "app": "gridcraft",
+        "id": "gridcraft/pr/182",
+        "symptom": "In the web build, Export as PDF does nothing and no file is downloaded.",
+        "confidence": 0.6,
+        "state": "fixed"
+      },
+      {
+        "app": "photocraft",
+        "id": "photocraft/pr/1857",
+        "symptom": "In the browser build an export command downloads nothing and fails silently.",
+        "confidence": 0.6,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "gridcraft",
+      "photocraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "security",
+    "members": [
+      {
+        "app": "gridcraft",
+        "id": "gridcraft/pr/231",
+        "symptom": "A small crafted document can use gigabytes of memory when opened.",
+        "confidence": 0.75,
+        "state": "fixed"
+      },
+      {
+        "app": "wordcraft",
+        "id": "wordcraft/pr/363",
+        "symptom": "A small crafted document with many namespace declarations uses gigabytes of memory and the app can be killed for running out of memory.",
+        "confidence": 0.75,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "gridcraft",
+      "wordcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "text_fonts_i18n",
+    "members": [
+      {
+        "app": "gridcraft",
+        "id": "gridcraft/pr/298",
+        "symptom": "Interface symbols such as arrows, check marks and ✕ show up as empty boxes, mostly on Linux.",
+        "confidence": 0.9,
+        "state": "fixed"
+      },
+      {
+        "app": "wordcraft",
+        "id": "wordcraft/pr/305",
+        "symptom": "Some buttons show empty boxes instead of symbols such as the close X or pencil.",
+        "confidence": 0.9,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "gridcraft",
+      "wordcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "windowing_input",
+    "members": [
+      {
+        "app": "gridcraft",
+        "id": "gridcraft/pr/316",
+        "symptom": "On macOS a crash or error report appears every time the app is quit.",
+        "confidence": 0.95,
+        "state": "fixed"
+      },
+      {
+        "app": "vectorcraft",
+        "id": "vectorcraft/pr/670",
+        "symptom": "On Macs with a Touch Bar, every quit ends in a macOS crash report.",
+        "confidence": 0.9,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "gridcraft",
+      "vectorcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "text_fonts_i18n",
+    "members": [
+      {
+        "app": "lightcraft",
+        "id": "lightcraft/pr/750",
+        "symptom": "Thai, Arabic and other non-Latin, non-CJK file and folder names show as empty boxes.",
+        "confidence": 0.9,
+        "state": "fixed"
+      },
+      {
+        "app": "photocraft",
+        "id": "photocraft/pr/2109",
+        "symptom": "In the browser, non-Latin text such as Arabic shows as boxes in the default font.",
+        "confidence": 0.6,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "lightcraft",
+      "photocraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "windowing_input",
+    "members": [
+      {
+        "app": "lightcraft",
+        "id": "lightcraft/pr/799",
+        "symptom": "A notched mouse wheel doesn't zoom or scroll the canvas.",
+        "confidence": 0.55,
+        "state": "fixed"
+      },
+      {
+        "app": "wordcraft",
+        "id": "wordcraft/pr/179",
+        "symptom": "Ctrl/Cmd + mouse wheel or trackpad pinch over the document does not zoom.",
+        "confidence": 0.75,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "lightcraft",
+      "wordcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "gpu_rendering",
+    "members": [
+      {
+        "app": "pdfcraft",
+        "id": "pdfcraft/pr/1088",
+        "symptom": "On Linux hybrid-GPU laptops whose Wayland compositor runs on the discrete GPU, the window opens empty with no error.",
+        "confidence": 0.8,
+        "state": "fixed"
+      },
+      {
+        "app": "vectorcraft",
+        "id": "vectorcraft/pr/1200",
+        "symptom": "On Linux hybrid-GPU laptops whose Wayland compositor runs on the discrete GPU, the window opens empty with no error.",
+        "confidence": 0.9,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "pdfcraft",
+      "vectorcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "ui_theme",
+    "members": [
+      {
+        "app": "pdfcraft",
+        "id": "pdfcraft/pr/416",
+        "symptom": "With many documents open, tabs overflow off the window and can't be reached.",
+        "confidence": 0.75,
+        "state": "fixed"
+      },
+      {
+        "app": "vectorcraft",
+        "id": "vectorcraft/pr/749",
+        "symptom": "With many documents open, tabs past the edge of the tab strip can't be reached.",
+        "confidence": 0.7,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "pdfcraft",
+      "vectorcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "gpu_rendering",
+    "members": [
+      {
+        "app": "pdfcraft",
+        "id": "pdfcraft/pr/631",
+        "symptom": "On Windows desktops with two GPUs the window stays black or the display driver resets.",
+        "confidence": 0.9,
+        "state": "fixed"
+      },
+      {
+        "app": "vectorcraft",
+        "id": "vectorcraft/pr/851",
+        "symptom": "On Windows desktops with two GPUs the window goes black or the graphics device is lost at startup.",
+        "confidence": 0.95,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "pdfcraft",
+      "vectorcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "packaging_install",
+    "members": [
+      {
+        "app": "pdfcraft",
+        "id": "pdfcraft/pr/823",
+        "symptom": "On macOS, the app in the DMG fails codesign --verify --strict because of Finder info detritus.",
+        "confidence": 0.9,
+        "state": "fixed"
+      },
+      {
+        "app": "vectorcraft",
+        "id": "vectorcraft/pr/1121",
+        "symptom": "The app inside the macOS release DMG fails codesign --verify --strict --deep with 'resource fork, Finder information, or similar detritus not allowed', so MDM checks report it damaged.",
+        "confidence": 0.95,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "pdfcraft",
+      "vectorcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "file_io",
+    "members": [
+      {
+        "app": "pdfcraft",
+        "id": "pdfcraft/pr/856",
+        "symptom": "In the browser, reloading or closing the tab silently discards unsaved edits without a warning.",
+        "confidence": 0.85,
+        "state": "fixed"
+      },
+      {
+        "app": "photocraft",
+        "id": "photocraft/pr/1424",
+        "symptom": "In the browser build, closing or reloading the tab discards unsaved work without asking.",
+        "confidence": 0.9,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "pdfcraft",
+      "photocraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "ui_theme",
+    "members": [
+      {
+        "app": "pdfcraft",
+        "id": "pdfcraft/pr/881",
+        "symptom": "On Linux, the 'use system setting' theme does not follow the desktop's dark or light mode.",
+        "confidence": 0.9,
+        "state": "fixed"
+      },
+      {
+        "app": "photocraft",
+        "id": "photocraft/pr/2941",
+        "symptom": "On Linux with the theme set to follow the system, an idle window stays dark even though the system uses a light theme.",
+        "confidence": 0.8,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "pdfcraft",
+      "photocraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "windowing_input",
+    "members": [
+      {
+        "app": "photocraft",
+        "id": "photocraft/pr/1718",
+        "symptom": "Zooming stops at 3200% and each further wheel notch slides the view toward the pointer instead of zooming.",
+        "confidence": 0.5,
+        "state": "fixed"
+      },
+      {
+        "app": "vectorcraft",
+        "id": "vectorcraft/pr/896",
+        "symptom": "With zoom-with-mouse-wheel turned on, each wheel notch jumps the zoom instead of gliding smoothly.",
+        "confidence": 0.5,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "photocraft",
+      "vectorcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "windowing_input",
+    "members": [
+      {
+        "app": "photocraft",
+        "id": "photocraft/pr/1912",
+        "symptom": "Paste inserts an old image even after text or something else has been copied to the system clipboard.",
+        "confidence": 0.75,
+        "state": "fixed"
+      },
+      {
+        "app": "wordcraft",
+        "id": "wordcraft/pr/272",
+        "symptom": "Pasting an image from the system clipboard says the clipboard is empty.",
+        "confidence": 0.8,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "photocraft",
+      "wordcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "ui_theme",
+    "members": [
+      {
+        "app": "lightcraft",
+        "id": "lightcraft/pr/402",
+        "symptom": "In-window menus open over the menu bar and cover the menu titles.",
+        "confidence": 0.9,
+        "state": "fixed"
+      },
+      {
+        "app": "lightcraft",
+        "id": "lightcraft/pr/405",
+        "symptom": "In-window menus open over the menu bar and cover the menu titles.",
+        "confidence": 0.7,
+        "state": "fixed"
+      },
+      {
+        "app": "lightcraft",
+        "id": "lightcraft/pr/422",
+        "symptom": "In the in-window menu bar, moving the pointer over another menu title while a menu is open does not switch to that menu.",
+        "confidence": 0.85,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "lightcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "text_fonts_i18n",
+    "members": [
+      {
+        "app": "pdfcraft",
+        "id": "pdfcraft/pr/892",
+        "symptom": "Case-insensitive search doesn't find Turkish words containing dotted or dotless i in a different case.",
+        "confidence": 0.6,
+        "state": "fixed"
+      },
+      {
+        "app": "pdfcraft",
+        "id": "pdfcraft/pr/937",
+        "symptom": "Searching filters and the command palette miss matches with Turkish İ/ı when the case differs.",
+        "confidence": 0.75,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "pdfcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "windowing_input",
+    "members": [
+      {
+        "app": "photocraft",
+        "id": "photocraft/pr/1743",
+        "symptom": "Pressing Cmd+V once pastes the content several times.",
+        "confidence": 0.8,
+        "state": "fixed"
+      },
+      {
+        "app": "photocraft",
+        "id": "photocraft/pr/2643",
+        "symptom": "In the web build, a single Ctrl/Cmd+V pastes twice when the clipboard holds text.",
+        "confidence": 0.85,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "photocraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "windowing_input",
+    "members": [
+      {
+        "app": "photocraft",
+        "id": "photocraft/pr/2003",
+        "symptom": "On some Linux desktops Alt-click does nothing in the canvas because the window manager takes it to move the window.",
+        "confidence": 0.75,
+        "state": "fixed"
+      },
+      {
+        "app": "photocraft",
+        "id": "photocraft/pr/3164",
+        "symptom": "On desktops that move windows with Alt+drag, Alt-click inside the app does nothing.",
+        "confidence": 0.6,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "photocraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "windowing_input",
+    "members": [
+      {
+        "app": "photocraft",
+        "id": "photocraft/pr/2172",
+        "symptom": "Popup menu buttons need a click and then a second click; you can't press, drag onto an item and release to pick it.",
+        "confidence": 0.6,
+        "state": "fixed"
+      },
+      {
+        "app": "photocraft",
+        "id": "photocraft/pr/2854",
+        "symptom": "Dropdowns need two clicks; pressing, dragging onto an option and releasing chooses nothing.",
+        "confidence": 0.85,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "photocraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "automation_control",
+    "members": [
+      {
+        "app": "photocraft",
+        "id": "photocraft/pr/2228",
+        "symptom": "Automation commands with misspelled, wrongly typed or out-of-range parameters report success and silently use defaults or clamped values.",
+        "confidence": 0.6,
+        "state": "fixed"
+      },
+      {
+        "app": "photocraft",
+        "id": "photocraft/pr/2656",
+        "symptom": "Automation input commands with misspelled or wrong-typed parameters report success and act on defaults.",
+        "confidence": 0.8,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "photocraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "windowing_input",
+    "members": [
+      {
+        "app": "photocraft",
+        "id": "photocraft/pr/2772",
+        "symptom": "A quick two-finger trackpad tap opens a popup that disappears at once.",
+        "confidence": 0.6,
+        "state": "fixed"
+      },
+      {
+        "app": "photocraft",
+        "id": "photocraft/pr/3029",
+        "symptom": "Right-click or two-finger trackpad context menus flash open and close immediately.",
+        "confidence": 0.7,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "photocraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "ui_theme",
+    "members": [
+      {
+        "app": "vectorcraft",
+        "id": "vectorcraft/pr/1080",
+        "symptom": "Unchecked checkboxes in the Preferences dialog have no visible outline in some themes.",
+        "confidence": 0.6,
+        "state": "fixed"
+      },
+      {
+        "app": "vectorcraft",
+        "id": "vectorcraft/pr/1112",
+        "symptom": "Unchecked checkboxes are invisible and checked ones show only a bare tick.",
+        "confidence": 0.75,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "vectorcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "file_io",
+    "members": [
+      {
+        "app": "vectorcraft",
+        "id": "vectorcraft/pr/1135",
+        "symptom": "Pasting an image copied from a web browser pastes its HTML markup or address as text instead of the picture.",
+        "confidence": 0.7,
+        "state": "fixed"
+      },
+      {
+        "app": "vectorcraft",
+        "id": "vectorcraft/pr/616",
+        "symptom": "Pasting an image copied in a browser pastes its web address as text instead of the picture.",
+        "confidence": 0.75,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "vectorcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "file_io",
+    "members": [
+      {
+        "app": "cadcraft",
+        "id": "cadcraft/pr/193",
+        "symptom": "In the browser version, Save reports success and clears the unsaved marker but no file is downloaded.",
+        "confidence": 0.75,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "cadcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "file_io",
+    "members": [
+      {
+        "app": "cadcraft",
+        "id": "cadcraft/pr/199",
+        "symptom": "In the browser version, File > Open does nothing and dropped files are ignored.",
+        "confidence": 0.75,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "cadcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "text_fonts_i18n",
+    "members": [
+      {
+        "app": "cadcraft",
+        "id": "cadcraft/pr/321",
+        "symptom": "Builds that claim to bundle extra fonts embed none, so CJK or Arabic text shows as missing-glyph boxes, especially on the web.",
+        "confidence": 0.9,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "cadcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "windowing_input",
+    "members": [
+      {
+        "app": "cadcraft",
+        "id": "cadcraft/pr/47",
+        "symptom": "Closing the window or quitting discards unsaved changes without asking to save.",
+        "confidence": 0.85,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "cadcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "gpu_rendering",
+    "members": [
+      {
+        "app": "craft-launcher",
+        "id": "craft-launcher/pr/105",
+        "symptom": "On Windows PCs with old GPUs that lack D3D12 support, the app crashes at startup with a 'Failed to wait for GPU to come idle' error.",
+        "confidence": 0.9,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "craft-launcher"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "build_ci",
+    "members": [
+      {
+        "app": "craft-launcher",
+        "id": "craft-launcher/pr/17",
+        "symptom": "UI tests sometimes crash with a segfault when run in parallel.",
+        "confidence": 0.85,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "craft-launcher"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "security",
+    "members": [
+      {
+        "app": "craft-launcher",
+        "id": "craft-launcher/pr/43",
+        "symptom": "On some Windows PCs update checks or downloads fail with 'invalid peer certificate: UnknownIssuer' and the app shows as offline.",
+        "confidence": 0.8,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "craft-launcher"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "windowing_input",
+    "members": [
+      {
+        "app": "craft-launcher",
+        "id": "craft-launcher/pr/77",
+        "symptom": "Choosing Quit from the tray does nothing while the window is minimized; the app only closes once it is restored.",
+        "confidence": 0.7,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "craft-launcher"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "ui_theme",
+    "members": [
+      {
+        "app": "deckcraft",
+        "id": "deckcraft/pr/47",
+        "symptom": "Clicking the hex code field in a colour drop-down closes the menu, so a hex colour can't be typed.",
+        "confidence": 0.75,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "deckcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "ui_theme",
+    "members": [
+      {
+        "app": "designcraft",
+        "id": "designcraft/pr/112",
+        "symptom": "In a small window, toolbars are cut off and some tools can't be reached.",
+        "confidence": 0.75,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "designcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "logging_diagnostics",
+    "members": [
+      {
+        "app": "designcraft",
+        "id": "designcraft/pr/122",
+        "symptom": "Warnings and errors are never recorded anywhere, so a user has no log to attach to a bug report.",
+        "confidence": 0.9,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "designcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "windowing_input",
+    "members": [
+      {
+        "app": "designcraft",
+        "id": "designcraft/pr/138",
+        "symptom": "In the browser build, pressing AltGr or other named keys while editing text types the key's name, such as 'AltGraph'.",
+        "confidence": 0.85,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "designcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "security",
+    "members": [
+      {
+        "app": "designcraft",
+        "id": "designcraft/pr/153",
+        "symptom": "Temporary print files and recovery files could be exposed or redirected through symlinks, and release inputs were not pinned.",
+        "confidence": 0.8,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "designcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "windowing_input",
+    "members": [
+      {
+        "app": "designcraft",
+        "id": "designcraft/pr/239",
+        "symptom": "Pressing a command shortcut that opens the command palette also runs the palette's first entry, so the palette closes right away.",
+        "confidence": 0.7,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "designcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "ui_theme",
+    "members": [
+      {
+        "app": "designcraft",
+        "id": "designcraft/pr/249",
+        "symptom": "Menu entries only highlight and respond to clicks over their text, not the whole row.",
+        "confidence": 0.75,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "designcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "windowing_input",
+    "members": [
+      {
+        "app": "designcraft",
+        "id": "designcraft/pr/264",
+        "symptom": "The keyboard shortcut recorder saves a combination as soon as a modifier is pressed, so it never captures the actual key; some workspace presets also open the default workspace instead of their own panels.",
+        "confidence": 0.7,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "designcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "ui_theme",
+    "members": [
+      {
+        "app": "designcraft",
+        "id": "designcraft/pr/281",
+        "symptom": "At larger UI scales, long menus and dialogs run off the screen and their buttons cannot be reached.",
+        "confidence": 0.85,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "designcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "automation_control",
+    "members": [
+      {
+        "app": "effectcraft",
+        "id": "effectcraft/pr/280",
+        "symptom": "Unsaved work is lost when the headless MCP server is restarted by its client.",
+        "confidence": 0.7,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "effectcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "gpu_rendering",
+    "members": [
+      {
+        "app": "effectcraft",
+        "id": "effectcraft/pr/283",
+        "symptom": "Launching the app twice quickly can switch window graphics to OpenGL for good, after which the app never starts.",
+        "confidence": 0.75,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "effectcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "text_fonts_i18n",
+    "members": [
+      {
+        "app": "effectcraft",
+        "id": "effectcraft/pr/310",
+        "symptom": "CJK text renders as nothing when font fallback picks an installed font that maps those characters to empty glyphs.",
+        "confidence": 0.75,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "effectcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "performance",
+    "members": [
+      {
+        "app": "effectcraft",
+        "id": "effectcraft/pr/445",
+        "symptom": "The interface is slower when shown in a translated language because each string is looked up by scanning the whole catalog every frame.",
+        "confidence": 0.75,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "effectcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "automation_control",
+    "members": [
+      {
+        "app": "effectcraft",
+        "id": "effectcraft/pr/458",
+        "symptom": "The MCP automation server hangs instead of exiting when it can't write output and stdin is still open.",
+        "confidence": 0.7,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "effectcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "text_fonts_i18n",
+    "members": [
+      {
+        "app": "effectcraft",
+        "id": "effectcraft/pr/459",
+        "symptom": "Typing Arabic or other non-Latin names fails because switching keyboard layout with Alt+Shift focuses the menu bar, and Arabic, Hebrew, Indic and Thai text shows as boxes.",
+        "confidence": 0.85,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "effectcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "text_fonts_i18n",
+    "members": [
+      {
+        "app": "effectcraft",
+        "id": "effectcraft/pr/490",
+        "symptom": "After choosing a non-English language, some tooltips, option lists and formatted labels stay in English.",
+        "confidence": 0.75,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "effectcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "packaging_install",
+    "members": [
+      {
+        "app": "effectcraft",
+        "id": "effectcraft/pr/582",
+        "symptom": "On macOS, double-clicking a project file in Finder or using open -a launches the app without opening the document, and the bundle claims another app's file extension.",
+        "confidence": 0.9,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "effectcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "gpu_rendering",
+    "members": [
+      {
+        "app": "effectcraft",
+        "id": "effectcraft/pr/589",
+        "symptom": "On Windows with AMD GPUs the app crashes on every launch just as its window appears.",
+        "confidence": 0.9,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "effectcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "text_fonts_i18n",
+    "members": [
+      {
+        "app": "effectcraft",
+        "id": "effectcraft/pr/616",
+        "symptom": "Korean (Hangul) text in the interface shows as boxes on macOS.",
+        "confidence": 0.9,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "effectcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "windowing_input",
+    "members": [
+      {
+        "app": "effectcraft",
+        "id": "effectcraft/pr/626",
+        "symptom": "Recording a keyboard shortcut also types the key into the field, and shortcuts using the plus key never fire.",
+        "confidence": 0.7,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "effectcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "file_io",
+    "members": [
+      {
+        "app": "effectcraft",
+        "id": "effectcraft/pr/627",
+        "symptom": "On macOS, exporting or rendering an unsaved document with no output folder set fails because it tries to write to the root folder.",
+        "confidence": 0.7,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "effectcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "gpu_rendering",
+    "members": [
+      {
+        "app": "effectcraft",
+        "id": "effectcraft/pr/674",
+        "symptom": "On some GPUs such as Adreno, the app crashes on buffer allocation failure or when the graphics device is lost.",
+        "confidence": 0.7,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "effectcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "gpu_rendering",
+    "members": [
+      {
+        "app": "effectcraft",
+        "id": "effectcraft/pr/675",
+        "symptom": "When the graphics device is lost, the window closes without telling the user why or where the recovery copy is.",
+        "confidence": 0.75,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "effectcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "other",
+    "members": [
+      {
+        "app": "filmcraft",
+        "id": "filmcraft/pr/237",
+        "symptom": "In the browser version, background jobs crash with 'time not implemented on this platform'.",
+        "confidence": 0.7,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "filmcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "ui_theme",
+    "members": [
+      {
+        "app": "filmcraft",
+        "id": "filmcraft/pr/270",
+        "symptom": "On Windows and Linux, status-bar hints and tooltips name the Mac keys Opt and Cmd instead of Alt and Ctrl.",
+        "confidence": 0.75,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "filmcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "packaging_install",
+    "members": [
+      {
+        "app": "filmcraft",
+        "id": "filmcraft/pr/303",
+        "symptom": "The Windows portable version writes preferences, logs and recovery files to %APPDATA% instead of next to the executable.",
+        "confidence": 0.9,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "filmcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "text_fonts_i18n",
+    "members": [
+      {
+        "app": "filmcraft",
+        "id": "filmcraft/pr/450",
+        "symptom": "With the interface in Japanese or another CJK language, panel tab labels overlap each other.",
+        "confidence": 0.7,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "filmcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "build_ci",
+    "members": [
+      {
+        "app": "filmcraft",
+        "id": "filmcraft/pr/488",
+        "symptom": "On Windows checkouts with CRLF line endings, the translation source-scan test fails with 'use a plain string literal in tl! and tlf!'.",
+        "confidence": 0.75,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "filmcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "ui_theme",
+    "members": [
+      {
+        "app": "filmcraft",
+        "id": "filmcraft/pr/555",
+        "symptom": "In the light theme some panels and controls stay dark.",
+        "confidence": 0.7,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "filmcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "automation_control",
+    "members": [
+      {
+        "app": "filmcraft",
+        "id": "filmcraft/pr/567",
+        "symptom": "The command-line tool exits with panic status 101 when its stderr pipe is closed, even after successful work.",
+        "confidence": 0.75,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "filmcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "security",
+    "members": [
+      {
+        "app": "filmcraft",
+        "id": "filmcraft/pr/595",
+        "symptom": "The CLI's MCP server accepts unknown options such as --automation-read-root without error, so it looks sandboxed when it is not.",
+        "confidence": 0.8,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "filmcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "gpu_rendering",
+    "members": [
+      {
+        "app": "filmcraft",
+        "id": "filmcraft/pr/633",
+        "symptom": "In VMs or containers without GPU access, rendering runs on the CPU with heavy lag and nothing explains why.",
+        "confidence": 0.8,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "filmcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "windowing_input",
+    "members": [
+      {
+        "app": "filmcraft",
+        "id": "filmcraft/pr/657",
+        "symptom": "Clicking help or report-an-issue links does not open the web browser.",
+        "confidence": 0.9,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "filmcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "file_io",
+    "members": [
+      {
+        "app": "filmcraft",
+        "id": "filmcraft/pr/677",
+        "symptom": "Files with uppercase extensions such as .MOV or .JPG can't be imported on Linux.",
+        "confidence": 0.85,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "filmcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "packaging_install",
+    "members": [
+      {
+        "app": "filmcraft",
+        "id": "filmcraft/pr/692",
+        "symptom": "On macOS the app never asks for microphone permission and records no audio input.",
+        "confidence": 0.8,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "filmcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "file_io",
+    "members": [
+      {
+        "app": "filmcraft",
+        "id": "filmcraft/pr/758",
+        "symptom": "Quitting or closing the window with unsaved changes exits without asking to save, so the next launch always offers recovery.",
+        "confidence": 0.8,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "filmcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "gpu_rendering",
+    "members": [
+      {
+        "app": "filmcraft",
+        "id": "filmcraft/pr/761",
+        "symptom": "A command-line tool built on its own crashes or fails when GPU rendering is enabled.",
+        "confidence": 0.7,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "filmcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "text_fonts_i18n",
+    "members": [
+      {
+        "app": "filmcraft",
+        "id": "filmcraft/pr/777",
+        "symptom": "On macOS the app holds gigabytes of memory from launch with nothing open.",
+        "confidence": 0.85,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "filmcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "other",
+    "members": [
+      {
+        "app": "gridcraft",
+        "id": "gridcraft/pr/125",
+        "symptom": "In the web build, an ordinary edit crashes with 'RuntimeError: unreachable'.",
+        "confidence": 0.8,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "gridcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "windowing_input",
+    "members": [
+      {
+        "app": "gridcraft",
+        "id": "gridcraft/pr/164",
+        "symptom": "On macOS, opening a document from Finder, the Dock or `open -a` shows an error that the app cannot open files in this format.",
+        "confidence": 0.95,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "gridcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "automation_control",
+    "members": [
+      {
+        "app": "gridcraft",
+        "id": "gridcraft/pr/184",
+        "symptom": "When connected to the desktop app, listing commands with a search term still returns every command.",
+        "confidence": 0.7,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "gridcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "automation_control",
+    "members": [
+      {
+        "app": "gridcraft",
+        "id": "gridcraft/pr/185",
+        "symptom": "Headless open or save calls with no file path report success but do nothing.",
+        "confidence": 0.7,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "gridcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "text_fonts_i18n",
+    "members": [
+      {
+        "app": "gridcraft",
+        "id": "gridcraft/pr/277",
+        "symptom": "On some Linux systems the app panics at startup with an error parsing a system TTF/OTF font file.",
+        "confidence": 0.9,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "gridcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "packaging_install",
+    "members": [
+      {
+        "app": "gridcraft",
+        "id": "gridcraft/pr/321",
+        "symptom": "The app is not registered as a handler for file types it can open, so opening those files from the file manager doesn't work.",
+        "confidence": 0.75,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "gridcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "text_fonts_i18n",
+    "members": [
+      {
+        "app": "gridcraft",
+        "id": "gridcraft/pr/35",
+        "symptom": "Dropdown buttons show an empty box instead of a down arrow.",
+        "confidence": 0.85,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "gridcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "security",
+    "members": [
+      {
+        "app": "gridcraft",
+        "id": "gridcraft/pr/351",
+        "symptom": "Password fields in dialogs show the typed password as readable text.",
+        "confidence": 0.7,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "gridcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "windowing_input",
+    "members": [
+      {
+        "app": "gridcraft",
+        "id": "gridcraft/pr/94",
+        "symptom": "After clicking an item, pressing Enter or Space acts on the previously clicked spot instead of the current selection.",
+        "confidence": 0.7,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "gridcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "automation_control",
+    "members": [
+      {
+        "app": "gridcraft",
+        "id": "gridcraft/pr/95",
+        "symptom": "A screenshot timeout over the control server suggests a CLI snapshot command that does not exist.",
+        "confidence": 0.75,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "gridcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "text_fonts_i18n",
+    "members": [
+      {
+        "app": "lightcraft",
+        "id": "lightcraft/pr/411",
+        "symptom": "Localized menu hints show missing-glyph boxes in place of arrow separators.",
+        "confidence": 0.8,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "lightcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "windowing_input",
+    "members": [
+      {
+        "app": "lightcraft",
+        "id": "lightcraft/pr/444",
+        "symptom": "Choosing Quit from the macOS menu bar sometimes crashes the app with a SIGILL crash report.",
+        "confidence": 0.85,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "lightcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "packaging_install",
+    "members": [
+      {
+        "app": "lightcraft",
+        "id": "lightcraft/pr/520",
+        "symptom": "The Windows MSI installs silently with no completion message and no choice of install folder.",
+        "confidence": 0.85,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "lightcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "windowing_input",
+    "members": [
+      {
+        "app": "lightcraft",
+        "id": "lightcraft/pr/561",
+        "symptom": "Ctrl+C and Ctrl+V don't work in text boxes, and Esc or Return don't behave as expected in some fields.",
+        "confidence": 0.7,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "lightcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "gpu_rendering",
+    "members": [
+      {
+        "app": "lightcraft",
+        "id": "lightcraft/pr/655",
+        "symptom": "On large or HiDPI windows the zoomed image is sharp only in a centre band and blurry at the sides.",
+        "confidence": 0.75,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "lightcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "gpu_rendering",
+    "members": [
+      {
+        "app": "lightcraft",
+        "id": "lightcraft/pr/656",
+        "symptom": "The app crashes inside the GPU driver when it quits while a render is running.",
+        "confidence": 0.75,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "lightcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "gpu_rendering",
+    "members": [
+      {
+        "app": "lightcraft",
+        "id": "lightcraft/pr/694",
+        "symptom": "On Intel Macs the app can crash on every launch while compiling GPU shaders.",
+        "confidence": 0.7,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "lightcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "ui_theme",
+    "members": [
+      {
+        "app": "lightcraft",
+        "id": "lightcraft/pr/696",
+        "symptom": "In a menu that scrolls, the scrollbar covers the shortcut text, so its last character is cut off.",
+        "confidence": 0.75,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "lightcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "windowing_input",
+    "members": [
+      {
+        "app": "lightcraft",
+        "id": "lightcraft/pr/721",
+        "symptom": "On Wayland, file dialogs open as separate windows that can be hidden behind the fullscreen app, so the app looks frozen.",
+        "confidence": 0.9,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "lightcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "gpu_rendering",
+    "members": [
+      {
+        "app": "lightcraft",
+        "id": "lightcraft/pr/791",
+        "symptom": "On Macs with wide-gamut (P3) screens, colours on screen look more saturated than in exported files.",
+        "confidence": 0.8,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "lightcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "windowing_input",
+    "members": [
+      {
+        "app": "lightcraft",
+        "id": "lightcraft/pr/809",
+        "symptom": "With a dialog open, clicks and shortcuts still change things behind it.",
+        "confidence": 0.8,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "lightcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "packaging_install",
+    "members": [
+      {
+        "app": "lightcraft",
+        "id": "lightcraft/pr/848",
+        "symptom": "The web release zip contains about 100 MB of build artifacts and leaks build paths.",
+        "confidence": 0.75,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "lightcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "packaging_install",
+    "members": [
+      {
+        "app": "lightcraft",
+        "id": "lightcraft/pr/879",
+        "symptom": "Upgrading with the Windows MSI moves a custom install folder back to Program Files.",
+        "confidence": 0.8,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "lightcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "gpu_rendering",
+    "members": [
+      {
+        "app": "lightcraft",
+        "id": "lightcraft/pr/951",
+        "symptom": "On some Windows machines the app vanishes at startup with no window because of a DX12 shader translation error.",
+        "confidence": 0.95,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "lightcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "packaging_install",
+    "members": [
+      {
+        "app": "lightcraft",
+        "id": "lightcraft/pr/959",
+        "symptom": "On macOS the app in the downloaded DMG fails code signature checks and may refuse to open.",
+        "confidence": 0.8,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "lightcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "ui_theme",
+    "members": [
+      {
+        "app": "pdfcraft",
+        "id": "pdfcraft/pr/1005",
+        "symptom": "Choosing 100% interface size still draws at the system's display scale, such as 200%.",
+        "confidence": 0.85,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "pdfcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "file_io",
+    "members": [
+      {
+        "app": "pdfcraft",
+        "id": "pdfcraft/pr/1007",
+        "symptom": "On Windows, printing scales pages down to about 76%, opens a console window and freezes the interface.",
+        "confidence": 0.7,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "pdfcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "gpu_rendering",
+    "members": [
+      {
+        "app": "pdfcraft",
+        "id": "pdfcraft/pr/1042",
+        "symptom": "On some Windows NVIDIA systems the app exits at startup before a window appears, instead of falling back to OpenGL.",
+        "confidence": 0.9,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "pdfcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "text_fonts_i18n",
+    "members": [
+      {
+        "app": "pdfcraft",
+        "id": "pdfcraft/pr/1065",
+        "symptom": "Page counts on the home/recent documents screen use the wrong plural form in languages like Polish (e.g. \"1 strony\").",
+        "confidence": 0.7,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "pdfcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "packaging_install",
+    "members": [
+      {
+        "app": "pdfcraft",
+        "id": "pdfcraft/pr/1087",
+        "symptom": "On Linux the launcher is not matched to the open window, and the busy cursor keeps spinning after launch until it times out.",
+        "confidence": 0.95,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "pdfcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "ui_theme",
+    "members": [
+      {
+        "app": "pdfcraft",
+        "id": "pdfcraft/pr/376",
+        "symptom": "Long toast messages overflow the window, and the search shortcut hint shows the wrong key on Linux.",
+        "confidence": 0.7,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "pdfcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "packaging_install",
+    "members": [
+      {
+        "app": "pdfcraft",
+        "id": "pdfcraft/pr/382",
+        "symptom": "On Linux the app can't become the default handler in GNOME Files, and double-clicking a file opens another app.",
+        "confidence": 0.85,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "pdfcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "ui_theme",
+    "members": [
+      {
+        "app": "pdfcraft",
+        "id": "pdfcraft/pr/443",
+        "symptom": "Long file names and paths in the recent files list run over the row's details and past the edge of the row.",
+        "confidence": 0.7,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "pdfcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "windowing_input",
+    "members": [
+      {
+        "app": "pdfcraft",
+        "id": "pdfcraft/pr/544",
+        "symptom": "On Windows, dragging the window to a monitor with a different scale leaves it wrongly sized and blurry.",
+        "confidence": 0.95,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "pdfcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "gpu_rendering",
+    "members": [
+      {
+        "app": "pdfcraft",
+        "id": "pdfcraft/pr/558",
+        "symptom": "On Linux desktops with a monitor on each of two GPUs, the app crashes at startup with a surface-lost error.",
+        "confidence": 0.9,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "pdfcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "windowing_input",
+    "members": [
+      {
+        "app": "pdfcraft",
+        "id": "pdfcraft/pr/565",
+        "symptom": "Dragging with the middle mouse button draws or edits with the current tool instead of panning the view.",
+        "confidence": 0.75,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "pdfcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "text_fonts_i18n",
+    "members": [
+      {
+        "app": "pdfcraft",
+        "id": "pdfcraft/pr/567",
+        "symptom": "On Windows the interface comes up in English instead of the user's display language when launched with a neutral C locale.",
+        "confidence": 0.85,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "pdfcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "security",
+    "members": [
+      {
+        "app": "pdfcraft",
+        "id": "pdfcraft/pr/597",
+        "symptom": "Another local user can plant the automation control file and capture the commands and token the CLI sends.",
+        "confidence": 0.85,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "pdfcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "packaging_install",
+    "members": [
+      {
+        "app": "pdfcraft",
+        "id": "pdfcraft/pr/598",
+        "symptom": "The Windows command-line executable shows no version or publisher in Explorer or inventory tools.",
+        "confidence": 0.85,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "pdfcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "file_io",
+    "members": [
+      {
+        "app": "pdfcraft",
+        "id": "pdfcraft/pr/601",
+        "symptom": "Saving a file opened from an Outlook attachment fails or writes to a temporary copy that is later deleted.",
+        "confidence": 0.75,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "pdfcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "gpu_rendering",
+    "members": [
+      {
+        "app": "pdfcraft",
+        "id": "pdfcraft/pr/609",
+        "symptom": "The app crashes at launch when a restored window is larger than the GPU's maximum texture size, for example a large HiDPI window.",
+        "confidence": 0.9,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "pdfcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "gpu_rendering",
+    "members": [
+      {
+        "app": "pdfcraft",
+        "id": "pdfcraft/pr/617",
+        "symptom": "On Windows with an old GPU the app aborts at launch before any window appears.",
+        "confidence": 0.9,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "pdfcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "other",
+    "members": [
+      {
+        "app": "pdfcraft",
+        "id": "pdfcraft/pr/658",
+        "symptom": "On Linux the Print dialog lists only Save as PDF and none of the network driverless printers.",
+        "confidence": 0.7,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "pdfcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "text_fonts_i18n",
+    "members": [
+      {
+        "app": "pdfcraft",
+        "id": "pdfcraft/pr/672",
+        "symptom": "On Wayland, IME input stops working after a touch screen, tablet or remote session is disconnected, until restart.",
+        "confidence": 0.9,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "pdfcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "text_fonts_i18n",
+    "members": [
+      {
+        "app": "pdfcraft",
+        "id": "pdfcraft/pr/673",
+        "symptom": "On Windows, no caret is shown while composing Korean text in text fields.",
+        "confidence": 0.9,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "pdfcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "windowing_input",
+    "members": [
+      {
+        "app": "pdfcraft",
+        "id": "pdfcraft/pr/674",
+        "symptom": "On Windows, a window closed while maximized reopens with a white unpainted flash before the first frame.",
+        "confidence": 0.9,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "pdfcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "text_fonts_i18n",
+    "members": [
+      {
+        "app": "pdfcraft",
+        "id": "pdfcraft/pr/675",
+        "symptom": "On X11 the input method (IBus, fcitx5) stops working when focus moves between text fields until the window loses and regains focus.",
+        "confidence": 0.9,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "pdfcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "text_fonts_i18n",
+    "members": [
+      {
+        "app": "pdfcraft",
+        "id": "pdfcraft/pr/676",
+        "symptom": "On macOS, text committed through an input method (e.g. Korean syllable-ending keys, mouse-picked candidates) is lost or the next key is swallowed.",
+        "confidence": 0.9,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "pdfcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "text_fonts_i18n",
+    "members": [
+      {
+        "app": "pdfcraft",
+        "id": "pdfcraft/pr/677",
+        "symptom": "On macOS an unfinished IME composition reappears and is committed again after focus leaves a text field and comes back.",
+        "confidence": 0.9,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "pdfcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "text_fonts_i18n",
+    "members": [
+      {
+        "app": "pdfcraft",
+        "id": "pdfcraft/pr/678",
+        "symptom": "On macOS, emoji chosen from the emoji picker never appear in text fields.",
+        "confidence": 0.9,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "pdfcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "text_fonts_i18n",
+    "members": [
+      {
+        "app": "pdfcraft",
+        "id": "pdfcraft/pr/679",
+        "symptom": "On macOS with Apple Korean input, Space types two spaces when no syllable is in progress.",
+        "confidence": 0.9,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "pdfcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "text_fonts_i18n",
+    "members": [
+      {
+        "app": "pdfcraft",
+        "id": "pdfcraft/pr/680",
+        "symptom": "On macOS, the first Korean word typed after launch comes out as separate jamo instead of a composed syllable.",
+        "confidence": 0.9,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "pdfcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "windowing_input",
+    "members": [
+      {
+        "app": "pdfcraft",
+        "id": "pdfcraft/pr/696",
+        "symptom": "Clicking outside the command palette does not close it.",
+        "confidence": 0.75,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "pdfcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "ui_theme",
+    "members": [
+      {
+        "app": "pdfcraft",
+        "id": "pdfcraft/pr/704",
+        "symptom": "A side panel slowly grows wider again after you resize it narrower.",
+        "confidence": 0.7,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "pdfcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "windowing_input",
+    "members": [
+      {
+        "app": "pdfcraft",
+        "id": "pdfcraft/pr/715",
+        "symptom": "On Windows, opening several files at once from Explorer opens several windows instead of one.",
+        "confidence": 0.8,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "pdfcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "windowing_input",
+    "members": [
+      {
+        "app": "pdfcraft",
+        "id": "pdfcraft/pr/725",
+        "symptom": "On Windows, text and the user interface may look blurry or fuzzy on high-DPI displays.",
+        "confidence": 0.85,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "pdfcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "other",
+    "members": [
+      {
+        "app": "pdfcraft",
+        "id": "pdfcraft/pr/731",
+        "symptom": "Checking for updates shows a bare 'http status: 403' error when GitHub rate-limits the request.",
+        "confidence": 0.85,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "pdfcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "windowing_input",
+    "members": [
+      {
+        "app": "pdfcraft",
+        "id": "pdfcraft/pr/868",
+        "symptom": "Touchpad scrolling lags slightly behind the finger instead of following it 1:1.",
+        "confidence": 0.85,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "pdfcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "text_fonts_i18n",
+    "members": [
+      {
+        "app": "pdfcraft",
+        "id": "pdfcraft/pr/884",
+        "symptom": "Shortcut key names stay in English (for example Ctrl instead of Strg) when the interface is in another language.",
+        "confidence": 0.8,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "pdfcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "windowing_input",
+    "members": [
+      {
+        "app": "pdfcraft",
+        "id": "pdfcraft/pr/898",
+        "symptom": "Keyboard shortcuts such as Close or Undo act on the document behind an open dialog.",
+        "confidence": 0.85,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "pdfcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "packaging_install",
+    "members": [
+      {
+        "app": "pdfcraft",
+        "id": "pdfcraft/pr/933",
+        "symptom": "On macOS, documents the app handles show a generic gray icon in Finder instead of the app's document icon.",
+        "confidence": 0.85,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "pdfcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "text_fonts_i18n",
+    "members": [
+      {
+        "app": "photocraft",
+        "id": "photocraft/pr/1094",
+        "symptom": "Startup notices and welcome text stay in English or in the launch language after the interface language is changed.",
+        "confidence": 0.75,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "photocraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "windowing_input",
+    "members": [
+      {
+        "app": "photocraft",
+        "id": "photocraft/pr/1160",
+        "symptom": "On Windows, brush and crosshair cursors lag behind the mouse over the canvas.",
+        "confidence": 0.7,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "photocraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "text_fonts_i18n",
+    "members": [
+      {
+        "app": "photocraft",
+        "id": "photocraft/pr/1291",
+        "symptom": "Some dialog labels stay in English in every language even though translation coverage reports 100%.",
+        "confidence": 0.7,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "photocraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "automation_control",
+    "members": [
+      {
+        "app": "photocraft",
+        "id": "photocraft/pr/1304",
+        "symptom": "The automation server's reply to malformed JSON has no id field, unlike its other error replies.",
+        "confidence": 0.75,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "photocraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "gpu_rendering",
+    "members": [
+      {
+        "app": "photocraft",
+        "id": "photocraft/pr/1342",
+        "symptom": "After a failed start, the app keeps launching on a slower fallback or CPU renderer even though the GPU was not the cause.",
+        "confidence": 0.9,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "photocraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "text_fonts_i18n",
+    "members": [
+      {
+        "app": "photocraft",
+        "id": "photocraft/pr/1359",
+        "symptom": "The notice for a file path that is not valid Unicode is shown untranslated.",
+        "confidence": 0.7,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "photocraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "gpu_rendering",
+    "members": [
+      {
+        "app": "photocraft",
+        "id": "photocraft/pr/1412",
+        "symptom": "On macOS the display colour profile is not used, and a wall of raw base64 text fills the error notice.",
+        "confidence": 0.75,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "photocraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "windowing_input",
+    "members": [
+      {
+        "app": "photocraft",
+        "id": "photocraft/pr/1413",
+        "symptom": "On macOS, clicking menu bar items while a modal dialog is open runs commands underneath it.",
+        "confidence": 0.85,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "photocraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "windowing_input",
+    "members": [
+      {
+        "app": "photocraft",
+        "id": "photocraft/pr/1421",
+        "symptom": "On Wayland, selecting text with Ctrl+A, Shift-arrows or dragging deletes the selected text.",
+        "confidence": 0.8,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "photocraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "automation_control",
+    "members": [
+      {
+        "app": "photocraft",
+        "id": "photocraft/pr/1446",
+        "symptom": "A single automation click request with a huge count freezes the app or makes it run out of memory.",
+        "confidence": 0.85,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "photocraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "text_fonts_i18n",
+    "members": [
+      {
+        "app": "photocraft",
+        "id": "photocraft/pr/1467",
+        "symptom": "The app crashes at startup when the saved UI font size is anything other than the default.",
+        "confidence": 0.8,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "photocraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "windowing_input",
+    "members": [
+      {
+        "app": "photocraft",
+        "id": "photocraft/pr/1507",
+        "symptom": "Clicking the Help menu's search field closes the menu or loses focus, so typing does nothing.",
+        "confidence": 0.7,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "photocraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "automation_control",
+    "members": [
+      {
+        "app": "photocraft",
+        "id": "photocraft/pr/1527",
+        "symptom": "When a reply is lost, the automation bridge resends the request and the edit is applied twice.",
+        "confidence": 0.8,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "photocraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "file_io",
+    "members": [
+      {
+        "app": "photocraft",
+        "id": "photocraft/pr/1577",
+        "symptom": "Autosave failures go unreported, and the unsaved changes are left without a recovery copy.",
+        "confidence": 0.7,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "photocraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "windowing_input",
+    "members": [
+      {
+        "app": "photocraft",
+        "id": "photocraft/pr/1624",
+        "symptom": "On macOS, quitting the app crashes it, or leaves it hanging with no window until you Force Quit.",
+        "confidence": 0.85,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "photocraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "file_io",
+    "members": [
+      {
+        "app": "photocraft",
+        "id": "photocraft/pr/1639",
+        "symptom": "On macOS, saving or exporting to an SMB network share fails with 'Operation not supported (os error 45)'.",
+        "confidence": 0.9,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "photocraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "automation_control",
+    "members": [
+      {
+        "app": "photocraft",
+        "id": "photocraft/pr/1671",
+        "symptom": "Menu commands invoked through automation change the document while a modal dialog is open, leaving the dialog with stale values.",
+        "confidence": 0.8,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "photocraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "ui_theme",
+    "members": [
+      {
+        "app": "photocraft",
+        "id": "photocraft/pr/1677",
+        "symptom": "Toggling the System Title Bar preference appears to do nothing because it only takes effect after restart and no notice says so.",
+        "confidence": 0.7,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "photocraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "ui_theme",
+    "members": [
+      {
+        "app": "photocraft",
+        "id": "photocraft/pr/1822",
+        "symptom": "Tall dialogs push their OK and Cancel buttons off screen in small windows, and dialogs always reopen centred.",
+        "confidence": 0.7,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "photocraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "automation_control",
+    "members": [
+      {
+        "app": "photocraft",
+        "id": "photocraft/pr/1834",
+        "symptom": "Launching with --control exits with status 0 even when the control server couldn't be set up.",
+        "confidence": 0.9,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "photocraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "automation_control",
+    "members": [
+      {
+        "app": "photocraft",
+        "id": "photocraft/pr/1845",
+        "symptom": "Strict LLM providers reject every request when the app's MCP tools are loaded.",
+        "confidence": 0.85,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "photocraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "file_io",
+    "members": [
+      {
+        "app": "photocraft",
+        "id": "photocraft/pr/1866",
+        "symptom": "Save As and Export dialogs don't open in the current document's folder, so you have to browse back to it every time.",
+        "confidence": 0.85,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "photocraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "security",
+    "members": [
+      {
+        "app": "photocraft",
+        "id": "photocraft/pr/1901",
+        "symptom": "Importing a deeply nested or highly compressed SVG crashes the app with a stack overflow or huge memory use.",
+        "confidence": 0.7,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "photocraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "ui_theme",
+    "members": [
+      {
+        "app": "photocraft",
+        "id": "photocraft/pr/1936",
+        "symptom": "On macOS the unsaved-changes prompt shows accelerator letters in its button labels, unlike native alerts.",
+        "confidence": 0.8,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "photocraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "security",
+    "members": [
+      {
+        "app": "photocraft",
+        "id": "photocraft/pr/1956",
+        "symptom": "Opening a crafted or corrupt ZIP-based project file can use huge amounts of memory or crash.",
+        "confidence": 0.75,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "photocraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "windowing_input",
+    "members": [
+      {
+        "app": "photocraft",
+        "id": "photocraft/pr/1978",
+        "symptom": "With display scaling above 100%, the 100% zoom setting shows content larger than actual pixels.",
+        "confidence": 0.7,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "photocraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "gpu_rendering",
+    "members": [
+      {
+        "app": "photocraft",
+        "id": "photocraft/pr/1982",
+        "symptom": "In the web build on WebGPU the GPU renderer fails at once and the app falls back to CPU rendering.",
+        "confidence": 0.7,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "photocraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "ui_theme",
+    "members": [
+      {
+        "app": "photocraft",
+        "id": "photocraft/pr/1984",
+        "symptom": "A submenu whose items are all disabled still looks enabled and opens onto greyed items.",
+        "confidence": 0.75,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "photocraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "text_fonts_i18n",
+    "members": [
+      {
+        "app": "photocraft",
+        "id": "photocraft/pr/2008",
+        "symptom": "User-visible strings still mention the commercial app that this app copies.",
+        "confidence": 0.75,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "photocraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "file_io",
+    "members": [
+      {
+        "app": "photocraft",
+        "id": "photocraft/pr/2018",
+        "symptom": "After Save As on a new document, the tab and title still show Untitled instead of the chosen file name.",
+        "confidence": 0.7,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "photocraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "packaging_install",
+    "members": [
+      {
+        "app": "photocraft",
+        "id": "photocraft/pr/2097",
+        "symptom": "On GNOME, after launch the pointer keeps showing a spinning 'starting' cursor even though the window is already open.",
+        "confidence": 0.9,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "photocraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "windowing_input",
+    "members": [
+      {
+        "app": "photocraft",
+        "id": "photocraft/pr/2146",
+        "symptom": "Clicking a hyperlink in the About dialog does nothing, and the console logs that links are not enabled.",
+        "confidence": 0.85,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "photocraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "windowing_input",
+    "members": [
+      {
+        "app": "photocraft",
+        "id": "photocraft/pr/2205",
+        "symptom": "On Linux the window edges are hard or impossible to grab for resizing, show the wrong cursor, and stop responding after a resize.",
+        "confidence": 0.85,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "photocraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "gpu_rendering",
+    "members": [
+      {
+        "app": "photocraft",
+        "id": "photocraft/pr/2206",
+        "symptom": "On Linux with NVIDIA, choosing CPU rendering mode makes the app fail to start with no graphics adapter found.",
+        "confidence": 0.8,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "photocraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "automation_control",
+    "members": [
+      {
+        "app": "photocraft",
+        "id": "photocraft/pr/2216",
+        "symptom": "Automation commands refuse absolute file paths even when they lie inside the allowed root.",
+        "confidence": 0.75,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "photocraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "windowing_input",
+    "members": [
+      {
+        "app": "photocraft",
+        "id": "photocraft/pr/2221",
+        "symptom": "The Hand tool shows a four-arrow move cursor on Windows and a plain arrow while panning.",
+        "confidence": 0.75,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "photocraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "ui_theme",
+    "members": [
+      {
+        "app": "photocraft",
+        "id": "photocraft/pr/2323",
+        "symptom": "Popup menus have different spacing from the main menus, and hovered items have poor text contrast.",
+        "confidence": 0.7,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "photocraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "windowing_input",
+    "members": [
+      {
+        "app": "photocraft",
+        "id": "photocraft/pr/2401",
+        "symptom": "On some Windows systems the custom-title-bar window shows black bars at the top and left, and the mouse pointer hits the wrong controls.",
+        "confidence": 0.9,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "photocraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "automation_control",
+    "members": [
+      {
+        "app": "photocraft",
+        "id": "photocraft/pr/2497",
+        "symptom": "Automation requests that time out return a bare \"timeout\" error that doesn't say whether the command is slow or the window stopped drawing frames.",
+        "confidence": 0.85,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "photocraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "packaging_install",
+    "members": [
+      {
+        "app": "photocraft",
+        "id": "photocraft/pr/2503",
+        "symptom": "On Alpine, NixOS or AppImage installs, startup prints a warning about missing X11 libraries even though they are installed and the app runs fine.",
+        "confidence": 0.85,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "photocraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "automation_control",
+    "members": [
+      {
+        "app": "photocraft",
+        "id": "photocraft/pr/2507",
+        "symptom": "Automation calls through the MCP bridge fail after the agent pauses for more than 30 seconds, or time out with no diagnostics.",
+        "confidence": 0.8,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "photocraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "automation_control",
+    "members": [
+      {
+        "app": "photocraft",
+        "id": "photocraft/pr/2517",
+        "symptom": "Saving through the automation channel freezes the window, and large saves time out.",
+        "confidence": 0.75,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "photocraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "text_fonts_i18n",
+    "members": [
+      {
+        "app": "photocraft",
+        "id": "photocraft/pr/2586",
+        "symptom": "Menus say \"Reveal in Finder\" on Windows and Linux.",
+        "confidence": 0.8,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "photocraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "ui_theme",
+    "members": [
+      {
+        "app": "photocraft",
+        "id": "photocraft/pr/2610",
+        "symptom": "When quitting with several unsaved documents, answering No leaves the tab open, so the same prompt seems to repeat.",
+        "confidence": 0.7,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "photocraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "text_fonts_i18n",
+    "members": [
+      {
+        "app": "photocraft",
+        "id": "photocraft/pr/2627",
+        "symptom": "With a non-English interface language, items added at run time are missing from their menu.",
+        "confidence": 0.75,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "photocraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "ui_theme",
+    "members": [
+      {
+        "app": "photocraft",
+        "id": "photocraft/pr/2634",
+        "symptom": "An open dropdown list gets slightly wider while you scroll and hover over its options.",
+        "confidence": 0.8,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "photocraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "text_fonts_i18n",
+    "members": [
+      {
+        "app": "photocraft",
+        "id": "photocraft/pr/2660",
+        "symptom": "Some UI strings stay untranslated because the translation check never sees them.",
+        "confidence": 0.8,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "photocraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "ui_theme",
+    "members": [
+      {
+        "app": "photocraft",
+        "id": "photocraft/pr/2774",
+        "symptom": "Panel tabs can't be dragged to reorder them; dragging moves the whole group instead.",
+        "confidence": 0.7,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "photocraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "file_io",
+    "members": [
+      {
+        "app": "photocraft",
+        "id": "photocraft/pr/2807",
+        "symptom": "In the web build, File > Open opens only one of several selected files.",
+        "confidence": 0.75,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "photocraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "windowing_input",
+    "members": [
+      {
+        "app": "photocraft",
+        "id": "photocraft/pr/2821",
+        "symptom": "Drag-selecting text in a single-line field follows vertical mouse movement instead of horizontal, selecting all to the start or end.",
+        "confidence": 0.9,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "photocraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "windowing_input",
+    "members": [
+      {
+        "app": "photocraft",
+        "id": "photocraft/pr/3006",
+        "symptom": "Malformed keyboard shortcut strings are quietly read as a different shortcut, and Plus-key shortcuts display wrongly.",
+        "confidence": 0.7,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "photocraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "ui_theme",
+    "members": [
+      {
+        "app": "photocraft",
+        "id": "photocraft/pr/3140",
+        "symptom": "When several dialogs stack up, the one in front can be greyed out and ignore clicks, so the app has to be quit.",
+        "confidence": 0.7,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "photocraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "windowing_input",
+    "members": [
+      {
+        "app": "photocraft",
+        "id": "photocraft/pr/3165",
+        "symptom": "On a large 4K monitor set to 100% scaling, the window and UI open at double size.",
+        "confidence": 0.8,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "photocraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "windowing_input",
+    "members": [
+      {
+        "app": "photocraft",
+        "id": "photocraft/pr/3251",
+        "symptom": "In menus a submenu closes, and other rows open, when the pointer moves diagonally toward the submenu.",
+        "confidence": 0.85,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "photocraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "file_io",
+    "members": [
+      {
+        "app": "photocraft",
+        "id": "photocraft/pr/3293",
+        "symptom": "Opening several files at once gives tabs in random order instead of name order.",
+        "confidence": 0.75,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "photocraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "ui_theme",
+    "members": [
+      {
+        "app": "photocraft",
+        "id": "photocraft/pr/3363",
+        "symptom": "Rounded colour swatches show white specks at their corners on dark themes.",
+        "confidence": 0.7,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "photocraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "automation_control",
+    "members": [
+      {
+        "app": "photocraft",
+        "id": "photocraft/pr/820",
+        "symptom": "An automation call that sets several UI fields reports failure but still applies some of them, or silently ignores bad values.",
+        "confidence": 0.7,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "photocraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "automation_control",
+    "members": [
+      {
+        "app": "soundcraft",
+        "id": "soundcraft/pr/119",
+        "symptom": "Running dialog commands through automation opens modal dialogs instead of returning without one.",
+        "confidence": 0.7,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "soundcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "text_fonts_i18n",
+    "members": [
+      {
+        "app": "soundcraft",
+        "id": "soundcraft/pr/31",
+        "symptom": "On Linux the UI does not use the system's or the user's installed fonts.",
+        "confidence": 0.8,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "soundcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "windowing_input",
+    "members": [
+      {
+        "app": "soundcraft",
+        "id": "soundcraft/pr/66",
+        "symptom": "Menus and the command palette show Cmd shortcuts on Windows, Linux and in the browser, where the key is Ctrl.",
+        "confidence": 0.85,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "soundcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "windowing_input",
+    "members": [
+      {
+        "app": "vectorcraft",
+        "id": "vectorcraft/pr/1099",
+        "symptom": "On macOS the app crashes when a file open or save dialog is resized.",
+        "confidence": 0.95,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "vectorcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "security",
+    "members": [
+      {
+        "app": "vectorcraft",
+        "id": "vectorcraft/pr/1157",
+        "symptom": "Passing an automation root flag without a value starts the control channel without file-system confinement.",
+        "confidence": 0.8,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "vectorcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "text_fonts_i18n",
+    "members": [
+      {
+        "app": "vectorcraft",
+        "id": "vectorcraft/pr/1186",
+        "symptom": "In text editing, the arrow keys and Delete stop inside Thai clusters, accented letters or emoji, so typing or deleting there splits the character.",
+        "confidence": 0.7,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "vectorcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "ui_theme",
+    "members": [
+      {
+        "app": "vectorcraft",
+        "id": "vectorcraft/pr/625",
+        "symptom": "Clicking a menu button inside a popover closes the popover and no menu appears.",
+        "confidence": 0.7,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "vectorcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "gpu_rendering",
+    "members": [
+      {
+        "app": "vectorcraft",
+        "id": "vectorcraft/pr/658",
+        "symptom": "On dual-GPU Macs the app quits at startup instead of falling back to the other GPU.",
+        "confidence": 0.9,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "vectorcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "ui_theme",
+    "members": [
+      {
+        "app": "vectorcraft",
+        "id": "vectorcraft/pr/688",
+        "symptom": "On Windows, Linux and the web, document tab close buttons appear before the title instead of after it.",
+        "confidence": 0.75,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "vectorcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "windowing_input",
+    "members": [
+      {
+        "app": "vectorcraft",
+        "id": "vectorcraft/pr/692",
+        "symptom": "On Windows the taskbar and Alt+Tab show a generic icon instead of the app's icon.",
+        "confidence": 0.95,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "vectorcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "file_io",
+    "members": [
+      {
+        "app": "vectorcraft",
+        "id": "vectorcraft/pr/709",
+        "symptom": "On Linux desktops whose documents folder has a localised name, the template file dialog opens on a missing folder and shows an error.",
+        "confidence": 0.8,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "vectorcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "packaging_install",
+    "members": [
+      {
+        "app": "vectorcraft",
+        "id": "vectorcraft/pr/760",
+        "symptom": "The Windows installer shows only a progress bar and closes, so users can't tell whether the app was installed.",
+        "confidence": 0.9,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "vectorcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "windowing_input",
+    "members": [
+      {
+        "app": "vectorcraft",
+        "id": "vectorcraft/pr/800",
+        "symptom": "Single-key tool shortcuts do nothing on non-Latin keyboard layouts such as Russian, Arabic or Persian.",
+        "confidence": 0.85,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "vectorcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "automation_control",
+    "members": [
+      {
+        "app": "vectorcraft",
+        "id": "vectorcraft/pr/860",
+        "symptom": "The control channel's app.quit returns null at once even when a save-changes prompt is waiting.",
+        "confidence": 0.75,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "vectorcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "windowing_input",
+    "members": [
+      {
+        "app": "vectorcraft",
+        "id": "vectorcraft/pr/895",
+        "symptom": "On macOS the app crashes after resizing an Open or Save dialog and releasing the mouse.",
+        "confidence": 0.85,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "vectorcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "ui_theme",
+    "members": [
+      {
+        "app": "vectorcraft",
+        "id": "vectorcraft/pr/916",
+        "symptom": "Number fields with a spinner and preset dropdown look like three separate boxes with mismatched heights and double borders.",
+        "confidence": 0.7,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "vectorcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "ui_theme",
+    "members": [
+      {
+        "app": "vectorcraft",
+        "id": "vectorcraft/pr/953",
+        "symptom": "Contributor links in the About and credits dialog do not work.",
+        "confidence": 0.7,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "vectorcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "gpu_rendering",
+    "members": [
+      {
+        "app": "vectorcraft",
+        "id": "vectorcraft/pr/982",
+        "symptom": "On hybrid-GPU laptops with the high-performance GPU chosen, the window never appears and the app stays running in the background.",
+        "confidence": 0.8,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "vectorcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "packaging_install",
+    "members": [
+      {
+        "app": "wordcraft",
+        "id": "wordcraft/pr/10",
+        "symptom": "The Windows MSI refuses to install, saying a newer version is already installed, when a different Craft app is installed.",
+        "confidence": 0.95,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "wordcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "file_io",
+    "members": [
+      {
+        "app": "wordcraft",
+        "id": "wordcraft/pr/151",
+        "symptom": "New, Open, Close or quitting discard unsaved changes without asking, and AutoSave rewrites files that were only opened.",
+        "confidence": 0.75,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "wordcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "gpu_rendering",
+    "members": [
+      {
+        "app": "wordcraft",
+        "id": "wordcraft/pr/165",
+        "symptom": "At fractional zoom levels the page looks blurry or is off by one pixel from its outline.",
+        "confidence": 0.75,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "wordcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "performance",
+    "members": [
+      {
+        "app": "wordcraft",
+        "id": "wordcraft/pr/180",
+        "symptom": "The app keeps redrawing at the monitor refresh rate and uses CPU/GPU while idle.",
+        "confidence": 0.85,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "wordcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "other",
+    "members": [
+      {
+        "app": "wordcraft",
+        "id": "wordcraft/pr/214",
+        "symptom": "In the browser build, new items are stamped with a fixed date of 2026-01-01 instead of the current time.",
+        "confidence": 0.8,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "wordcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "file_io",
+    "members": [
+      {
+        "app": "wordcraft",
+        "id": "wordcraft/pr/223",
+        "symptom": "On macOS, double-clicking a document in Finder, dropping it on the Dock or using open -a launches the app without opening the file.",
+        "confidence": 0.95,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "wordcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "other",
+    "members": [
+      {
+        "app": "wordcraft",
+        "id": "wordcraft/pr/230",
+        "symptom": "In the browser, timers never fire, the caret doesn't blink, and dates are wrong.",
+        "confidence": 0.8,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "wordcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "file_io",
+    "members": [
+      {
+        "app": "wordcraft",
+        "id": "wordcraft/pr/246",
+        "symptom": "On Linux, opening Open, Save As or Export freezes the window, and the dialog can appear behind it.",
+        "confidence": 0.9,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "wordcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "packaging_install",
+    "members": [
+      {
+        "app": "wordcraft",
+        "id": "wordcraft/pr/248",
+        "symptom": "With the Simplified Chinese interface, some menu and button characters show as boxes while document text looks fine.",
+        "confidence": 0.9,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "wordcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "windowing_input",
+    "members": [
+      {
+        "app": "wordcraft",
+        "id": "wordcraft/pr/252",
+        "symptom": "On Wayland, touchpad scrolling feels choppy, has no inertia after a flick, and mouse wheel scrolls too little.",
+        "confidence": 0.85,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "wordcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "packaging_install",
+    "members": [
+      {
+        "app": "wordcraft",
+        "id": "wordcraft/pr/257",
+        "symptom": "The Windows MSI installer closes without showing a finish or success page.",
+        "confidence": 0.9,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "wordcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "gpu_rendering",
+    "members": [
+      {
+        "app": "wordcraft",
+        "id": "wordcraft/pr/325",
+        "symptom": "On Windows PCs whose graphics lack a DirectX 12 driver the app is very laggy because it renders in software.",
+        "confidence": 0.9,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "wordcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "ui_theme",
+    "members": [
+      {
+        "app": "wordcraft",
+        "id": "wordcraft/pr/511",
+        "symptom": "Switching tabs in a dialog makes the window re-centre, so the title bar and tab strip jump up and down.",
+        "confidence": 0.75,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "wordcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "security",
+    "members": [
+      {
+        "app": "wordcraft",
+        "id": "wordcraft/pr/72",
+        "symptom": "A web page can send commands to the local automation port through an HTTP request.",
+        "confidence": 0.85,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "wordcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "windowing_input",
+    "members": [
+      {
+        "app": "wordcraft",
+        "id": "wordcraft/pr/76",
+        "symptom": "A restored window can open off-screen because the off-screen check was skipped.",
+        "confidence": 0.9,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "wordcraft"
+    ],
+    "open_in": []
+  },
+  {
+    "area": "text_fonts_i18n",
+    "members": [
+      {
+        "app": "wordcraft",
+        "id": "wordcraft/pr/9",
+        "symptom": "Opening the font dropdown freezes the app.",
+        "confidence": 0.7,
+        "state": "fixed"
+      }
+    ],
+    "fixed_in": [
+      "wordcraft"
+    ],
+    "open_in": []
+  }
+]
