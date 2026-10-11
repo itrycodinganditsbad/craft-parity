@@ -101,9 +101,9 @@ fn candidates_need_a_fix_and_either_two_apps_or_confidence() {
 
 #[test]
 fn output_is_stable() {
-    let a = serde_json::to_string(&cluster::clusters(&corpus(), 0.42)).unwrap();
+    let a = serde_json::to_string(&cluster::clusters(&corpus(), cluster::DEFAULT_THRESHOLD)).unwrap();
     let mut shuffled = corpus();
     shuffled.reverse();
-    let b = serde_json::to_string(&cluster::clusters(&shuffled, 0.42)).unwrap();
+    let b = serde_json::to_string(&cluster::clusters(&shuffled, cluster::DEFAULT_THRESHOLD)).unwrap();
     assert_eq!(a, b);
 }

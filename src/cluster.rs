@@ -9,7 +9,7 @@ use serde::Serialize;
 use crate::classify::Classified;
 
 /// Two records join a cluster when their similarity reaches this.
-pub const DEFAULT_THRESHOLD: f64 = 0.42;
+pub const DEFAULT_THRESHOLD: f64 = 0.35;
 
 const STOPWORDS: &[&str] = &[
     "a", "an", "and", "are", "as", "at", "be", "but", "by", "can", "does", "doesn", "don", "for", "from", "has", "have", "if", "in", "into", "is",
@@ -125,15 +125,32 @@ pub fn clusters(records: &[(String, Classified, MemberState)], threshold: f64) -
     let pool: Vec<&(String, Classified, MemberState)> = records.iter().filter(|(_, c, _)| eligible(c)).collect();
     let texts: Vec<Vec<String>> = pool.iter().map(|(_, c, _)| tokens(&format!("{} {}", c.labels.symptom, c.labels.root_cause))).collect();
     let vecs = vectors(&texts);
-    let mut parent: Vec<usize> = (0..pool.len()).collect();
+    // Greedy average linkage: take pairs from most to least similar; join their groups only when
+    // the two groups are similar on average, so one bridging pair can't chain unrelated bugs.
+    let sim = |i: usize, j: usize| if pool[i].1.labels.area == pool[j].1.labels.area { vecs[i].cosine(&vecs[j]) } else { 0.0 };
+    let mut edges: Vec<(f64, usize, usize)> = Vec::new();
     for i in 0..pool.len() {
         for j in i + 1..pool.len() {
-            if pool[i].1.labels.area == pool[j].1.labels.area && vecs[i].cosine(&vecs[j]) >= threshold {
-                let (a, b) = (find(&mut parent, i), find(&mut parent, j));
-                if a != b {
-                    parent[a.max(b)] = a.min(b);
-                }
+            let s = sim(i, j);
+            if s >= threshold {
+                edges.push((s, i, j));
             }
+        }
+    }
+    edges.sort_by(|a, b| b.0.total_cmp(&a.0).then_with(|| (a.1, a.2).cmp(&(b.1, b.2))));
+    let mut parent: Vec<usize> = (0..pool.len()).collect();
+    let mut members: Vec<Vec<usize>> = (0..pool.len()).map(|i| vec![i]).collect();
+    for (_, i, j) in edges {
+        let (a, b) = (find(&mut parent, i), find(&mut parent, j));
+        if a == b {
+            continue;
+        }
+        let total: f64 = members[a].iter().flat_map(|&x| members[b].iter().map(move |&y| (x, y))).map(|(x, y)| sim(x, y)).sum();
+        if total / (members[a].len() * members[b].len()) as f64 >= threshold {
+            let (keep, gone) = (a.min(b), a.max(b));
+            parent[gone] = keep;
+            let moved = std::mem::take(&mut members[gone]);
+            members[keep].extend(moved);
         }
     }
     let mut groups: BTreeMap<usize, Vec<usize>> = BTreeMap::new();
