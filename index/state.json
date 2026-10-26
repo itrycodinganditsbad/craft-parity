@@ -1,7 +1,7 @@
 {
   "artcraft": {
-    "prs_updated": "2026-10-26T10:19:26Z",
-    "issues_updated": "2026-10-26T12:36:37Z",
+    "prs_updated": "2026-10-26T19:17:06Z",
+    "issues_updated": "2026-10-26T19:46:56Z",
     "full_sync": "2026-10-25T07:48:44Z"
   },
   "artcraftx": {
@@ -10,68 +10,68 @@
     "full_sync": "2026-10-25T07:48:44Z"
   },
   "cadcraft": {
-    "prs_updated": "2026-10-26T13:06:10Z",
-    "issues_updated": "2026-10-26T12:09:55Z",
+    "prs_updated": "2026-10-26T20:33:40Z",
+    "issues_updated": "2026-10-26T19:53:19Z",
     "full_sync": "2026-10-25T07:48:44Z"
   },
   "craft-launcher": {
-    "prs_updated": "2026-10-26T13:04:39Z",
-    "issues_updated": "2026-10-26T11:52:53Z",
+    "prs_updated": "2026-10-26T20:28:09Z",
+    "issues_updated": "2026-10-26T19:27:53Z",
     "full_sync": "2026-10-25T07:48:44Z"
   },
   "deckcraft": {
-    "prs_updated": "2026-10-26T13:12:47Z",
-    "issues_updated": "2026-10-26T13:13:01Z",
+    "prs_updated": "2026-10-26T20:17:19Z",
+    "issues_updated": "2026-10-26T19:39:15Z",
     "full_sync": "2026-10-25T07:48:44Z"
   },
   "designcraft": {
-    "prs_updated": "2026-10-26T13:12:25Z",
-    "issues_updated": "2026-10-26T11:49:00Z",
+    "prs_updated": "2026-10-26T20:29:06Z",
+    "issues_updated": "2026-10-26T20:33:33Z",
     "full_sync": "2026-10-25T07:48:44Z"
   },
   "effectcraft": {
-    "prs_updated": "2026-10-26T13:11:14Z",
-    "issues_updated": "2026-10-26T10:54:18Z",
+    "prs_updated": "2026-10-26T20:31:07Z",
+    "issues_updated": "2026-10-26T19:44:54Z",
     "full_sync": "2026-10-25T07:48:44Z"
   },
   "filmcraft": {
-    "prs_updated": "2026-10-26T13:13:20Z",
-    "issues_updated": "2026-10-26T12:45:15Z",
+    "prs_updated": "2026-10-26T20:34:00Z",
+    "issues_updated": "2026-10-26T20:00:26Z",
     "full_sync": "2026-10-25T07:48:44Z"
   },
   "gridcraft": {
-    "prs_updated": "2026-10-26T13:12:56Z",
-    "issues_updated": "2026-10-26T12:30:55Z",
+    "prs_updated": "2026-10-26T20:25:09Z",
+    "issues_updated": "2026-10-26T20:33:38Z",
     "full_sync": "2026-10-25T07:48:44Z"
   },
   "lightcraft": {
-    "prs_updated": "2026-10-26T13:12:40Z",
-    "issues_updated": "2026-10-26T13:12:12Z",
+    "prs_updated": "2026-10-26T20:34:19Z",
+    "issues_updated": "2026-10-26T20:34:30Z",
     "full_sync": "2026-10-25T07:48:44Z"
   },
   "pdfcraft": {
-    "prs_updated": "2026-10-26T13:13:08Z",
-    "issues_updated": "2026-10-26T13:03:18Z",
+    "prs_updated": "2026-10-26T20:34:05Z",
+    "issues_updated": "2026-10-26T20:30:12Z",
     "full_sync": "2026-10-25T07:48:44Z"
   },
   "photocraft": {
-    "prs_updated": "2026-10-26T13:13:37Z",
-    "issues_updated": "2026-10-26T13:12:53Z",
+    "prs_updated": "2026-10-26T20:16:11Z",
+    "issues_updated": "2026-10-26T20:34:39Z",
     "full_sync": "2026-10-25T07:48:44Z"
   },
   "soundcraft": {
-    "prs_updated": "2026-10-26T13:12:27Z",
-    "issues_updated": "2026-10-26T11:49:26Z",
+    "prs_updated": "2026-10-26T20:34:15Z",
+    "issues_updated": "2026-10-26T18:28:08Z",
     "full_sync": "2026-10-25T07:48:44Z"
   },
   "vectorcraft": {
-    "prs_updated": "2026-10-26T13:13:04Z",
-    "issues_updated": "2026-10-26T12:18:32Z",
+    "prs_updated": "2026-10-26T20:34:28Z",
+    "issues_updated": "2026-10-26T20:22:44Z",
     "full_sync": "2026-10-25T07:48:44Z"
   },
   "wordcraft": {
-    "prs_updated": "2026-10-26T13:13:39Z",
-    "issues_updated": "2026-10-26T12:46:45Z",
+    "prs_updated": "2026-10-26T20:34:30Z",
+    "issues_updated": "2026-10-26T19:16:54Z",
     "full_sync": "2026-10-25T07:48:44Z"
   }
 }
